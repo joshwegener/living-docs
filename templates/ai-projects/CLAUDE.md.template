@@ -3,7 +3,7 @@
 This file provides guidance to Claude and other AI agents working with code in this repository.
 
 ## 📚 Documentation System
-**@{{DOCS_PATH}}/current.md** - Complete project documentation map, status dashboard, and reporting instructions
+**@{{DOCS_PATH}}/bootstrap.md** - AI instructions and project documentation system
 
 ## Project Overview
 {{PROJECT_DESCRIPTION}}

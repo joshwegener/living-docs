@@ -1,7 +1,7 @@
 # CLAUDE.md - AI Assistant Instructions
 
 ## Documentation System
-@docs/current.md - Complete project documentation map, status dashboard, and reporting instructions
+@docs/bootstrap.md - AI instructions and project documentation system
 
 ## Project Overview
 {{PROJECT_DESCRIPTION}}

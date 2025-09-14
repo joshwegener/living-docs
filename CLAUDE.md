@@ -1,7 +1,7 @@
 # CLAUDE.md - living-docs AI Assistant Guidelines
 
 ## 📚 Documentation System
-**@docs/current.md** - Complete project documentation map, status dashboard, and reporting instructions
+**@docs/bootstrap.md** - AI instructions and project documentation system
 
 ## Project Overview
 living-docs is a universal documentation framework that keeps documentation alive by integrating it into the development workflow. We eat our own dog food - this project uses its own system.

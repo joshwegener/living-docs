@@ -3,7 +3,7 @@
 This file provides core guidance for all team members working on {{PROJECT_NAME}}.
 
 ## 📚 Documentation System
-**@{{DOCS_PATH}}/current.md** - Complete project documentation map, status dashboard, and reporting instructions
+**@{{DOCS_PATH}}/bootstrap.md** - AI instructions and project documentation system
 
 ## Project Overview
 {{PROJECT_DESCRIPTION}}

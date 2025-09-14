@@ -2,14 +2,6 @@
 
 **Status**: ALPHA | **Version**: 0.2.0 | **Updated**: Sept 14, 2025
 
-## 📋 Status Reporting Instructions
-When asked for project status, provide:
-1. **Active Tasks**: Count items in `active/` directory (currently 8 specs)
-2. **Open Bugs**: Check [bugs.md](../bugs.md) (7 open, 2 closed)
-3. **Ideas Backlog**: Check [ideas.md](../ideas.md) (25+ ideas)
-4. **Recent Completions**: Spec-kit integration, bootstrap templates
-5. **Current Focus**: Testing framework and examples library
-
 ## 🎯 Project Mission
 Create a documentation framework that actually stays alive throughout a project's lifecycle.
 

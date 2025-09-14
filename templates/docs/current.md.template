@@ -2,14 +2,6 @@
 
 **Status**: {{STATUS}} | **Version**: {{VERSION}} | **Updated**: {{DATE}}
 
-## 📋 Status Reporting Instructions
-When asked for project status, provide:
-1. **Active Tasks**: Count items in `active/` directory below
-2. **Open Bugs**: Check [bugs.md](../bugs.md) for count and priorities
-3. **Ideas Backlog**: Check [ideas.md](../ideas.md) for count
-4. **Recent Completions**: List latest from `completed/` directory
-5. **Current Focus**: Describe what's being worked on now
-
 ## 🎯 Project Overview
 {{PROJECT_DESCRIPTION}}
 

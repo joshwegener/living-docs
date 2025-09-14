@@ -3,7 +3,7 @@
 This file provides guidance for contributors working on the living-docs framework itself.
 
 ## 📚 Documentation System
-**@docs/current.md** - Complete project documentation map, status dashboard, and reporting instructions
+**@docs/bootstrap.md** - AI instructions and project documentation system
 
 ## Project Mission
 

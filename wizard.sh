@@ -256,16 +256,16 @@ if [ ! -f "$AI_FILE" ]; then
     if [ -f "$(dirname "$0")/templates/ai-projects/$AI_FILE.template" ]; then
         cp "$(dirname "$0")/templates/ai-projects/$AI_FILE.template" "$AI_FILE"
     else
-        cat > "$AI_FILE" << 'EOF'
+        cat > "$AI_FILE" << EOF
 # Project Guidelines
 
-## Documentation System
-This project uses [living-docs](https://github.com/joshwegener/living-docs) for documentation.
+## 📚 Documentation System
+**@$DOCS_PATH/bootstrap.md** - AI instructions and project documentation system
 
 ## Quick Reference
-- Track issues in `bugs.md`
-- Check status in `$DOCS_PATH/current.md`
-- Active work in `$DOCS_PATH/active/`
+- Track issues in \`bugs.md\`
+- Check status in \`$DOCS_PATH/current.md\`
+- Active work in \`$DOCS_PATH/active/\`
 
 ---
 *Powered by living-docs - documentation that stays alive*
@@ -330,6 +330,81 @@ Project documentation powered by living-docs.
 *Powered by [living-docs](https://github.com/joshwegener/living-docs)*
 EOF
     echo -e "${GREEN}✓${NC} Created dashboard"
+
+    # Create bootstrap.md for AI instructions
+    cat > "$DOCS_PATH/bootstrap.md" << EOF
+# Bootstrap - AI Assistant Instructions
+
+## 📊 Project Dashboard
+**@$DOCS_PATH/current.md** - Complete project status, metrics, and documentation map
+
+## 📋 Status Reporting
+When asked for project status, check current.md and report:
+1. **Active Tasks**: Count items in \`active/\` directory with priorities
+2. **Open Bugs**: Count from bugs.md with severity breakdown
+3. **Ideas Backlog**: Total count from ideas.md
+4. **Recent Completions**: Latest 3-5 from \`completed/\` directory
+5. **Current Focus**: Main work areas being addressed
+
+## 📁 Documentation Structure
+\`\`\`
+/
+├── $AI_FILE (references this bootstrap)
+├── bugs.md (lightweight issue tracking)
+├── ideas.md (feature backlog)
+└── $DOCS_PATH/
+    ├── bootstrap.md (this file - AI instructions)
+    ├── current.md (project dashboard)
+    ├── log.md (one-liner updates)
+    ├── active/ (current work)
+    ├── completed/ (finished tasks)
+    ├── issues/ (detailed bug specs)
+    └── procedures/ (how-to guides)
+\`\`\`
+
+## 🔄 Workflow Patterns
+
+### Starting Work
+1. Check current.md for priorities
+2. Review active/ for ongoing tasks
+3. Pick from bugs.md for quick fixes
+
+### During Work
+1. Update task files in active/
+2. Add one-liners to log.md for major steps
+3. Commit every 30 minutes
+
+### Completing Work
+1. Move task to completed/ with date prefix
+2. Update current.md if needed
+3. Mark bugs as fixed in bugs.md
+
+## 🛠️ Common Commands
+\`\`\`bash
+# Add a bug
+echo "- [ ] Bug description" >> bugs.md
+
+# Add an idea
+echo "- [ ] Feature idea" >> ideas.md
+
+# Update log
+echo "\$(date '+%I:%M %p') - Role: Action taken" >> $DOCS_PATH/log.md
+
+# Complete a task
+mv $DOCS_PATH/active/task.md $DOCS_PATH/completed/\$(date +%Y-%m-%d)-task.md
+\`\`\`
+
+## 🎯 Key Principles
+- Always check current.md first for context
+- Keep updates brief and factual
+- Use existing documentation structure
+- Don't create new files unless necessary
+- Prefer editing over creating
+
+---
+*This file contains instructions for AI assistants. Project data lives in current.md*
+EOF
+    echo -e "${GREEN}✓${NC} Created bootstrap.md"
 fi
 
 # Success message
