@@ -18,10 +18,11 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Testing Framework](./active/06-testing-framework.md) - 🔴 HIGH PRIORITY
-2. [Examples Library](./active/07-examples-library.md) - 🔴 HIGH PRIORITY
-3. [Universal Spec Adapter Testing](./active/03-universal-spec-adapter.md) - 🟡 Needs testing
-4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
+3. [Universal Spec Adapters](./active/03-universal-spec-adapter.md) - 🔴 Not Implemented
+4. [Spec-Kit Adapter](./active/09-spec-kit-adapter.md) - 🔴 Not Started
+5. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
 - [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation

@@ -3,6 +3,10 @@
 *One-liner bug capture - promote to docs/issues/ when investigation needed*
 
 ## 🔴 Critical
+- [ ] Universal Adapters not implemented (framework exists but no actual adapters)
+- [ ] Spec-kit adapter completely missing (no .claude/commands/)
+- [ ] BMAD adapter not implemented
+- [ ] Agent OS adapter not implemented
 - [ ] Wizard.sh needs error handling for missing template files
 - [ ] Paths with spaces break sed commands in scripts
 
