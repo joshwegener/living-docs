@@ -3,15 +3,7 @@
 This file provides guidance for contributors working on the living-docs framework itself.
 
 ## 📚 Documentation System
-**@docs/current.md** - Complete project documentation map and status dashboard
-
-## Status Reporting
-When asked for status, provide:
-1. **Active Tasks**: 8 specs in docs/active/ (3 HIGH, 1 MEDIUM priority)
-2. **Open Bugs**: Check bugs.md for count and priorities
-3. **Ideas Backlog**: 25+ ideas in ideas.md
-4. **Recent Completions**: Spec-kit integration, status reporting templates
-5. **Current Focus**: Documentation system bootstrap
+**@docs/current.md** - Complete project documentation map, status dashboard, and reporting instructions
 
 ## Project Mission
 

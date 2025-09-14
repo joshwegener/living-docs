@@ -1,15 +1,7 @@
 # CLAUDE.md - living-docs AI Assistant Guidelines
 
 ## 📚 Documentation System
-**@docs/current.md** - Complete project documentation map and status dashboard
-
-## Status Reporting
-When asked for status, provide:
-1. **Active Tasks**: List from docs/active/ (currently 8 specs)
-2. **Open Bugs**: Count from bugs.md (currently 7 open, 2 closed)
-3. **Ideas Backlog**: Count from ideas.md (currently 25+ ideas)
-4. **Recent Completions**: Latest from docs/completed/
-5. **Current Focus**: What you're working on now
+**@docs/current.md** - Complete project documentation map, status dashboard, and reporting instructions
 
 ## Project Overview
 living-docs is a universal documentation framework that keeps documentation alive by integrating it into the development workflow. We eat our own dog food - this project uses its own system.

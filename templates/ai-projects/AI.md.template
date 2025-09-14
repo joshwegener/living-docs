@@ -3,15 +3,7 @@
 This file provides guidance to AI assistants (Claude, ChatGPT, Copilot, etc.) working with this codebase.
 
 ## 📚 Documentation System
-**@{{DOCS_PATH}}/current.md** - Complete project documentation map and status dashboard
-
-## Status Reporting
-When asked for status, provide:
-1. **Active Tasks**: List from {{DOCS_PATH}}/active/ with status
-2. **Open Bugs**: Count and top priorities from bugs.md
-3. **Ideas Backlog**: Count from ideas.md
-4. **Recent Completions**: Latest from {{DOCS_PATH}}/completed/
-5. **Current Focus**: What you're working on now
+**@{{DOCS_PATH}}/current.md** - Complete project documentation map, status dashboard, and reporting instructions
 
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
