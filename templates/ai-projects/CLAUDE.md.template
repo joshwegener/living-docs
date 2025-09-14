@@ -29,7 +29,7 @@ This file provides guidance to Claude and other AI agents working with code in t
 /
 ├── CLAUDE.md (this file - core agent behavior)
 ├── bugs.md (lightweight issue tracking)
-└── docs/
+└── {{DOCS_PATH}}/
     ├── current.md (project dashboard)
     ├── active/ (current work)
     ├── completed/ (finished tasks)
@@ -38,10 +38,10 @@ This file provides guidance to Claude and other AI agents working with code in t
 ```
 
 ### Workflow
-1. **Start**: Check `docs/current.md` for status
-2. **Find Work**: Look in `docs/active/` for tasks
+1. **Start**: Check `{{DOCS_PATH}}/current.md` for status
+2. **Find Work**: Look in `{{DOCS_PATH}}/active/` for tasks
 3. **Document**: Update task files as you work
-4. **Complete**: Move to `docs/completed/` when done
+4. **Complete**: Move to `{{DOCS_PATH}}/completed/` when done
 
 ### What Stays in CLAUDE.md
 - Critical safety protocols

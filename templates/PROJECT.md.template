@@ -11,20 +11,20 @@ This file provides core guidance for all team members working on {{PROJECT_NAME}
 ## Development Workflow
 
 ### Finding Work
-1. Check `docs/current.md` for project status
-2. Review `docs/active/` for current priorities
+1. Check `{{DOCS_PATH}}/current.md` for project status
+2. Review `{{DOCS_PATH}}/active/` for current priorities
 3. Pick from `bugs.md` for quick fixes
 
 ### Working on Tasks
-1. Move task to `docs/active/` or create new file
-2. Update `docs/current.md` dashboard
+1. Move task to `{{DOCS_PATH}}/active/` or create new file
+2. Update `{{DOCS_PATH}}/current.md` dashboard
 3. Work on implementation
 4. Update task file with progress
 
 ### Completing Work
-1. Move task to `docs/completed/` with date prefix
-2. Update `docs/current.md` to reflect completion
-3. Add one-liner to `docs/log.md`
+1. Move task to `{{DOCS_PATH}}/completed/` with date prefix
+2. Update `{{DOCS_PATH}}/current.md` to reflect completion
+3. Add one-liner to `{{DOCS_PATH}}/log.md`
 4. Close related bugs in `bugs.md`
 
 ## Quality Standards
