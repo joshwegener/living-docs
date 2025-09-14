@@ -93,6 +93,8 @@ Seamlessly integrates with GitHub's issue templates, PR workflows, and community
 
 We use our own system for development. Check our [current work](docs/current.md) and [contribution guide](docs/contributing/CONTRIBUTING.md).
 
+**Note**: We use GitHub Spec-Kit for living-docs development (see `.github/`). This is OUR choice - you can use ANY methodology with living-docs!
+
 ## 📄 License
 
 MIT - Use it anywhere, for any project.

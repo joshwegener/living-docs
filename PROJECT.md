@@ -6,6 +6,12 @@ This file provides guidance for contributors working on the living-docs framewor
 
 Create a documentation framework that actually stays alive and useful throughout a project's lifecycle.
 
+## Our Development Methodology
+
+**We use GitHub Spec-Kit** for community collaboration on living-docs development. This is visible in our `.github/` directory.
+
+**This is OUR choice** - users of living-docs can choose ANY methodology or none at all. We show our implementation as a real-world example, not a requirement.
+
 ## Development Principles
 
 ### Core Philosophy
