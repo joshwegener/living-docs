@@ -2,6 +2,9 @@
 
 This file provides guidance to Claude and other AI agents working with code in this repository.
 
+## 📚 Documentation System
+**@{{DOCS_PATH}}/current.md** - Complete project documentation map and status dashboard
+
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
 

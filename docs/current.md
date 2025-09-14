@@ -19,6 +19,9 @@ Create a documentation framework that actually stays alive throughout a project'
 3. [Universal Spec Adapter](./active/03-universal-spec-adapter.md) - Any methodology
 4. [Configurable Paths](./active/04-configurable-docs-location.md) - Flexible locations
 5. [Documentation Repair](./active/05-documentation-repair-system.md) - Brownfield projects
+6. [Testing Framework](./active/06-testing-framework.md) - Comprehensive testing
+7. [Examples Library](./active/07-examples-library.md) - Real-world examples
+8. [VSCode Extension](./active/08-vscode-extension.md) - IDE integration
 
 ## 📂 Complete Documentation Map
 
@@ -80,6 +83,13 @@ See [IDEAS.md](../IDEAS.md) - Current count: 25 ideas
 - [GitHub Repository](https://github.com/joshwegener/living-docs)
 - [One-Liner Install](https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh)
 
+## 📚 GitHub Integration (Spec-Kit)
+- [Pull Request Template](../.github/pull_request_template.md) - PR standards
+- [Contributing Guide](../.github/CONTRIBUTING.md) - How to contribute
+- [Code of Conduct](../.github/CODE_OF_CONDUCT.md) - Community standards
+- [Bug Report Template](../.github/ISSUE_TEMPLATE/bug_report.md) - Issue reporting
+- [Feature Request Template](../.github/ISSUE_TEMPLATE/feature_request.md) - New ideas
+
 ---
 
 **This dashboard is the single source of truth for ALL documentation in living-docs**
@@ -96,4 +106,10 @@ echo "- [ ] Issue description" >> ../bugs.md
 
 # Complete a task
 mv docs/active/task.md docs/completed/$(date +%Y-%m-%d)-task.md
+
+# Run tests (coming soon)
+./test.sh
+
+# Install in new project
+curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
 ```

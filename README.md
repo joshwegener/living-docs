@@ -2,8 +2,11 @@
 
 > Documentation that evolves with your project
 
+⚠️ **ALPHA STATUS**: This project is in early development. Core functionality works but expect breaking changes. We're using it to document itself - eating our own dog food! 🐕
+
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
+[![Status](https://img.shields.io/badge/status-alpha-orange)](docs/current.md)
 
 ## 🎯 The Problem
 
@@ -31,21 +34,30 @@ Every project starts with good documentation intentions. Then reality hits:
 - **Living System**: Documentation updates are part of the workflow, not an afterthought
 - **Auto-Updates**: Stay current with your chosen methodology
 
-## 🚀 Quick Start - One Command for Everything
+## 🚀 Quick Start
+
+### One-Line Install (Recommended)
+
+Open your project directory and run:
 
 ```bash
-# For ANY project (new or existing)
 curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
+```
 
-# Or clone and run locally:
+That's it! The wizard will guide you through everything.
+
+### Alternative: Clone and Run
+
+```bash
 git clone https://github.com/joshwegener/living-docs.git
 ./living-docs/wizard.sh
-
-# The wizard will:
-# ✓ Auto-detect if you're in an existing project
-# ✓ Guide you through all configuration options
-# ✓ Set up everything based on your choices
 ```
+
+The wizard automatically:
+- ✓ Detects if you're in a new or existing project
+- ✓ Guides you through all configuration options
+- ✓ Sets up everything based on your choices
+- ✓ Works with your existing methodology
 
 ### 🔮 The Wizard Experience
 

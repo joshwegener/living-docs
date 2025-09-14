@@ -2,6 +2,9 @@
 
 This file provides guidance to AI assistants (Claude, ChatGPT, Copilot, etc.) working with this codebase.
 
+## 📚 Documentation System
+**@{{DOCS_PATH}}/current.md** - Complete project documentation map and status dashboard
+
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
 
