@@ -23,14 +23,14 @@ Create a documentation framework that actually stays alive throughout a project'
 ## 📂 Complete Documentation Map
 
 ### Core Files
-- [README.md](../README.md) - Public introduction
-- [PROJECT.md](../PROJECT.md) - Internal guidelines
-- [CRITICAL_INSIGHTS.md](../CRITICAL_INSIGHTS.md) - Essential architecture decisions
-- [MIGRATION.md](../MIGRATION.md) - Version migration guide
+- [README.md](../README.md) - Public introduction (GitHub standard)
+- [project.md](../project.md) - Internal development guidelines
+- [insights.md](../insights.md) - Architecture decisions & key insights
+- [migration.md](../migration.md) - Version migration guide
 
 ### Quick Capture
 - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners)
-- [IDEAS.md](../IDEAS.md) - Feature ideas backlog (one-liners)
+- [ideas.md](../ideas.md) - Feature ideas backlog (one-liners)
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -58,10 +58,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [.github/README.md](../.github/README.md) - Our spec-kit usage
 - [.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/) - Issue templates
 
-### Development Logs
-- [docs/log.md](./log.md) - One-liner history
-- [docs/completed/](./completed/) - Finished tasks (dated)
-- [docs/issues/](./issues/) - Detailed bug investigations
+### Development History
+- [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
+- [docs/completed/](./completed/) - Finished tasks with full details (dated)
+- [docs/issues/](./issues/) - Detailed bug investigations when needed
 
 ## 🐛 Quick Issues
 See [bugs.md](../bugs.md) - Current count: 7 open, 2 closed

@@ -97,6 +97,21 @@
 4. **Beauty** - Good UX encourages usage
 5. **Universality** - Work for everyone, everywhere
 
+## 📝 File Naming Conventions
+
+### Use lowercase (except standards)
+- ✅ `bugs.md`, `ideas.md`, `log.md`, `project.md`
+- ✅ `README.md` (GitHub standard - exception)
+- ✅ `LICENSE` (standard - exception)
+- ❌ `IDEAS.md`, `PROJECT.md` (avoid unless standard)
+
+### Purpose of Each File Type
+- **log.md** - One-liner updates for multi-agent coordination
+- **bugs.md** - Quick bug capture (one-liners)
+- **ideas.md** - Feature ideas backlog (one-liners)
+- **current.md** - Dashboard and single source of truth
+- **project.md/claude.md** - Behavior guidance for humans/AI
+
 ## 📝 Critical Implementation Notes
 
 ### Template Variables
