@@ -31,39 +31,30 @@ Every project starts with good documentation intentions. Then reality hits:
 - **Living System**: Documentation updates are part of the workflow, not an afterthought
 - **Auto-Updates**: Stay current with your chosen methodology
 
-## 🚀 Quick Start
+## 🚀 Quick Start - One Command for Everything
 
-### New Project (30 seconds)
 ```bash
-# Clone the framework
-git clone https://github.com/joshwegener/living-docs.git
-cd living-docs
-
-# Run interactive setup
-./setup.sh my-project
-
-# Choose documentation location (.docs/, .claude/docs/, etc.)
-# Choose your methodology (Spec-Kit, BMAD, Agent OS, etc.)
-# Choose your AI assistant (Claude, ChatGPT, Copilot, etc.)
-
-cd my-project
-cat docs/current.md  # Your new dashboard
-```
-
-### Existing Project (Documentation Repair)
-```bash
-# Add living-docs to ANY existing project
-cd your-existing-project
-curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/repair.sh | bash
+# For ANY project (new or existing)
+curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
 
 # Or clone and run locally:
 git clone https://github.com/joshwegener/living-docs.git
-./living-docs/repair.sh .
+./living-docs/wizard.sh
 
-# Choose:
-# 1) Quick Bootstrap (minimal changes, adds on top)
-# 2) Full Migration (reorganizes everything)
+# The wizard will:
+# ✓ Auto-detect if you're in an existing project
+# ✓ Guide you through all configuration options
+# ✓ Set up everything based on your choices
 ```
+
+### 🔮 The Wizard Experience
+
+The intelligent wizard will:
+1. **Detect** - New project? Existing project? Already configured?
+2. **Guide** - Interactive prompts for every choice
+3. **Configure** - Documentation location, AI assistant, methodology
+4. **Setup** - Creates the right structure for your needs
+5. **Succeed** - You're ready to document!
 
 ## 📂 Structure
 
