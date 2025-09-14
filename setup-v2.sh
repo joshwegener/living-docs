@@ -31,27 +31,31 @@ fi
 # Ask for documentation location
 echo -e "${BLUE}Where should your documentation live?${NC}"
 echo "  1) docs/              (standard)"
-echo "  2) .claude/docs/      (AI projects with Claude)"
-echo "  3) .github/docs/      (GitHub-centric)"
-echo "  4) .documentation/    (enterprise)"
-echo "  5) Custom path..."
+echo "  2) .docs/             (hidden standard)"
+echo "  3) .claude/docs/      (AI projects with Claude)"
+echo "  4) .github/docs/      (GitHub-centric)"
+echo "  5) .documentation/    (enterprise)"
+echo "  6) Custom path..."
 echo ""
-read -p "Choice (1-5): " DOC_CHOICE
+read -p "Choice (1-6): " DOC_CHOICE
 
 case $DOC_CHOICE in
     1)
         DOCS_PATH="docs"
         ;;
     2)
-        DOCS_PATH=".claude/docs"
+        DOCS_PATH=".docs"
         ;;
     3)
-        DOCS_PATH=".github/docs"
+        DOCS_PATH=".claude/docs"
         ;;
     4)
-        DOCS_PATH=".documentation"
+        DOCS_PATH=".github/docs"
         ;;
     5)
+        DOCS_PATH=".documentation"
+        ;;
+    6)
         read -p "Enter custom path (e.g., 'my-docs'): " DOCS_PATH
         ;;
     *)

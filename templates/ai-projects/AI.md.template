@@ -1,0 +1,70 @@
+# AI Assistant Guidelines - {{PROJECT_NAME}}
+
+This file provides guidance to AI assistants (Claude, ChatGPT, Copilot, etc.) working with this codebase.
+
+## Project Overview
+{{PROJECT_DESCRIPTION}}
+
+## Universal AI Rules
+
+### Core Principles
+- Do what has been asked; nothing more, nothing less
+- ALWAYS prefer editing existing files over creating new ones
+- NEVER create documentation unless explicitly requested
+- Follow the project's established patterns
+
+### Documentation System
+This project uses [living-docs](https://github.com/joshwegener/living-docs) for documentation management.
+
+```
+/
+├── AI.md (this file - universal AI guidance)
+├── bugs.md (lightweight issue tracking)
+└── {{DOCS_PATH}}/
+    ├── current.md (project dashboard)
+    ├── active/ (current work)
+    ├── completed/ (finished tasks)
+    └── procedures/ (detailed guides)
+```
+
+### Workflow
+1. **Start**: Check `{{DOCS_PATH}}/current.md` for project status
+2. **Find Work**: Look in `{{DOCS_PATH}}/active/` for current tasks
+3. **Track Issues**: Use `bugs.md` for quick bug tracking
+4. **Document**: Update relevant files as you work
+
+## Git Discipline
+{{GIT_RULES}}
+
+## Development Guidelines
+{{DEVELOPMENT_GUIDELINES}}
+
+## Testing Requirements
+{{TESTING_REQUIREMENTS}}
+
+## AI-Specific Instructions
+
+### For Claude (Anthropic)
+- Use chain-of-thought reasoning for complex problems
+- Be direct and concise in responses
+
+### For ChatGPT (OpenAI)
+- Follow the project's code style strictly
+- Verify suggestions against project patterns
+
+### For GitHub Copilot
+- Respect existing code patterns
+- Don't auto-complete beyond request scope
+
+### For Cursor AI
+- Use project context effectively
+- Follow file organization patterns
+
+## Resources
+- [Project Dashboard]({{DOCS_PATH}}/current.md)
+- [Active Tasks]({{DOCS_PATH}}/active/)
+- [Bug Tracker](bugs.md)
+- [Procedures]({{DOCS_PATH}}/procedures/)
+
+---
+*This project uses living-docs for documentation management.*

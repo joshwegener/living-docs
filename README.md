@@ -20,33 +20,49 @@ Every project starts with good documentation intentions. Then reality hits:
 
 **living-docs** is a universal documentation framework that stays alive by integrating with your actual workflow AND your preferred development methodology:
 
+- **Documentation Repair**: Add to ANY existing project with minimal friction
 - **Universal Spec Adapter**: Works with GitHub Spec-Kit, BMAD Method, Agent OS, or your custom approach
+- **AI Agnostic**: Supports Claude, ChatGPT, Copilot, Cursor, JetBrains AI, or any assistant
+- **Configurable Paths**: Put docs anywhere (.docs/, .claude/docs/, .github/docs/, etc.)
+- **Auto-Discovery**: Detects existing methodologies and suggests organization
 - **Behavior vs Reference Separation**: Core rules stay accessible, detailed procedures stay organized
 - **Temporal Organization**: Track what was done when with dated completions
 - **Progressive Disclosure**: Dashboard → Active work → Detailed procedures
 - **Living System**: Documentation updates are part of the workflow, not an afterthought
 - **Auto-Updates**: Stay current with your chosen methodology
 
-## 🚀 Quick Start (30 seconds)
+## 🚀 Quick Start
 
+### New Project (30 seconds)
 ```bash
 # Clone the framework
 git clone https://github.com/joshwegener/living-docs.git
 cd living-docs
 
-# Run the interactive setup
-./setup.sh my-project
+# Run interactive setup
+./setup-v2.sh my-project
 
-# Choose your methodology:
-# 1) GitHub Spec-Kit (Community-driven)
-# 2) BMAD Method (AI-driven development)
-# 3) Agent OS (Agent coordination)
-# 4) None (Just living-docs)
-# 5) Custom (Bring your own)
+# Choose documentation location (.docs/, .claude/docs/, etc.)
+# Choose your methodology (Spec-Kit, BMAD, Agent OS, etc.)
+# Choose your AI assistant (Claude, ChatGPT, Copilot, etc.)
 
-# Start documenting
 cd my-project
 cat docs/current.md  # Your new dashboard
+```
+
+### Existing Project (Documentation Repair)
+```bash
+# Add living-docs to ANY existing project
+cd your-existing-project
+curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/repair.sh | bash
+
+# Or clone and run locally:
+git clone https://github.com/joshwegener/living-docs.git
+./living-docs/repair.sh .
+
+# Choose:
+# 1) Quick Bootstrap (minimal changes, adds on top)
+# 2) Full Migration (reorganizes everything)
 ```
 
 ## 📂 Structure
