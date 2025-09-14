@@ -4,6 +4,13 @@
 
 ## Sept 14, 2025
 
+- 3:45 PM - DEV: Fixed minimal impact - bugs.md/ideas.md move to docs path when using subdirs
+- 3:30 PM - DEV: Implemented bootstrap.md for cleaner separation of concerns
+- 3:15 PM - DEV: Added status reporting instructions to all templates
+- 3:00 PM - DEV: Set up complete spec-kit integration (PR template, CONTRIBUTING, CODE_OF_CONDUCT)
+- 2:45 PM - DEV: Created feature specs for testing framework, examples library, VSCode extension
+- 2:30 PM - DEV: Added WIP disclaimer and improved one-liner install in README
+- 2:15 PM - DEV: Bootstrapped living-docs to use its own framework properly
 - 12:45 PM - PM: Created log.md for multi-agent coordination tracking
 - 12:43 PM - PM: Renamed files to lowercase for consistency (PROJECT→project, IDEAS→ideas, etc.)
 - 12:42 PM - PM: Added insights.md, ideas.md, updated bugs.md with priority system

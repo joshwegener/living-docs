@@ -8,20 +8,28 @@ Create a documentation framework that actually stays alive throughout a project'
 ## 📊 Current Status
 - **Unified Wizard**: ✅ Complete
 - **Documentation Repair**: ✅ Complete
-- **Universal Adapters**: ✅ Complete
+- **Universal Adapters**: 🟡 Created but not tested
 - **AI-Agnostic**: ✅ Complete
-- **Examples**: 🟡 In Progress
+- **Bootstrap System**: ✅ Complete
+- **Minimal Impact**: ✅ Complete
+- **Spec-Kit Integration**: ✅ Complete
+- **Examples**: 🔴 Not Started
+- **Testing**: 🔴 Not Started
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Initial Repository Setup](./active/01-initial-setup.md) - Core structure
-2. [Spec-Kit Integration](./active/02-spec-kit-integration.md) - GitHub integration
-3. [Universal Spec Adapter](./active/03-universal-spec-adapter.md) - Any methodology
-4. [Configurable Paths](./active/04-configurable-docs-location.md) - Flexible locations
-5. [Documentation Repair](./active/05-documentation-repair-system.md) - Brownfield projects
-6. [Testing Framework](./active/06-testing-framework.md) - Comprehensive testing
-7. [Examples Library](./active/07-examples-library.md) - Real-world examples
-8. [VSCode Extension](./active/08-vscode-extension.md) - IDE integration
+1. [Testing Framework](./active/06-testing-framework.md) - 🔴 HIGH PRIORITY
+2. [Examples Library](./active/07-examples-library.md) - 🔴 HIGH PRIORITY
+3. [Universal Spec Adapter Testing](./active/03-universal-spec-adapter.md) - 🟡 Needs testing
+4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+
+## ✅ Recently Completed
+- [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation
+- [Spec-Kit Integration](./completed/2025-09-14-spec-kit-integration.md) - GitHub standards
+- [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs
+- [Initial Repository Setup](./active/01-initial-setup.md) - Core structure
+- [Configurable Paths](./active/04-configurable-docs-location.md) - Flexible locations
+- [Documentation Repair](./active/05-documentation-repair-system.md) - Brownfield projects
 
 ## 📂 Complete Documentation Map
 
