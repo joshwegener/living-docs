@@ -1,6 +1,6 @@
-# living-docs Project Uses GitHub Spec-Kit
+# living-docs GitHub Standards
 
-**IMPORTANT**: This `.github/` directory contains OUR team's choice of methodology (GitHub Spec-Kit) for developing living-docs itself.
+**IMPORTANT**: This `.github/` directory contains standard GitHub community files for the living-docs project.
 
 ## This is NOT Required for Your Project!
 

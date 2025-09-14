@@ -1,9 +1,9 @@
-# Spec-Kit for living-docs Project
+# GitHub Standards Setup
 
 **Completed**: Sept 14, 2025 | **Duration**: 15 minutes | **Agent**: DEV
 
 ## Objective
-Set up GitHub spec-kit for the living-docs repository itself (not the adapter).
+Set up standard GitHub community files for professional repository presence.
 
 ## What Was Done
 1. Created `.github/pull_request_template.md` for PR standards
@@ -17,7 +17,10 @@ Set up GitHub spec-kit for the living-docs repository itself (not the adapter).
 - `.github/CODE_OF_CONDUCT.md` - Community behavior standards
 
 ## Important Note
-This is spec-kit FOR the living-docs project itself. The universal adapter for spec-kit (allowing OTHER projects to use spec-kit with living-docs) is NOT implemented yet.
+These are standard GitHub community files, NOT spec-kit. Real spec-kit would include:
+- `.claude/` folder with commands
+- `/spec`, `/create`, `/task` commands
+- Actual specification workflow integration
 
 ## Result
-✅ living-docs repository now uses spec-kit for its own development
+✅ living-docs repository has professional GitHub presence with standard community files

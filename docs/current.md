@@ -12,7 +12,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - **AI-Agnostic**: ✅ Complete
 - **Bootstrap System**: ✅ Complete
 - **Minimal Impact**: ✅ Complete
-- **Spec-Kit for living-docs**: ✅ Complete (we use it ourselves)
+- **GitHub Standards**: ✅ Complete (PR template, CONTRIBUTING, etc.)
 - **Examples**: 🔴 Not Started
 - **Testing**: 🔴 Not Started
 - **Community**: 🔴 Not Started
@@ -25,7 +25,7 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ## ✅ Recently Completed
 - [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation
-- [Spec-Kit Integration](./completed/2025-09-14-spec-kit-integration.md) - GitHub standards
+- [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING
 - [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs
 - [Initial Repository Setup](./active/01-initial-setup.md) - Core structure
 - [Configurable Paths](./active/04-configurable-docs-location.md) - Flexible locations
