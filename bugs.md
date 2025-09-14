@@ -1,15 +1,27 @@
 # Quick Bug Tracker
 
-*Lightweight issue tracking - promote to docs/issues/ when investigation needed*
+*One-liner bug capture - promote to docs/issues/ when investigation needed*
 
-## Open Issues
-- [ ] Create setup.sh script for project initialization
-- [ ] Add migration tool for existing projects
-- [ ] Design spec-kit integration workflow
-- [ ] Create example templates for different project types
+## 🔴 Critical
+- [ ] Wizard.sh needs error handling for missing template files
+- [ ] Paths with spaces break sed commands in scripts
 
-## Completed ✅
-*Move completed items here with date*
+## 🟡 High Priority
+- [ ] Auto-detection sometimes misses Python projects without requirements.txt
+- [ ] Wizard should validate DOCS_PATH before creating structure
+
+## 🟢 Normal
+- [ ] Add --version flag to wizard.sh
+- [ ] Better error messages when run outside project directory
+- [ ] Sed commands not portable between macOS and Linux
+
+## 🔵 Low Priority
+- [ ] Add emoji support toggle for enterprise users
+- [ ] Wizard color codes don't work in some terminals
+
+## ✅ Completed
+- [x] Setup scripts consolidated into wizard.sh (Sept 14, 2025)
+- [x] Documentation repair system implemented (Sept 14, 2025)
 
 ---
 
