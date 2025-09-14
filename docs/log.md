@@ -4,6 +4,9 @@
 
 ## Sept 14, 2025
 
+- 5:15 PM - DEV: Added enforcement rules to bootstrap.md to prevent documentation drift
+- 5:00 PM - DEV: Fixed dishonest status reporting - properly tracked what's done vs not
+- 4:45 PM - DEV: Faced reality - admitted universal adapters not implemented
 - 3:45 PM - DEV: Fixed minimal impact - bugs.md/ideas.md move to docs path when using subdirs
 - 3:30 PM - DEV: Implemented bootstrap.md for cleaner separation of concerns
 - 3:15 PM - DEV: Added status reporting instructions to all templates
