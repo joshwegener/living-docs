@@ -1,0 +1,44 @@
+# PROJECT.md - {{PROJECT_NAME}} Guidelines
+
+This file provides core guidance for all team members working on {{PROJECT_NAME}}.
+
+## Project Overview
+{{PROJECT_DESCRIPTION}}
+
+## Core Principles
+{{PROJECT_PRINCIPLES}}
+
+## Development Workflow
+
+### Finding Work
+1. Check `docs/current.md` for project status
+2. Review `docs/active/` for current priorities
+3. Pick from `bugs.md` for quick fixes
+
+### Working on Tasks
+1. Move task to `docs/active/` or create new file
+2. Update `docs/current.md` dashboard
+3. Work on implementation
+4. Update task file with progress
+
+### Completing Work
+1. Move task to `docs/completed/` with date prefix
+2. Update `docs/current.md` to reflect completion
+3. Add one-liner to `docs/log.md`
+4. Close related bugs in `bugs.md`
+
+## Quality Standards
+{{QUALITY_STANDARDS}}
+
+## Communication
+{{COMMUNICATION_GUIDELINES}}
+
+## Resources
+- [Current Status](docs/current.md)
+- [Bug Tracker](bugs.md)
+- [Active Work](docs/active/)
+- [Procedures](docs/procedures/)
+
+---
+
+*This document defines HOW we work. For WHAT we're building, see docs/current.md*

@@ -1,0 +1,40 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build artifacts
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+venv/
+env/
+
+# Temporary files
+*.tmp
+.temp/
+
+# Test coverage
+coverage/
+.coverage
+htmlcov/
+
+# Don't ignore our own docs!
+# We're dogfooding - our docs are part of the project

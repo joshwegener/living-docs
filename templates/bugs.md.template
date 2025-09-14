@@ -1,0 +1,30 @@
+# Quick Bug Tracker
+
+*Lightweight issue tracking - promote to docs/issues/ when investigation needed*
+
+## 🔴 Critical (Blocking)
+<!-- Production breaking or security issues -->
+
+## 🟡 High (Important)
+<!-- Significant functionality issues -->
+
+## 🟢 Medium (Normal)
+<!-- Standard bugs and improvements -->
+
+## 🔵 Low (Nice to have)
+<!-- Minor issues and enhancements -->
+
+## ✅ Recently Fixed
+<!-- Move completed items here with date -->
+
+---
+
+**Format**: `- [ ] Brief description (reported: date)`
+
+**Promotion**: When investigation needed, create `docs/issues/priority-#-description.md`
+
+**Priority Guide**:
+- 🔴 Critical: System down, data loss, security
+- 🟡 High: Major feature broken, blocking work
+- 🟢 Medium: Normal bugs, workflow issues
+- 🔵 Low: UI polish, nice-to-haves

@@ -1,0 +1,75 @@
+# CLAUDE.md - {{PROJECT_NAME}} AI Agent Guidelines
+
+This file provides guidance to Claude and other AI agents working with code in this repository.
+
+## Project Overview
+{{PROJECT_DESCRIPTION}}
+
+## Agent Behavior Rules
+
+### Core Principles
+- Do what has been asked; nothing more, nothing less
+- ALWAYS prefer editing existing files over creating new ones
+- NEVER create documentation unless explicitly requested
+- Use the documentation system, don't recreate it
+
+### Critical Safety Protocols
+{{SAFETY_PROTOCOLS}}
+
+### Git Discipline
+- Commit every 30 minutes or when switching tasks
+- Use meaningful commit messages
+- Create feature branches for new work
+- Tag stable versions before major changes
+
+## Documentation System
+
+### Structure
+```
+/
+├── CLAUDE.md (this file - core agent behavior)
+├── bugs.md (lightweight issue tracking)
+└── docs/
+    ├── current.md (project dashboard)
+    ├── active/ (current work)
+    ├── completed/ (finished tasks)
+    ├── procedures/ (detailed guides)
+    └── [other directories]
+```
+
+### Workflow
+1. **Start**: Check `docs/current.md` for status
+2. **Find Work**: Look in `docs/active/` for tasks
+3. **Document**: Update task files as you work
+4. **Complete**: Move to `docs/completed/` when done
+
+### What Stays in CLAUDE.md
+- Critical safety protocols
+- Agent behavior rules
+- Git discipline requirements
+- Communication protocols
+
+### What Links to docs/
+- Detailed procedures
+- Step-by-step guides
+- Examples and templates
+- Historical information
+
+## Communication Protocols
+{{COMMUNICATION_RULES}}
+
+## Development Guidelines
+{{DEVELOPMENT_GUIDELINES}}
+
+## Testing Requirements
+{{TESTING_REQUIREMENTS}}
+
+## Resources
+- [Current Project Status](docs/current.md)
+- [Active Tasks](docs/active/)
+- [Procedures](docs/procedures/)
+- [Bug Tracker](bugs.md)
+
+---
+
+*This document defines agent BEHAVIOR. For detailed procedures, see docs/procedures/*

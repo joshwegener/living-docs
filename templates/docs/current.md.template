@@ -1,0 +1,55 @@
+# {{PROJECT_NAME}} - Project Dashboard
+
+**Status**: {{STATUS}} | **Version**: {{VERSION}} | **Updated**: {{DATE}}
+
+## 🎯 Project Overview
+{{PROJECT_DESCRIPTION}}
+
+## 📊 Current Metrics
+- **Feature A**: {{PERCENT}}% {{STATUS_EMOJI}}
+- **Feature B**: {{PERCENT}}% {{STATUS_EMOJI}}
+- **Feature C**: {{PERCENT}}% {{STATUS_EMOJI}}
+- **Overall**: {{PERCENT}}% {{STATUS_EMOJI}}
+
+## 🔥 Active Tasks (Priority Order)
+1. [Task Name](./active/01-task-name.md) - Brief description
+2. [Task Name](./active/02-task-name.md) - Brief description
+3. [Task Name](./active/03-task-name.md) - Brief description
+
+## ✅ Recent Completions (Last 7 Days)
+- [Completed Task](./completed/YYYY-MM-DD-task-name.md) - What was achieved
+- [Completed Task](./completed/YYYY-MM-DD-task-name.md) - What was achieved
+
+## 🐛 Known Issues
+- [PRIORITY: Issue](./issues/priority-1-issue-name.md) - Impact description
+- See [bugs.md](../bugs.md) for complete list
+
+## 📚 Documentation
+- [Getting Started](./procedures/getting-started.md)
+- [Development Guide](./procedures/development-guide.md)
+- [API Reference](./procedures/api-reference.md)
+
+## 🔮 Upcoming Milestones
+- **v{{NEXT_VERSION}}**: {{MILESTONE_DESCRIPTION}} (Target: {{DATE}})
+- **v{{FUTURE_VERSION}}**: {{MILESTONE_DESCRIPTION}} (Target: {{DATE}})
+
+## 📖 Resources
+- [Project Guidelines](../PROJECT.md) - How we work
+- [Contributing](./contributing/CONTRIBUTING.md) - How to contribute
+- [Architecture](./procedures/architecture.md) - System design
+
+---
+
+**Quick Commands:**
+```bash
+# Your project-specific commands here
+npm run dev        # Start development
+npm test          # Run tests
+npm run build     # Build for production
+```
+
+**Status Legend:**
+- ✅ Complete
+- 🟡 In Progress
+- 🔴 Blocked
+- ⚪ Not Started
