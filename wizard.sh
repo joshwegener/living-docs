@@ -236,7 +236,8 @@ project:
   type: "$([[ "$AI_FILE" == "PROJECT.md" ]] && echo "standard" || echo "ai")"
 paths:
   docs: "$DOCS_PATH"
-  bugs: "bugs.md"
+  bugs: "$BUGS_FILE"
+  ideas: "$IDEAS_FILE"
   ai_file: "$AI_FILE"
 spec_system: "$SPEC_SYSTEM"
 auto_update: $AUTO_UPDATE_ENABLED
@@ -263,7 +264,7 @@ if [ ! -f "$AI_FILE" ]; then
 **@$DOCS_PATH/bootstrap.md** - AI instructions and project documentation system
 
 ## Quick Reference
-- Track issues in \`bugs.md\`
+- Track issues in \`$BUGS_FILE\`
 - Check status in \`$DOCS_PATH/current.md\`
 - Active work in \`$DOCS_PATH/active/\`
 
@@ -283,9 +284,19 @@ else
     echo -e "${GREEN}✓${NC} Updated existing $AI_FILE"
 fi
 
+# Determine where to put bugs.md based on docs location
+if [ "$DOCS_PATH" = "docs" ] || [ "$DOCS_PATH" = ".docs" ]; then
+    BUGS_FILE="bugs.md"
+    IDEAS_FILE="ideas.md"
+else
+    # If docs are in a subdirectory like .github/docs, put everything there
+    BUGS_FILE="$DOCS_PATH/bugs.md"
+    IDEAS_FILE="$DOCS_PATH/ideas.md"
+fi
+
 # Create bugs.md if doesn't exist
-if [ ! -f "bugs.md" ]; then
-    cat > bugs.md << 'EOF'
+if [ ! -f "$BUGS_FILE" ]; then
+    cat > "$BUGS_FILE" << 'EOF'
 # Quick Bug Tracker
 
 ## 🔴 Critical
@@ -303,7 +314,27 @@ if [ ! -f "bugs.md" ]; then
 ---
 *Track quick issues here. Promote to $DOCS_PATH/issues/ for investigation.*
 EOF
-    echo -e "${GREEN}✓${NC} Created bugs.md"
+    echo -e "${GREEN}✓${NC} Created $BUGS_FILE"
+fi
+
+# Create ideas.md if doesn't exist
+if [ ! -f "$IDEAS_FILE" ]; then
+    cat > "$IDEAS_FILE" << 'EOF'
+# Ideas Backlog
+
+## 💡 Feature Ideas
+<!-- One-liner feature ideas -->
+
+## 🚀 Improvements
+<!-- Enhancement suggestions -->
+
+## 📚 Documentation
+<!-- Docs that need writing -->
+
+---
+*Quick capture for ideas. Promote to specs when ready to implement.*
+EOF
+    echo -e "${GREEN}✓${NC} Created $IDEAS_FILE"
 fi
 
 # Create dashboard if full setup
@@ -320,7 +351,7 @@ Project documentation powered by living-docs.
 - See [$DOCS_PATH/active/]($DOCS_PATH/active/)
 
 ## 🐛 Issues
-- See [bugs.md](../bugs.md)
+- See [$BUGS_FILE]($BUGS_FILE)
 
 ## 📚 Documentation
 - [Procedures]($DOCS_PATH/procedures/)
@@ -341,8 +372,8 @@ EOF
 ## 📋 Status Reporting
 When asked for project status, check current.md and report:
 1. **Active Tasks**: Count items in \`active/\` directory with priorities
-2. **Open Bugs**: Count from bugs.md with severity breakdown
-3. **Ideas Backlog**: Total count from ideas.md
+2. **Open Bugs**: Count from $BUGS_FILE with severity breakdown
+3. **Ideas Backlog**: Total count from $IDEAS_FILE
 4. **Recent Completions**: Latest 3-5 from \`completed/\` directory
 5. **Current Focus**: Main work areas being addressed
 
@@ -350,8 +381,8 @@ When asked for project status, check current.md and report:
 \`\`\`
 /
 ├── $AI_FILE (references this bootstrap)
-├── bugs.md (lightweight issue tracking)
-├── ideas.md (feature backlog)
+├── $BUGS_FILE (lightweight issue tracking)
+├── $IDEAS_FILE (feature backlog)
 └── $DOCS_PATH/
     ├── bootstrap.md (this file - AI instructions)
     ├── current.md (project dashboard)
@@ -367,7 +398,7 @@ When asked for project status, check current.md and report:
 ### Starting Work
 1. Check current.md for priorities
 2. Review active/ for ongoing tasks
-3. Pick from bugs.md for quick fixes
+3. Pick from $BUGS_FILE for quick fixes
 
 ### During Work
 1. Update task files in active/
@@ -377,15 +408,15 @@ When asked for project status, check current.md and report:
 ### Completing Work
 1. Move task to completed/ with date prefix
 2. Update current.md if needed
-3. Mark bugs as fixed in bugs.md
+3. Mark bugs as fixed in $BUGS_FILE
 
 ## 🛠️ Common Commands
 \`\`\`bash
 # Add a bug
-echo "- [ ] Bug description" >> bugs.md
+echo "- [ ] Bug description" >> $BUGS_FILE
 
 # Add an idea
-echo "- [ ] Feature idea" >> ideas.md
+echo "- [ ] Feature idea" >> $IDEAS_FILE
 
 # Update log
 echo "\$(date '+%I:%M %p') - Role: Action taken" >> $DOCS_PATH/log.md
@@ -425,7 +456,7 @@ case $MODE in
     "bootstrap")
         echo -e "${YELLOW}Next steps (Bootstrap Mode):${NC}"
         echo "  1. Add project info to $AI_FILE"
-        echo "  2. Track issues in bugs.md"
+        echo "  2. Track issues in $BUGS_FILE"
         echo "  3. Run wizard again for full migration"
         ;;
     "new"|"integrate")
