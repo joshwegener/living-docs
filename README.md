@@ -40,7 +40,7 @@ git clone https://github.com/joshwegener/living-docs.git
 cd living-docs
 
 # Run interactive setup
-./setup-v2.sh my-project
+./setup.sh my-project
 
 # Choose documentation location (.docs/, .claude/docs/, etc.)
 # Choose your methodology (Spec-Kit, BMAD, Agent OS, etc.)
