@@ -8,11 +8,11 @@ Create a documentation framework that actually stays alive throughout a project'
 ## 📊 Current Status
 - **Unified Wizard**: ✅ Complete
 - **Documentation Repair**: ✅ Complete
-- **Universal Adapters**: 🟡 Created but not tested
+- **Universal Adapters**: 🔴 Framework exists, adapters not implemented
 - **AI-Agnostic**: ✅ Complete
 - **Bootstrap System**: ✅ Complete
 - **Minimal Impact**: ✅ Complete
-- **Spec-Kit Integration**: ✅ Complete
+- **Spec-Kit for living-docs**: ✅ Complete (we use it ourselves)
 - **Examples**: 🔴 Not Started
 - **Testing**: 🔴 Not Started
 - **Community**: 🔴 Not Started

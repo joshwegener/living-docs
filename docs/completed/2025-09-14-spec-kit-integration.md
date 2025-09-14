@@ -1,9 +1,9 @@
-# Spec-Kit Integration
+# Spec-Kit for living-docs Project
 
 **Completed**: Sept 14, 2025 | **Duration**: 15 minutes | **Agent**: DEV
 
 ## Objective
-Set up complete GitHub spec-kit integration for living-docs project.
+Set up GitHub spec-kit for the living-docs repository itself (not the adapter).
 
 ## What Was Done
 1. Created `.github/pull_request_template.md` for PR standards
@@ -16,5 +16,8 @@ Set up complete GitHub spec-kit integration for living-docs project.
 - `.github/CONTRIBUTING.md` - How to contribute guide
 - `.github/CODE_OF_CONDUCT.md` - Community behavior standards
 
+## Important Note
+This is spec-kit FOR the living-docs project itself. The universal adapter for spec-kit (allowing OTHER projects to use spec-kit with living-docs) is NOT implemented yet.
+
 ## Result
-✅ Full spec-kit integration complete - living-docs now has professional GitHub presence
+✅ living-docs repository now uses spec-kit for its own development
