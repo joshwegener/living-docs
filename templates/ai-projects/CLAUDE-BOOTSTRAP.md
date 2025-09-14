@@ -3,6 +3,27 @@
 ## Documentation System
 @docs/current.md - Project dashboard and documentation map
 
+## Status Reporting
+When asked for status, provide:
+1. **Active Tasks**: List from docs/active/ with status
+2. **Open Bugs**: Count and top priorities from bugs.md
+3. **Ideas Backlog**: Count from ideas.md
+4. **Recent Completions**: Latest from docs/completed/
+5. **Current Focus**: What you're working on now
+
+Example response:
+```
+## Current Status
+- **Active Tasks**: 3 in progress
+  - Testing framework (HIGH priority)
+  - Examples library (HIGH priority)
+  - VSCode extension (MEDIUM priority)
+- **Bugs**: 7 open (2 critical, 3 medium, 2 low)
+- **Ideas**: 25 in backlog
+- **Recent**: Completed spec-kit integration
+- **Now**: Working on testing framework
+```
+
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
 

@@ -5,6 +5,14 @@ This file provides guidance to Claude and other AI agents working with code in t
 ## 📚 Documentation System
 **@{{DOCS_PATH}}/current.md** - Complete project documentation map and status dashboard
 
+## Status Reporting
+When asked for status, provide:
+1. **Active Tasks**: List from {{DOCS_PATH}}/active/ with status
+2. **Open Bugs**: Count and top priorities from bugs.md
+3. **Ideas Backlog**: Count from ideas.md
+4. **Recent Completions**: Latest from {{DOCS_PATH}}/completed/
+5. **Current Focus**: What you're working on now
+
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
 

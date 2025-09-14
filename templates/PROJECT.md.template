@@ -2,6 +2,17 @@
 
 This file provides core guidance for all team members working on {{PROJECT_NAME}}.
 
+## 📚 Documentation System
+**@{{DOCS_PATH}}/current.md** - Complete project documentation map and status dashboard
+
+## Status Reporting
+When asked for project status, check and report:
+1. **Active Tasks**: List from {{DOCS_PATH}}/active/ with priorities
+2. **Open Bugs**: Count and critical items from bugs.md
+3. **Ideas Backlog**: Count from ideas.md
+4. **Recent Completions**: Latest from {{DOCS_PATH}}/completed/
+5. **Team Focus**: Current work distribution
+
 ## Project Overview
 {{PROJECT_DESCRIPTION}}
 
