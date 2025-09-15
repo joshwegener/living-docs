@@ -19,12 +19,25 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ## 🔥 Active Development
 1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+- [vscode-extension](active/08-vscode-extension.md) - [Description needed]
+- [examples-library](active/07-examples-library.md) - [Description needed]
+- [testing-framework](active/06-testing-framework.md) - [Description needed]
+- [universal-spec-adapter](active/03-universal-spec-adapter.md) - [Description needed]
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [Universal Spec Adapters](./active/03-universal-spec-adapter.md) - 🔴 Not Implemented
 4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
+- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
+- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
+- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
+- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
+- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
+- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
+- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
+- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
+- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 - [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation
 - [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING
@@ -38,13 +51,13 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Core Files
 - [README.md](../README.md) - Public introduction (GitHub standard)
-- [project.md](../project.md) - Internal development guidelines
-- [insights.md](../insights.md) - Architecture decisions & key insights
-- [migration.md](../migration.md) - Version migration guide
+<!-- BROKEN: - [project.md](../project.md) - Internal development guidelines -->
+<!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights -->
+<!-- BROKEN: - [migration.md](../migration.md) - Version migration guide -->
 
 ### Quick Capture
-- [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners)
-- [ideas.md](../ideas.md) - Feature ideas backlog (one-liners)
+<!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) -->
+<!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) -->
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -57,13 +70,14 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Templates
 - [templates/PROJECT.md.template](../templates/PROJECT.md.template) - Standard projects
+- [CLAUDE-BOOTSTRAP.md](../templates/ai-projects/CLAUDE-BOOTSTRAP.md) - [Description needed]
 - [templates/ai-projects/CLAUDE.md.template](../templates/ai-projects/CLAUDE.md.template) - Claude AI
 - [templates/ai-projects/AI.md.template](../templates/ai-projects/AI.md.template) - Universal AI
-- [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker
+<!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker -->
 - [templates/docs/current.md.template](../templates/docs/current.md.template) - Dashboard
 
 ### Spec Adapters
-- [specs/README.md](../specs/README.md) - Adapter system docs
+<!-- BROKEN: - [specs/README.md](../specs/README.md) - Adapter system docs -->
 - [specs/github-spec-kit/](../specs/github-spec-kit/) - GitHub integration
 - [specs/bmad-method/](../specs/bmad-method/) - BMAD integration
 - [specs/agent-os/](../specs/agent-os/) - Agent OS integration
@@ -85,10 +99,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 15 open, 2 closed
+<!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed -->
 
 ## 💡 Ideas Backlog
-See [ideas.md](./ideas.md) - Current count: 26 ideas
+<!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas -->
 
 ## 🔮 Roadmap
 - [x] **v0.1**: Core framework
@@ -120,7 +134,7 @@ See [ideas.md](./ideas.md) - Current count: 26 ideas
 ls docs/active/
 
 # Add new issue
-echo "- [ ] Issue description" >> ../bugs.md
+<!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md -->
 
 # Complete a task
 mv docs/active/task.md docs/completed/$(date +%Y-%m-%d)-task.md
