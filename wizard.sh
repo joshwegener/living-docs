@@ -252,6 +252,28 @@ if [ "$MODE" != "bootstrap" ]; then
     echo -e "${GREEN}✓${NC} Created $DOCS_PATH/ structure"
 fi
 
+# Install spec system adapter if selected
+if [[ "$SPEC_SYSTEM" == "github-spec-kit" ]]; then
+    echo ""
+    echo -e "${BLUE}📦 Installing GitHub Spec-Kit...${NC}"
+
+    # Check if adapter exists
+    ADAPTER_SCRIPT="$(dirname "$0")/adapters/spec-kit.sh"
+    if [[ -f "$ADAPTER_SCRIPT" ]]; then
+        if bash "$ADAPTER_SCRIPT" install; then
+            echo -e "${GREEN}✓${NC} GitHub Spec-Kit installed successfully"
+        else
+            echo -e "${RED}✗${NC} Failed to install GitHub Spec-Kit"
+            exit 1
+        fi
+    else
+        echo -e "${RED}✗${NC} Spec-Kit adapter not found at $ADAPTER_SCRIPT"
+        echo "  This installation may be incomplete"
+    fi
+elif [[ "$SPEC_SYSTEM" != "none" ]]; then
+    echo -e "${YELLOW}⚠${NC} Adapter for '$SPEC_SYSTEM' not yet implemented"
+fi
+
 # Create or update AI/PROJECT file
 if [ ! -f "$AI_FILE" ]; then
     if [ -f "$(dirname "$0")/templates/ai-projects/$AI_FILE.template" ]; then

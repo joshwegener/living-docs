@@ -1,123 +1,100 @@
 # living-docs
 
-> Documentation that evolves with your project
+> Make documentation so easy it happens automatically
 
-⚠️ **ALPHA STATUS**: This project is in early development. Core functionality works but expect breaking changes. We're using it to document itself - eating our own dog food! 🐕
+⚠️ **ALPHA STATUS**: Core functionality works. We're using it to document itself - eating our own dog food! 🐕
 
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](docs/current.md)
 
-## 🎯 The Problem
+## The Universal Truth
 
-Every project starts with good documentation intentions. Then reality hits:
-- Documentation drifts from reality
-- Team members can't find what they need
-- Updates happen in code but not in docs
-- Knowledge gets lost in Slack threads and closed PRs
-- Different methodologies fight for control
+Every project starts with good documentation intentions. Then reality hits.
 
-**Result**: Dead documentation that nobody trusts or maintains.
+Documentation dies because **it's separate from work**. It becomes that thing you'll "update later" - except later never comes. Knowledge scatters across Slack threads, closed PRs, and that one developer's brain who just quit.
 
-## 💡 The Solution
+We've all been there. Starting a new job, staring at outdated docs, wondering if `setup.sh` still works or if you should use `docker-compose` or maybe that new thing mentioned in Slack last Tuesday.
 
-**living-docs** is a universal documentation framework that stays alive by integrating with your actual workflow AND your preferred development methodology:
+## Why living-docs is Different
 
-- **Documentation Repair**: Add to ANY existing project with minimal friction
-- **Universal Spec Adapter**: Works with GitHub Spec-Kit, BMAD Method, Agent OS, or your custom approach
-- **AI Agnostic**: Supports Claude, ChatGPT, Copilot, Cursor, JetBrains AI, or any assistant
-- **Configurable Paths**: Put docs anywhere (.docs/, .claude/docs/, .github/docs/, etc.)
-- **Auto-Discovery**: Detects existing methodologies and suggests organization
-- **Behavior vs Reference Separation**: Core rules stay accessible, detailed procedures stay organized
-- **Temporal Organization**: Track what was done when with dated completions
-- **Progressive Disclosure**: Dashboard → Active work → Detailed procedures
-- **Living System**: Documentation updates are part of the workflow, not an afterthought
-- **Auto-Updates**: Stay current with your chosen methodology
+### 📍 It Lives Where You Work
+Documentation isn't a separate task - it's part of your workflow. Update docs as you code. Track decisions as you make them. One-liner bug capture. Progressive disclosure that shows you what you need when you need it.
+
+**Think of it as a universal adapter for documentation** - like those power adapters that work in any country. We don't compete with GitHub Spec-Kit, BMAD Method, or Agent OS. We're the documentation layer that works with ALL of them.
+
+### 🔧 Built for Brownfield Reality
+Most tools assume greenfield projects - clean slate, perfect structure. But that's not reality.
+
+**We handle existing chaos with grace.** Run our wizard in your 5-year-old legacy project. It detects what you have, preserves what works, and adds what's missing. No "rip and replace" - just gentle repair.
+
+### 🧠 Progressive Disclosure That Actually Works
+- **Dashboard** (`current.md`): See everything at a glance
+- **Active Work** (`docs/active/`): Current priorities
+- **Deep Dives** (`docs/procedures/`): Detailed guides when needed
+
+You only see what you need at each level. No information overload.
+
+### ⏰ Temporal Organization
+`2025-09-14-feature-complete.md` tells a story. When did we add auth? Check the dated completions. What happened last sprint? It's all there, organized by time.
 
 ## 🚀 Quick Start
-
-### One-Line Install (Recommended)
-
-Open your project directory and run:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
 ```
 
-That's it! The wizard will guide you through everything.
+That's it. One command. The wizard handles everything:
+- Detects new vs existing projects
+- Preserves your current structure
+- Adds what's missing
+- Zero config required (but fully configurable)
 
-### Alternative: Clone and Run
-
-```bash
-git clone https://github.com/joshwegener/living-docs.git
-./living-docs/wizard.sh
-```
-
-The wizard automatically:
-- ✓ Detects if you're in a new or existing project
-- ✓ Guides you through all configuration options
-- ✓ Sets up everything based on your choices
-- ✓ Works with your existing methodology
-
-### 🔮 The Wizard Experience
-
-The intelligent wizard will:
-1. **Detect** - New project? Existing project? Already configured?
-2. **Guide** - Interactive prompts for every choice
-3. **Configure** - Documentation location, AI assistant, methodology
-4. **Setup** - Creates the right structure for your needs
-5. **Succeed** - You're ready to document!
-
-## 📂 Structure
+## What Gets Created
 
 ```
 your-project/
-├── PROJECT.md          # Core behavior guidance (or CLAUDE.md for AI projects)
-├── bugs.md            # Lightweight bug tracking
+├── CLAUDE.md          # AI assistant instructions (or PROJECT.md for humans)
 └── docs/
-    ├── current.md     # Status dashboard
-    ├── log.md         # One-liner history
-    ├── active/        # Current priorities
-    ├── completed/     # Dated completions
-    ├── issues/        # Detailed bug specs
-    ├── procedures/    # Step-by-step guides
-    └── templates/     # Reusable formats
+    ├── current.md     # Dashboard - everything at a glance
+    ├── bugs.md        # One-liner bug capture
+    ├── ideas.md       # Feature backlog
+    ├── active/        # What you're working on now
+    ├── completed/     # What's done (dated)
+    └── procedures/    # How-to guides
 ```
 
-## 🎯 Real-World Battle Testing
+Simple. Clear. Maintainable.
 
-This framework powers:
-- **[Tmux-Orchestrator](examples/tmux-orchestrator/)**: AI agent orchestration across tmux sessions
-- **[OTR Dad](examples/web-application/)**: 90,000 episode streaming platform
-- Multiple enterprise AI projects (case studies coming)
+## The Philosophy
 
-## 🔗 Integrations
+### Why Not Just Use GitHub Issues?
+- `bugs.md` = quick capture during coding
+- GitHub Issues = external collaboration
+- Different tools for different moments
 
-### GitHub Spec-Kit
-Seamlessly integrates with GitHub's issue templates, PR workflows, and community health files.
+### Why AI-Agnostic?
+Your team uses Claude. Their team uses GPT-4. That contractor uses Cursor. **It doesn't matter.** living-docs works with all of them. One `CLAUDE.md` (or `AI.md`) configures any assistant.
 
-### AI Agent Systems
-- Optimized for multi-agent coordination
-- Clear behavior guidance with CLAUDE.md
-- Tested with Claude, GPT-4, and open-source models
+### Why Not Force a Methodology?
+Because you already have one. Maybe it's Agile, maybe it's "whatever works." We adapt to YOU, not the other way around.
 
-## 📚 Documentation
+## Real Projects Using This
 
-- [Quick Start Guide](docs/procedures/quick-start.md)
-- [Migration Guide](docs/procedures/migration-guide.md)
-- [Architecture Principles](docs/procedures/architecture-principles.md)
-- [Current Project Status](docs/current.md) - See how we use our own system
+- **[Tmux-Orchestrator](https://github.com/your/tmux-orchestrator)**: Multi-agent AI coordination
+- **[OTR Dad](https://github.com/your/otr-dad)**: 90,000 episode streaming platform
+- **This project** - We use our own system
 
-## 🤝 Contributing
+## Contributing
 
-We use our own system for development. Check our [current work](docs/current.md) and [contribution guide](docs/contributing/CONTRIBUTING.md).
+We eat our own dog food. Check [docs/current.md](docs/current.md) to see what we're working on.
 
-**Note**: We use GitHub Spec-Kit for living-docs development (see `.github/`). This is OUR choice - you can use ANY methodology with living-docs!
-
-## 📄 License
+## License
 
 MIT - Use it anywhere, for any project.
 
 ---
 
-**The insight**: Most documentation dies because it's separate from work. living-docs makes documentation part of the workflow, not an afterthought.
+> "Make documentation so easy it happens automatically."
+
+That's the dream. We're building it.

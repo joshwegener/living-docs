@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-09-15T01:02:28Z",
+  "source": "living-docs/spec-kit",
+  "templates": {
+    "bug_report": "1.0.0",
+    "feature_request": "1.0.0",
+    "pull_request": "1.0.0",
+    "contributing": "1.0.0",
+    "code_of_conduct": "1.0.0",
+    "security": "1.0.0"
+  }
+}
