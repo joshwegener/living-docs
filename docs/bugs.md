@@ -31,3 +31,6 @@
 
 *Format: `- [ ] Brief description of issue`*
 *When issue needs investigation, create `docs/issues/priority-#-description.md`*
+
+- [ ] Update spec-kit adapter to install in AI-specific directories
+- [ ] Research exact directory structures for Cursor, ChatGPT, Copilot

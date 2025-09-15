@@ -28,3 +28,5 @@
 *Format: TIME - AGENT: One-line description of change*
 *Agents: PM (Project Manager), DEV (Developer), QA (Quality Assurance), DOC (Documentation)*07:03 PM - DEV: Completed GitHub Spec-Kit adapter implementation
 08:07 AM - DEV: Fixed bootstrap.md paths to reference docs/bugs.md and docs/ideas.md
+08:39 AM - DEV: Reduced bootstrap.md from 193 to 70 lines for better agent performance
+08:40 AM - DEV: Installed spec-kit and tested wizard.sh integration successfully

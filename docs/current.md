@@ -65,6 +65,9 @@ Create a documentation framework that actually stays alive throughout a project'
 - [specs/github-spec-kit/](../specs/github-spec-kit/) - GitHub integration
 - [specs/bmad-method/](../specs/bmad-method/) - BMAD integration
 - [specs/agent-os/](../specs/agent-os/) - Agent OS integration
+- [specs/wizard-enhancement.md](../specs/wizard-enhancement.md) - Wizard improvement spec
+- [specs/auto-update-feature.md](../specs/auto-update-feature.md) - Auto-update specification
+- [specs/ai-specific-paths.md](../specs/ai-specific-paths.md) - AI-specific path mapping
 
 ### GitHub Integration
 - [.github/README.md](../.github/README.md) - Our spec-kit usage
@@ -74,12 +77,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
 - [docs/completed/](./completed/) - Finished tasks with full details (dated)
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
+- [docs/procedures/enforcement.md](./procedures/enforcement.md) - Mandatory rules & verification
+- [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 
 ## 🐛 Quick Issues
-See [bugs.md](../bugs.md) - Current count: 7 open, 2 closed
+See [bugs.md](./bugs.md) - Current count: 15 open, 2 closed
 
 ## 💡 Ideas Backlog
-See [IDEAS.md](../IDEAS.md) - Current count: 25 ideas
+See [ideas.md](./ideas.md) - Current count: 26 ideas
 
 ## 🔮 Roadmap
 - [x] **v0.1**: Core framework
