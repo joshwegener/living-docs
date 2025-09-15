@@ -186,14 +186,19 @@ case $SPEC_CHOICE in
     4) SPEC_SYSTEM="none" ;;
     5)
         # Auto-detect methodology
-        if [ -d ".github/ISSUE_TEMPLATE" ]; then
+        if [ -d ".claude/commands" ]; then
             SPEC_SYSTEM="github-spec-kit"
+            echo -e "${GREEN}Detected: spec-kit (via .claude/commands/)${NC}"
+        elif [ -d ".github/ISSUE_TEMPLATE" ]; then
+            SPEC_SYSTEM="github-spec-kit"
+            echo -e "${GREEN}Detected: GitHub standards (likely spec-kit)${NC}"
         elif [ -f "PRD.md" ] || [ -d "agents" ]; then
             SPEC_SYSTEM="bmad-method"
+            echo -e "${GREEN}Detected: BMAD Method${NC}"
         else
             SPEC_SYSTEM="none"
+            echo -e "${YELLOW}No methodology detected${NC}"
         fi
-        echo -e "${GREEN}Detected: $SPEC_SYSTEM${NC}"
         ;;
     6)
         read -p "Enter name: " SPEC_SYSTEM

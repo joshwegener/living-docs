@@ -27,3 +27,4 @@
 ---
 *Format: TIME - AGENT: One-line description of change*
 *Agents: PM (Project Manager), DEV (Developer), QA (Quality Assurance), DOC (Documentation)*07:03 PM - DEV: Completed GitHub Spec-Kit adapter implementation
+08:07 AM - DEV: Fixed bootstrap.md paths to reference docs/bugs.md and docs/ideas.md

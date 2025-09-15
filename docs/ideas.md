@@ -19,6 +19,7 @@
 - [ ] Automatic changelog generation from completed tasks
 
 ## 🔧 Improvements
+- [ ] Reduce bootstrap.md bloat - move non-critical sections to linked docs (under 200 lines)
 - [ ] Wizard should remember previous choices
 - [ ] Add undo/rollback functionality
 - [ ] Create living-docs doctor command for health checks
