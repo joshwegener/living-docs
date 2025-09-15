@@ -1,36 +1,5 @@
 # Bootstrap - AI Assistant Instructions
 
-## 🔴 OBJECTIVE VERIFICATION SYSTEM (OV-GATES)
-
-### The Golden Rule
-**NEVER claim something is complete without objective verification. NO EXCEPTIONS.**
-
-### Run Verification Before ANY Claim
-```bash
-# Before claiming "adapter complete" - tests execution AND docs
-./verification.sh adapter-works spec-kit
-
-# Before claiming "bug fixed" - verifies fix in bugs.md
-./verification.sh bug-fixed "sed portability"
-
-# Before claiming "feature done" - tests functionality AND docs
-./verification.sh feature-complete testing-framework
-
-# Gate mode (blocks until passed) - full E2E testing
-./verification.sh gate wizard-works
-```
-
-### What Gets Verified
-- **adapter-works**: Executes adapter, verifies output, checks documentation
-- **feature-complete**: Tests actual functionality, not just file existence
-- **wizard-works**: Full E2E test - new project, existing project, edge cases
-- **tests-pass**: Runs actual test suite and verifies output
-
-### Why This Exists
-**Incident**: Claimed spec-kit adapter was complete when NO CODE existed.
-**Root Cause**: Confirmation bias - assumed completion without verification.
-**Solution**: Mandatory objective verification gates.
-
 ## 🚨 MANDATORY ENFORCEMENT RULES
 
 ### Before ANY Status Report
