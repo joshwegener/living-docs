@@ -21,16 +21,18 @@ Create a documentation framework that actually stays alive throughout a project'
 1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [Universal Spec Adapters](./active/03-universal-spec-adapter.md) - 🔴 Not Implemented
-4. [Spec-Kit Adapter](./active/09-spec-kit-adapter.md) - 🔴 Not Started
-5. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
+- [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
+- [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 - [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation
 - [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING
 - [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs
-- [Initial Repository Setup](./active/01-initial-setup.md) - Core structure
-- [Configurable Paths](./active/04-configurable-docs-location.md) - Flexible locations
-- [Documentation Repair](./active/05-documentation-repair-system.md) - Brownfield projects
+- [Enforcement Rules](./completed/2025-09-14-enforcement-rules.md) - Bootstrap enforcement
+- [Initial Setup](./completed/2025-09-14-initial-setup.md) - Core structure
+- [Configurable Paths](./completed/2025-09-14-configurable-docs-location.md) - Flexible locations
+- [Documentation Repair](./completed/2025-09-14-documentation-repair-system.md) - Brownfield projects
 
 ## 📂 Complete Documentation Map
 
@@ -68,6 +70,8 @@ Create a documentation framework that actually stays alive throughout a project'
 - [specs/wizard-enhancement.md](../specs/wizard-enhancement.md) - Wizard improvement spec
 - [specs/auto-update-feature.md](../specs/auto-update-feature.md) - Auto-update specification
 - [specs/ai-specific-paths.md](../specs/ai-specific-paths.md) - AI-specific path mapping
+- [specs/drift-detection.md](../specs/drift-detection.md) - Drift detection system spec
+- [specs/memory-enforcement.md](../specs/memory-enforcement.md) - AI memory enforcement techniques
 
 ### GitHub Integration
 - [.github/README.md](../.github/README.md) - Our spec-kit usage

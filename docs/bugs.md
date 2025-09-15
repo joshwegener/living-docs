@@ -34,3 +34,4 @@
 
 - [ ] Update spec-kit adapter to install in AI-specific directories
 - [ ] Research exact directory structures for Cursor, ChatGPT, Copilot
+- [ ] Spec-kit adapter ignores AI choice (always installs to .claude/)
