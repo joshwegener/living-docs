@@ -20,7 +20,7 @@ echo ""
 # Download latest wizard.sh
 echo -e "${CYAN}Downloading latest wizard.sh...${NC}"
 
-if curl -sL "https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh" -o wizard.sh; then
+if curl -L "https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh" -o wizard.sh 2>/dev/null; then
     chmod +x wizard.sh
     echo -e "${GREEN}✓${NC} Downloaded wizard.sh"
 else
@@ -31,7 +31,7 @@ fi
 # Download update.sh for future updates
 echo -e "${CYAN}Downloading update.sh...${NC}"
 
-if curl -sL "https://raw.githubusercontent.com/joshwegener/living-docs/main/update.sh" -o update.sh; then
+if curl -L "https://raw.githubusercontent.com/joshwegener/living-docs/main/update.sh" -o update.sh 2>/dev/null; then
     chmod +x update.sh
     echo -e "${GREEN}✓${NC} Downloaded update.sh"
 else
