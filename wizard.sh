@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+# Version
+WIZARD_VERSION="2.1.0"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -290,14 +293,36 @@ if [ -f ".living-docs.config" ]; then
     echo -e "${GREEN}✓${NC} This project already uses living-docs!"
     echo ""
     echo -e "${BLUE}What would you like to do?${NC}"
-    echo "  1) Check for spec-kit updates"
-    echo "  2) Reconfigure"
-    echo "  3) Exit"
-    read -p "Choice (1-3): " UPDATE_CHOICE
+    echo "  1) Check for all updates (recommended)"
+    echo "  2) Check spec-kit updates only"
+    echo "  3) Reconfigure"
+    echo "  4) Exit"
+    read -p "Choice (1-4): " UPDATE_CHOICE
 
     case $UPDATE_CHOICE in
         1)
-            # Update mode
+            # Full update - download and run update.sh
+            echo ""
+            echo -e "${MAGENTA}━━━ Checking for Updates ━━━${NC}"
+            echo ""
+
+            # Download update.sh from GitHub
+            echo -e "${CYAN}Downloading update script...${NC}"
+            if curl -sL "https://raw.githubusercontent.com/joshwegener/living-docs/main/update.sh" -o update.sh.tmp; then
+                chmod +x update.sh.tmp
+                mv update.sh.tmp update.sh
+                echo -e "${GREEN}✓${NC} Downloaded update.sh"
+                echo -e "${CYAN}Running update check...${NC}"
+                echo ""
+                exec ./update.sh
+            else
+                echo -e "${RED}✗${NC} Failed to download update script"
+                echo "Please check your internet connection and try again"
+                exit 1
+            fi
+            ;;
+        2)
+            # Spec-kit update only
             echo ""
             echo -e "${MAGENTA}━━━ Checking for Updates ━━━${NC}"
             echo ""
@@ -368,13 +393,13 @@ if [ -f ".living-docs.config" ]; then
             echo -e "${GREEN}✓${NC} Update check complete"
             exit 0
             ;;
-        2)
+        3)
             echo -e "${CYAN}Reconfiguration not yet implemented${NC}"
             exit 0
             ;;
         *)
             exit 0
-            ;;
+            ;;;
     esac
 fi
 

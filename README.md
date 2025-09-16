@@ -40,8 +40,24 @@ You only see what you need at each level. No information overload.
 
 ## 🚀 Quick Start
 
+### First Time Install
+```bash
+curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/install.sh | bash
+# Then run:
+./wizard.sh
+```
+
+### Or One-Liner (New Projects)
 ```bash
 curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
+```
+
+### Updating Existing Projects
+```bash
+# If you already have living-docs:
+./wizard.sh  # Choose option 1 for updates
+# OR
+./update.sh  # Direct update
 ```
 
 That's it. One command. The intelligent wizard v2.0 handles everything:

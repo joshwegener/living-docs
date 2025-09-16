@@ -36,3 +36,4 @@
 09:42 AM - TEST: Completed end-to-end wizard.sh testing - core features work, update mode needs implementation
 10:18 PM - FIX: Implemented wizard.sh update mode and custom spec-kit locations
 08:27 AM - WIZARD: Major improvements - intelligent detection, preview mode, better UX
+04:15 PM - WIZARD: Consolidated to single wizard.sh v2.0 with all features and pushed to GitHub
