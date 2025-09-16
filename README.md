@@ -44,10 +44,12 @@ You only see what you need at each level. No information overload.
 curl -sSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
 ```
 
-That's it. One command. The wizard handles everything:
-- Detects new vs existing projects
+That's it. One command. The intelligent wizard v2.0 handles everything:
+- Auto-detects your AI assistant (Claude, OpenAI, Cursor, Copilot, etc.)
+- Detects existing docs and spec systems
+- Shows preview before creating anything
+- Updates missing spec-kit files
 - Preserves your current structure
-- Adds what's missing
 - Zero config required (but fully configurable)
 
 ## What Gets Created

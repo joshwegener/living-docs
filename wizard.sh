@@ -431,6 +431,26 @@ if [ "$DETECTION_CONFIRM" = "y" ] || [ "$DETECTION_CONFIRM" = "yes" ]; then
         esac
     fi
 
+    # Auto-updates for auto-detected setup
+    echo ""
+    echo -e "${BLUE}🔄 Enable auto-updates?${NC} (y/n)"
+    read -p "> " AUTO_UPDATE
+
+    if [[ "$AUTO_UPDATE" =~ ^[Yy]$ ]]; then
+        AUTO_UPDATE_ENABLED="true"
+        echo "Update frequency: (d)aily, (w)eekly, (m)onthly?"
+        read -p "> " UPDATE_FREQ
+        case $UPDATE_FREQ in
+            d) UPDATE_FREQUENCY="daily" ;;
+            w) UPDATE_FREQUENCY="weekly" ;;
+            m) UPDATE_FREQUENCY="monthly" ;;
+            *) UPDATE_FREQUENCY="weekly" ;;
+        esac
+    else
+        AUTO_UPDATE_ENABLED="false"
+        UPDATE_FREQUENCY="manual"
+    fi
+
 elif [ "$DETECTION_CONFIRM" = "c" ] || [ "$DETECTION_CONFIRM" = "customize" ]; then
     # Manual configuration
     echo ""
@@ -489,6 +509,26 @@ elif [ "$DETECTION_CONFIRM" = "c" ] || [ "$DETECTION_CONFIRM" = "customize" ]; t
         SPEC_SYSTEM="none"
         INSTALL_SPEC="no"
     fi
+
+    # Auto-updates
+    echo ""
+    echo -e "${BLUE}🔄 Enable auto-updates?${NC} (y/n)"
+    read -p "> " AUTO_UPDATE
+
+    if [[ "$AUTO_UPDATE" =~ ^[Yy]$ ]]; then
+        AUTO_UPDATE_ENABLED="true"
+        echo "Update frequency: (d)aily, (w)eekly, (m)onthly?"
+        read -p "> " UPDATE_FREQ
+        case $UPDATE_FREQ in
+            d) UPDATE_FREQUENCY="daily" ;;
+            w) UPDATE_FREQUENCY="weekly" ;;
+            m) UPDATE_FREQUENCY="monthly" ;;
+            *) UPDATE_FREQUENCY="weekly" ;;
+        esac
+    else
+        AUTO_UPDATE_ENABLED="false"
+        UPDATE_FREQUENCY="manual"
+    fi
 else
     echo -e "${YELLOW}Installation cancelled${NC}"
     exit 0
@@ -526,7 +566,8 @@ paths:
   ai_file: "$AI_FILE"
 spec_system: "$SPEC_SYSTEM"
 $([ "$SPEC_LOCATION" != ".github" ] && echo "spec_location: \"$SPEC_LOCATION\"")
-auto_update: false
+auto_update: ${AUTO_UPDATE_ENABLED:-false}
+update_frequency: "${UPDATE_FREQUENCY:-manual}"
 created: $(date +%Y-%m-%d)
 EOF
 echo -e "${GREEN}✓${NC} Created configuration"

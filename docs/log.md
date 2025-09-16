@@ -35,3 +35,4 @@
 09:15 AM - DEV: Completed drift detection system with auto-fix and pre-commit hooks
 09:42 AM - TEST: Completed end-to-end wizard.sh testing - core features work, update mode needs implementation
 10:18 PM - FIX: Implemented wizard.sh update mode and custom spec-kit locations
+08:27 AM - WIZARD: Major improvements - intelligent detection, preview mode, better UX
