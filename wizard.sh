@@ -285,7 +285,100 @@ echo ""
 echo -e "${CYAN}🔮 Welcome to the living-docs wizard!${NC}"
 echo ""
 
-# Step 1: Detect environment
+# Check if this is an existing living-docs project
+if [ -f ".living-docs.config" ]; then
+    echo -e "${GREEN}✓${NC} This project already uses living-docs!"
+    echo ""
+    echo -e "${BLUE}What would you like to do?${NC}"
+    echo "  1) Check for spec-kit updates"
+    echo "  2) Reconfigure"
+    echo "  3) Exit"
+    read -p "Choice (1-3): " UPDATE_CHOICE
+
+    case $UPDATE_CHOICE in
+        1)
+            # Update mode
+            echo ""
+            echo -e "${MAGENTA}━━━ Checking for Updates ━━━${NC}"
+            echo ""
+
+            # Extract spec_system and spec_location from config
+            SPEC_SYSTEM=$(grep "^spec_system:" .living-docs.config | cut -d'"' -f2)
+            SPEC_LOCATION=$(grep "^spec_location:" .living-docs.config | cut -d'"' -f2)
+
+            # Check what spec system is in use
+            if [ "$SPEC_SYSTEM" = "github-spec-kit" ]; then
+                echo -e "${BLUE}📦 Checking GitHub Spec-Kit files...${NC}"
+
+                # Determine spec location (default to .github if not set)
+                SPEC_DIR="${SPEC_LOCATION:-.github}"
+
+                # Check for missing files
+                MISSING_FILES=()
+                SPEC_FILES=(
+                    "CODE_OF_CONDUCT.md"
+                    "CONTRIBUTING.md"
+                    "SECURITY.md"
+                    "pull_request_template.md"
+                    "ISSUE_TEMPLATE/bug_report.md"
+                    "ISSUE_TEMPLATE/feature_request.md"
+                    "ISSUE_TEMPLATE/config.yml"
+                )
+
+                for file in "${SPEC_FILES[@]}"; do
+                    if [ ! -f "$SPEC_DIR/$file" ]; then
+                        MISSING_FILES+=("$file")
+                    fi
+                done
+
+                if [ ${#MISSING_FILES[@]} -eq 0 ]; then
+                    echo -e "${GREEN}✓${NC} All spec-kit files are present in $SPEC_DIR"
+                else
+                    echo -e "${YELLOW}⚠${NC} Missing ${#MISSING_FILES[@]} spec-kit files:"
+                    for file in "${MISSING_FILES[@]}"; do
+                        echo "    - $file"
+                    done
+
+                    echo ""
+                    echo -e "${BLUE}Would you like to restore missing files?${NC} (y/n)"
+                    read -p "> " RESTORE
+
+                    if [[ "$RESTORE" =~ ^[Yy]$ ]]; then
+                        # Find the wizard script location
+                        WIZARD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+                        ADAPTER_SCRIPT="$WIZARD_DIR/adapters/spec-kit.sh"
+
+                        if [ -f "$ADAPTER_SCRIPT" ]; then
+                            echo -e "${CYAN}Restoring missing files to $SPEC_DIR...${NC}"
+                            if SPEC_LOCATION="$SPEC_DIR" bash "$ADAPTER_SCRIPT" install; then
+                                echo -e "${GREEN}✓${NC} Missing files restored successfully"
+                            else
+                                echo -e "${RED}✗${NC} Failed to restore files"
+                            fi
+                        else
+                            echo -e "${RED}✗${NC} Spec-kit adapter not found at $ADAPTER_SCRIPT"
+                        fi
+                    fi
+                fi
+            else
+                echo -e "${YELLOW}No updateable methodology detected${NC}"
+            fi
+
+            echo ""
+            echo -e "${GREEN}✓${NC} Update check complete"
+            exit 0
+            ;;
+        2)
+            echo -e "${CYAN}Reconfiguration not yet implemented${NC}"
+            exit 0
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+fi
+
+# Step 1: Detect environment for new installations
 echo -e "${BLUE}Analyzing your project...${NC}"
 
 AI_DETECTION=$(detect_ai_assistant)
