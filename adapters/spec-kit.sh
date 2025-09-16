@@ -8,7 +8,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ADAPTER_DIR="$SCRIPT_DIR/spec-kit"
 TEMPLATES_DIR="$ADAPTER_DIR/templates"
-TARGET_DIR=".github"
+# Allow custom location via environment variable
+TARGET_DIR="${SPEC_LOCATION:-.github}"
 VERSION_FILE="$ADAPTER_DIR/version.json"
 
 # Colors for output

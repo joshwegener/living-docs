@@ -118,7 +118,97 @@ case $PROJECT_STATE in
         ;;
 esac
 
-# Common configuration for all modes
+# Handle special modes that don't need configuration
+case $MODE in
+    "update")
+        echo ""
+        echo -e "${MAGENTA}━━━ Checking for Updates ━━━${NC}"
+        echo ""
+
+        # Parse existing config (YAML-like format)
+        if [ ! -f ".living-docs.config" ]; then
+            echo -e "${RED}✗${NC} Configuration file not found"
+            exit 1
+        fi
+
+        # Extract spec_system and spec_location from config
+        SPEC_SYSTEM=$(grep "^spec_system:" .living-docs.config | cut -d'"' -f2)
+        SPEC_LOCATION=$(grep "^spec_location:" .living-docs.config | cut -d'"' -f2)
+
+        # Check what spec system is in use
+        if [ "$SPEC_SYSTEM" = "github-spec-kit" ]; then
+            echo -e "${BLUE}📦 Checking GitHub Spec-Kit files...${NC}"
+
+            # Determine spec location (default to .github if not set)
+            SPEC_DIR="${SPEC_LOCATION:-.github}"
+
+            # Check for missing files
+            MISSING_FILES=()
+            SPEC_FILES=(
+                "CODE_OF_CONDUCT.md"
+                "CONTRIBUTING.md"
+                "SECURITY.md"
+                "pull_request_template.md"
+                "ISSUE_TEMPLATE/bug_report.md"
+                "ISSUE_TEMPLATE/feature_request.md"
+                "ISSUE_TEMPLATE/config.yml"
+            )
+
+            for file in "${SPEC_FILES[@]}"; do
+                if [ ! -f "$SPEC_DIR/$file" ]; then
+                    MISSING_FILES+=("$file")
+                fi
+            done
+
+            if [ ${#MISSING_FILES[@]} -eq 0 ]; then
+                echo -e "${GREEN}✓${NC} All spec-kit files are present in $SPEC_DIR"
+            else
+                echo -e "${YELLOW}⚠${NC} Missing ${#MISSING_FILES[@]} spec-kit files:"
+                for file in "${MISSING_FILES[@]}"; do
+                    echo "    - $file"
+                done
+
+                echo ""
+                echo -e "${BLUE}Would you like to restore missing files?${NC} (y/n)"
+                read -p "> " RESTORE
+
+                if [[ "$RESTORE" =~ ^[Yy]$ ]]; then
+                    # Find the wizard script location
+                    WIZARD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+                    ADAPTER_SCRIPT="$WIZARD_DIR/adapters/spec-kit.sh"
+
+                    if [ -f "$ADAPTER_SCRIPT" ]; then
+                        echo -e "${CYAN}Restoring missing files to $SPEC_DIR...${NC}"
+                        if SPEC_LOCATION="$SPEC_DIR" bash "$ADAPTER_SCRIPT" install; then
+                            echo -e "${GREEN}✓${NC} Missing files restored successfully"
+                        else
+                            echo -e "${RED}✗${NC} Failed to restore files"
+                        fi
+                    else
+                        echo -e "${RED}✗${NC} Spec-kit adapter not found at $ADAPTER_SCRIPT"
+                    fi
+                fi
+            fi
+        else
+            echo -e "${YELLOW}No updateable methodology detected${NC}"
+        fi
+
+        echo ""
+        echo -e "${GREEN}✓${NC} Update check complete"
+        exit 0
+        ;;
+
+    "migrate")
+        echo ""
+        echo -e "${MAGENTA}━━━ Migration Assistant ━━━${NC}"
+        echo ""
+        echo -e "${YELLOW}Migration mode not yet implemented${NC}"
+        echo "This will help move your existing docs to living-docs structure"
+        exit 0
+        ;;
+esac
+
+# Common configuration for all modes (new, reconfigure, etc.)
 echo ""
 echo -e "${MAGENTA}━━━ Configuration ━━━${NC}"
 echo ""
@@ -265,8 +355,32 @@ if [[ "$SPEC_SYSTEM" == "github-spec-kit" ]]; then
     # Check if adapter exists
     ADAPTER_SCRIPT="$(dirname "$0")/adapters/spec-kit.sh"
     if [[ -f "$ADAPTER_SCRIPT" ]]; then
-        if bash "$ADAPTER_SCRIPT" install; then
+        # Support custom location for non-GitHub projects
+        if [ "$AI_FILE" != "CLAUDE.md" ] && [ "$AI_FILE" != "PROJECT.md" ]; then
+            # For non-Claude AI, ask about spec-kit location
+            echo ""
+            echo -e "${BLUE}Where should GitHub community files live?${NC}"
+            echo "  1) .github/           (standard)"
+            echo "  2) .${AI_FILE%%.*}/   (AI-specific)"
+            echo "  3) Custom..."
+            read -p "Choice (1-3): " SPEC_LOC_CHOICE
+
+            case $SPEC_LOC_CHOICE in
+                1) SPEC_LOCATION=".github" ;;
+                2) SPEC_LOCATION=".$(echo $AI_FILE | tr '[:upper:]' '[:lower:]' | sed 's/\.md$//')" ;;
+                3) read -p "Enter path: " SPEC_LOCATION ;;
+                *) SPEC_LOCATION=".github" ;;
+            esac
+        else
+            SPEC_LOCATION=".github"
+        fi
+
+        if SPEC_LOCATION="$SPEC_LOCATION" bash "$ADAPTER_SCRIPT" install; then
             echo -e "${GREEN}✓${NC} GitHub Spec-Kit installed successfully"
+            # Save custom location to config if not default
+            if [ "$SPEC_LOCATION" != ".github" ]; then
+                echo "spec_location: \"$SPEC_LOCATION\"" >> .living-docs.config
+            fi
         else
             echo -e "${RED}✗${NC} Failed to install GitHub Spec-Kit"
             exit 1
