@@ -6,14 +6,15 @@
 Create a documentation framework that actually stays alive throughout a project's lifecycle.
 
 ## 📊 Current Status
-- **Unified Wizard**: ✅ Complete v2.0 (intelligent detection, preview mode)
+- **Unified Wizard**: ✅ Complete v2.1.0 (intelligent detection, preview mode)
+- **Update System**: ✅ Complete (update.sh self-updates, version tracking)
 - **Documentation Repair**: ✅ Complete with drift detection
 - **Universal Adapters**: 🟡 Spec-kit adapter complete, others pending
 - **AI-Agnostic**: ✅ Complete (auto-detects 9+ AI assistants)
 - **Bootstrap System**: ✅ Complete with auto-injection
 - **Minimal Impact**: ✅ Complete
 - **GitHub Standards**: ✅ Complete with custom locations
-- **Auto-updates**: ✅ Complete (daily/weekly/monthly)
+- **Auto-updates**: ✅ Complete (manual trigger, preserves customizations)
 - **Examples**: 🔴 Not Started
 - **Testing**: 🔴 Not Started
 - **Community**: 🔴 Not Started
