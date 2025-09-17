@@ -51,6 +51,13 @@ Failure message: "VIOLATION: Phase order not followed. Complete previous phase f
 ## Workflow: Feature Development
 
 ```bash
+# 0. Check if spec workflow is active
+TASKS_FILE=$(find . -path "*/specs/*/tasks.md" 2>/dev/null | head -1)
+if [ -n "$TASKS_FILE" ]; then
+    echo "⚠️ SPEC WORKFLOW ACTIVE: Follow $TASKS_FILE phase order"
+    echo "Tests MUST be written and MUST FAIL before implementation"
+fi
+
 # 1. Create spec
 ./.specify/scripts/bash/create-new-feature.sh --json "feature-name"
 
