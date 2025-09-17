@@ -95,10 +95,17 @@ if [ ${#ORPHANED_FILES[@]} -gt 0 ] && [ "$AUTO_FIX" = true ]; then
         elif [[ "$file" == *"/completed/"* ]]; then
             SECTION="## ✅ Recently Completed"
             LINK_TEXT=$(basename "$file" .md | sed 's/^[0-9]*-[0-9]*-[0-9]*-//')
+        elif [[ "$file" == *"/archived/"* ]]; then
+            # Skip archived files - they should NOT be in current.md
+            continue
         elif [[ "$file" == *"/procedures/"* ]]; then
             SECTION="### Development History"
             LINK_TEXT=$(basename "$file" .md)
+        elif [[ "$file" == "./docs/specs/"* ]]; then
+            SECTION="### Specifications"
+            LINK_TEXT=$(basename "$file" .md)
         elif [[ "$file" == "./specs/"*.md ]]; then
+            # Old location - should be moved
             SECTION="### Spec Adapters"
             LINK_TEXT=$(basename "$file" .md)
         elif [[ "$file" == "./templates/"* ]]; then

@@ -1,0 +1,45 @@
+# Configuration File Contract
+
+## .living-docs.config Schema
+
+**Format**: Bash key=value pairs
+**Location**: Project root
+**Encoding**: UTF-8
+
+### Required Fields
+```bash
+docs_path="<directory_name>"      # String: relative path from root
+version="<semantic_version>"      # String: X.Y.Z format
+created="<date>"                  # String: YYYY-MM-DD format
+```
+
+### Optional Fields (when frameworks installed)
+```bash
+INSTALLED_SPECS="<space_separated>"   # String: framework names
+<FRAMEWORK>_VERSION="<version>"       # String: per framework version
+```
+
+### Validation Rules
+- `docs_path`: Must be valid directory name, no absolute paths
+- `version`: Must match pattern `\d+\.\d+\.\d+`
+- `created`: Must be valid date in YYYY-MM-DD format
+- `INSTALLED_SPECS`: Space-separated list, each item must be known framework
+- Framework versions: Must exist for each framework in INSTALLED_SPECS
+
+### Example Valid Configuration
+```bash
+docs_path="docs"
+version="3.1.0"
+created="2025-09-16"
+INSTALLED_SPECS="spec-kit aider cursor"
+SPEC_KIT_VERSION="1.0.0"
+AIDER_VERSION="1.0.0"
+CURSOR_VERSION="1.0.0"
+```
+
+### Error Conditions
+- Missing required fields → wizard re-runs setup
+- Invalid version format → error message with correction
+- Invalid date → warning, update to current date
+- Unknown framework in INSTALLED_SPECS → warning, remove unknown
+- Missing framework version → warning, set to "unknown"
