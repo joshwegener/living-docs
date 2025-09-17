@@ -21,35 +21,37 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
-2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
-3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+1. [Modular Spec Rules](./specs/002-modular-spec-rules/) - Phase 1 Complete ✅
+2. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+3. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
+4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
 - [Multi-Spec Adapter System](./completed/2025-09-16-multi-spec-adapter.md) - Support for 6 frameworks ✅
+- [system-consistency-fixes](completed/2025-09-16-system-consistency-fixes.md) - [Description needed]
 - [Wizard v3.0.0](./completed/2025-09-16-wizard-v3.md) - Multi-select framework installation ✅
 - [Update System Enhancement](./completed/2025-09-16-update-system.md) - Adapter version tracking ✅
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
-- [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation ✅
-- [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING ✅
-- [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs ✅
-- [Enforcement Rules](./completed/2025-09-14-enforcement-rules.md) - Bootstrap enforcement ✅
-- [Initial Setup](./completed/2025-09-14-initial-setup.md) - Core structure ✅
-- [Configurable Paths](./completed/2025-09-14-configurable-docs-location.md) - Flexible locations ✅
-- [Documentation Repair](./completed/2025-09-14-documentation-repair-system.md) - Brownfield projects ✅
+<!-- BROKEN: - [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation ✅ -->
+<!-- BROKEN: - [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING ✅ -->
+<!-- BROKEN: - [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs ✅ -->
+<!-- BROKEN: - [Enforcement Rules](./completed/2025-09-14-enforcement-rules.md) - Bootstrap enforcement ✅ -->
+<!-- BROKEN: - [Initial Setup](./completed/2025-09-14-initial-setup.md) - Core structure ✅ -->
+<!-- BROKEN: - [Configurable Paths](./completed/2025-09-14-configurable-docs-location.md) - Flexible locations ✅ -->
+<!-- BROKEN: - [Documentation Repair](./completed/2025-09-14-documentation-repair-system.md) - Brownfield projects ✅ -->
 
 ## 📂 Complete Documentation Map
 
 ### Core Files
 - [README.md](../README.md) - Public introduction (GitHub standard)
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [project.md](../project.md) - Internal development guidelines --> --> --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights --> --> --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [migration.md](../migration.md) - Version migration guide --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [project.md](../project.md) - Internal development guidelines --> --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights --> --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [migration.md](../migration.md) - Version migration guide --> --> --> --> --> -->
 
 ### Quick Capture
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) --> --> --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) --> --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) --> --> --> --> --> -->
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -65,7 +67,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [CLAUDE-BOOTSTRAP.md](../templates/ai-projects/CLAUDE-BOOTSTRAP.md) - [Description needed]
 - [templates/ai-projects/CLAUDE.md.template](../templates/ai-projects/CLAUDE.md.template) - Claude AI
 - [templates/ai-projects/AI.md.template](../templates/ai-projects/AI.md.template) - Universal AI
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker --> --> --> --> --> -->
 - [templates/docs/current.md.template](../templates/docs/current.md.template) - Dashboard
 
 ### Spec Adapters
@@ -86,21 +88,22 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/specs/memory-enforcement.md](../docs/specs/memory-enforcement.md) - AI memory enforcement techniques
 
 ### GitHub Integration
-- [.github/README.md](../.github/README.md) - Our spec-kit usage
+<!-- BROKEN: - [.github/README.md](../.github/README.md) - Our spec-kit usage -->
 - [.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/) - Issue templates
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
+- [maintenance](procedures/maintenance.md) - [Description needed]
 - [docs/completed/](./completed/) - Finished tasks with full details (dated)
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
 - [docs/procedures/enforcement.md](./procedures/enforcement.md) - Mandatory rules & verification
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 
 ## 🐛 Quick Issues
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed --> --> --> --> --> -->
 
 ## 💡 Ideas Backlog
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas --> --> --> --> --> -->
 
 ## 🔮 Roadmap
 - [x] **v0.1**: Core framework
@@ -133,7 +136,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ls docs/active/
 
 # Add new issue
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md --> --> --> --> --> -->
 
 # Complete a task
 mv docs/active/task.md docs/completed/$(date +%Y-%m-%d)-task.md

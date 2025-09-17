@@ -439,18 +439,75 @@ main() {
 *Single source of truth for project documentation*
 EOF
 
+    # Create bootstrap.md from template
+    if [ -f "templates/docs/bootstrap.md.template" ]; then
+        # Copy template with substitutions
+        sed -e "s|{{DOCS_PATH}}|$DOCS_PATH|g" \
+            -e "s|{{AI_FILE}}|CLAUDE.md|g" \
+            -e "s|{{BUGS_FILE}}|$DOCS_PATH/bugs.md|g" \
+            -e "s|{{IDEAS_FILE}}|$DOCS_PATH/ideas.md|g" \
+            templates/docs/bootstrap.md.template > "$DOCS_PATH/bootstrap.md"
+    else
+        # Create minimal bootstrap if template missing
+        cat > "$DOCS_PATH/bootstrap.md" << EOF
+# Bootstrap - AI Assistant Instructions
+
+## 📊 Project Dashboard
+**@$DOCS_PATH/current.md** - Complete project status
+
+## 🛠️ Active Framework Rules
+<!-- RULES_START -->
+<!-- Framework-specific rules will be dynamically included here -->
+<!-- RULES_END -->
+
+## 📁 Documentation Structure
+- $DOCS_PATH/active/ - Current work
+- $DOCS_PATH/completed/ - Finished tasks
+- $DOCS_PATH/current.md - Project dashboard
+EOF
+    fi
+
+    # Create bugs and ideas files if they don't exist
+    [ ! -f "$DOCS_PATH/bugs.md" ] && echo "# Bugs\n\n## Open Issues\n" > "$DOCS_PATH/bugs.md"
+    [ ! -f "$DOCS_PATH/ideas.md" ] && echo "# Ideas\n\n## Feature Backlog\n" > "$DOCS_PATH/ideas.md"
+
     # Create configuration
     cat > .living-docs.config << EOF
 # living-docs configuration
 docs_path="$DOCS_PATH"
 version="$WIZARD_VERSION"
 created="$(date +%Y-%m-%d)"
+INSTALLED_SPECS=""
 EOF
 
     echo -e "${GREEN}✓${NC} Created documentation structure"
 
     # Install adapters
     install_adapters "." "$DOCS_PATH"
+
+    # Update INSTALLED_SPECS in config
+    if [ ${#SELECTED_ADAPTERS[@]} -gt 0 ]; then
+        local installed_list="${SELECTED_ADAPTERS[*]}"
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' "s/^INSTALLED_SPECS=.*/INSTALLED_SPECS=\"$installed_list\"/" .living-docs.config
+        else
+            sed -i "s/^INSTALLED_SPECS=.*/INSTALLED_SPECS=\"$installed_list\"/" .living-docs.config
+        fi
+
+        # Update bootstrap with framework rules
+        if [ -f "scripts/rules/rule-loading.sh" ]; then
+            source scripts/rules/rule-loading.sh
+
+            # Load and include rules
+            local specs=$(get_installed_specs)
+            local rule_files=$(discover_rule_files "$specs")
+
+            if [ -n "$rule_files" ]; then
+                include_rules_in_bootstrap "$DOCS_PATH/bootstrap.md" "$rule_files"
+                echo -e "${GREEN}✓${NC} Updated bootstrap with framework rules"
+            fi
+        fi
+    fi
 
     # Success
     echo ""
