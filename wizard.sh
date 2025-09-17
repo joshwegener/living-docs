@@ -324,9 +324,21 @@ install_adapters() {
         echo ""
     done
 
-    # Update config with installed adapters
+    # Update config with installed adapters and their versions
     if [ ${#SELECTED_ADAPTERS[@]} -gt 0 ]; then
         echo "INSTALLED_SPECS=\"${SELECTED_ADAPTERS[*]}\"" >> "$project_root/.living-docs.config"
+
+        # Add version info for each adapter
+        for adapter in "${SELECTED_ADAPTERS[@]}"; do
+            adapter_upper=$(echo "$adapter" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+            # Try to get version from adapter's own config/version file if it exists
+            adapter_version="1.0.0"  # Default version
+            if [ -f "$adapter_path/.version" ]; then
+                adapter_version=$(cat "$adapter_path/.version")
+            fi
+            echo "${adapter_upper}_VERSION=\"$adapter_version\"" >> "$project_root/.living-docs.config"
+        done
+
         echo -e "${GREEN}✓${NC} Updated .living-docs.config with installed adapters"
     fi
 }
@@ -430,9 +442,9 @@ EOF
     # Create configuration
     cat > .living-docs.config << EOF
 # living-docs configuration
-docs_path: "$DOCS_PATH"
-version: "$WIZARD_VERSION"
-created: "$(date +%Y-%m-%d)"
+docs_path="$DOCS_PATH"
+version="$WIZARD_VERSION"
+created="$(date +%Y-%m-%d)"
 EOF
 
     echo -e "${GREEN}✓${NC} Created documentation structure"

@@ -1,0 +1,55 @@
+# Directory Structure Contract
+
+## Documentation Hierarchy Schema
+
+**Base Path**: Value of `docs_path` from configuration
+**Organization**: Functional separation by purpose
+
+### Required Directories
+```
+{docs_path}/
+├── active/         # Current work in progress
+├── completed/      # Recent work (last 30 days)
+├── archived/       # Historical work (>30 days)
+├── specs/          # All specifications
+└── procedures/     # Process documentation
+```
+
+### Required Files
+```
+{docs_path}/
+├── current.md      # Project dashboard (mandatory)
+├── bootstrap.md    # AI assistant instructions (mandatory)
+├── bugs.md         # Quick issue tracker (optional)
+├── ideas.md        # Feature backlog (optional)
+└── log.md          # Event timeline (optional)
+```
+
+### File Naming Conventions
+
+#### Active Work
+- Pattern: `NN-descriptive-name.md`
+- Example: `01-user-authentication.md`
+- Numbering: Sequential, gaps allowed
+
+#### Completed Work
+- Pattern: `YYYY-MM-DD-descriptive-name.md`
+- Example: `2025-09-16-system-consistency-fixes.md`
+- Date: Completion date, not start date
+
+#### Specifications
+- Pattern: `NNN-descriptive-name/` (directories)
+- Contains: `spec.md`, `plan.md`, `tasks.md`, etc.
+- Example: `001-system-consistency-fixes/`
+
+### Migration Rules
+- Preserve existing file structure when possible
+- Move specifications to specs/ subdirectory
+- Archive work older than 30 days on first run
+- Update current.md references automatically
+
+### Error Conditions
+- Missing current.md → create from template
+- Missing bootstrap.md → create from template
+- Invalid file names → warning, manual cleanup needed
+- Broken internal links → auto-fix with drift detection

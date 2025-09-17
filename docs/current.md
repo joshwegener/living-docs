@@ -70,8 +70,8 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Spec Adapters
 - [adapters/README.md](../adapters/README.md) - 📚 Complete adapter documentation
-- [specs/multi-spec-adapter-system.md](../specs/multi-spec-adapter-system.md) - Multi-spec architecture
-- [specs/path-rewriting-system.md](../specs/path-rewriting-system.md) - Path customization system
+- [docs/specs/multi-spec-adapter-system.md](../docs/specs/multi-spec-adapter-system.md) - Multi-spec architecture
+- [docs/specs/path-rewriting-system.md](../docs/specs/path-rewriting-system.md) - Path customization system
 - [adapters/](../adapters/) - All 6 framework adapters:
   - `spec-kit/` - GitHub specification toolkit ✅
   - `bmad-method/` - Multi-agent system (Node.js) ✅
@@ -79,11 +79,11 @@ Create a documentation framework that actually stays alive throughout a project'
   - `aider/` - AI coding conventions ✅
   - `cursor/` - Cursor IDE rules ✅
   - `continue/` - Continue.dev rules ✅
-- [specs/wizard-enhancement.md](../specs/wizard-enhancement.md) - Wizard improvement spec
-- [specs/auto-update-feature.md](../specs/auto-update-feature.md) - Auto-update specification
-- [specs/ai-specific-paths.md](../specs/ai-specific-paths.md) - AI-specific path mapping
-- [specs/drift-detection.md](../specs/drift-detection.md) - Drift detection system spec
-- [specs/memory-enforcement.md](../specs/memory-enforcement.md) - AI memory enforcement techniques
+- [docs/specs/wizard-enhancement.md](../docs/specs/wizard-enhancement.md) - Wizard improvement spec
+- [docs/specs/auto-update-feature.md](../docs/specs/auto-update-feature.md) - Auto-update specification
+- [docs/specs/ai-specific-paths.md](../docs/specs/ai-specific-paths.md) - AI-specific path mapping
+- [docs/specs/drift-detection.md](../docs/specs/drift-detection.md) - Drift detection system spec
+- [docs/specs/memory-enforcement.md](../docs/specs/memory-enforcement.md) - AI memory enforcement techniques
 
 ### GitHub Integration
 - [.github/README.md](../.github/README.md) - Our spec-kit usage
