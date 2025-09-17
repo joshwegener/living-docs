@@ -2,7 +2,30 @@
 set -euo pipefail
 
 # Version
-WIZARD_VERSION="3.0.0"
+WIZARD_VERSION="3.1.0"
+REPO_URL="https://raw.githubusercontent.com/joshwegener/living-docs/main"
+
+# Parse command line arguments
+UPDATE_ONLY=false
+SHOW_VERSION=false
+SHOW_HELP=false
+
+for arg in "$@"; do
+    case $arg in
+        --update|--update-only|-u)
+            UPDATE_ONLY=true
+            shift
+            ;;
+        --version|-v)
+            SHOW_VERSION=true
+            shift
+            ;;
+        --help|-h)
+            SHOW_HELP=true
+            shift
+            ;;
+    esac
+done
 
 # Colors
 RED='\033[0;31m'
@@ -12,6 +35,88 @@ BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
+
+# Handle version flag
+if [ "$SHOW_VERSION" = true ]; then
+    echo "living-docs wizard v$WIZARD_VERSION"
+    exit 0
+fi
+
+# Handle help flag
+if [ "$SHOW_HELP" = true ]; then
+    echo "living-docs wizard v$WIZARD_VERSION"
+    echo ""
+    echo "Usage: wizard.sh [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  --update, -u     Update wizard to latest version"
+    echo "  --version, -v    Show version"
+    echo "  --help, -h       Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  wizard.sh              # Run interactive setup"
+    echo "  wizard.sh --update     # Update to latest version"
+    echo ""
+    exit 0
+fi
+
+# Self-installation: If piped from curl, save locally and re-run
+if [ ! -t 0 ] && [ ! -f wizard.sh ]; then
+    echo -e "${CYAN}Installing living-docs wizard...${NC}"
+    cat > wizard.sh
+    chmod +x wizard.sh
+    echo -e "${GREEN}✓${NC} Wizard installed. Running setup..."
+    echo ""
+    exec ./wizard.sh
+    exit 0
+fi
+
+# Handle update flag
+if [ "$UPDATE_ONLY" = true ]; then
+    echo -e "${CYAN}Checking for updates...${NC}"
+    echo ""
+
+    # Update wizard.sh first
+    echo -e "${BLUE}Checking wizard.sh...${NC}"
+    TEMP_FILE=$(mktemp)
+    if curl -sL "$REPO_URL/wizard.sh" -o "$TEMP_FILE" 2>/dev/null; then
+        # Extract version from downloaded file
+        NEW_VERSION=$(grep "^WIZARD_VERSION=" "$TEMP_FILE" | cut -d'"' -f2)
+
+        if [ "$NEW_VERSION" != "$WIZARD_VERSION" ]; then
+            echo -e "${GREEN}✓${NC} Update available: v$WIZARD_VERSION → v$NEW_VERSION"
+            mv "$TEMP_FILE" wizard.sh
+            chmod +x wizard.sh
+            echo -e "${GREEN}✓${NC} Wizard updated!"
+        else
+            echo -e "${GREEN}✓${NC} Wizard already up to date (v$WIZARD_VERSION)"
+            rm "$TEMP_FILE"
+        fi
+    else
+        echo -e "${RED}✗${NC} Failed to check wizard updates"
+        rm -f "$TEMP_FILE"
+    fi
+
+    # Check adapter updates if installed
+    if [ -f ".living-docs.config" ] && [ -f "adapters/check-updates.sh" ]; then
+        echo ""
+        echo -e "${BLUE}Checking adapter updates...${NC}"
+        bash adapters/check-updates.sh
+    elif [ -f ".living-docs.config" ]; then
+        # Download and run adapter update checker
+        echo ""
+        echo -e "${BLUE}Downloading adapter update checker...${NC}"
+        mkdir -p adapters
+        if curl -sL "$REPO_URL/adapters/check-updates.sh" -o "adapters/check-updates.sh" 2>/dev/null; then
+            chmod +x adapters/check-updates.sh
+            bash adapters/check-updates.sh
+        fi
+    fi
+
+    echo ""
+    echo -e "${GREEN}✓${NC} Update check complete!"
+    exit 0
+fi
 
 # Box drawing characters
 BOX_TOP_LEFT="╔"
@@ -255,13 +360,8 @@ main() {
                 source .living-docs.config
                 ;;
             2)
-                # Check updates
-                if [ -f "adapters/check-updates.sh" ]; then
-                    bash adapters/check-updates.sh
-                else
-                    echo "Update checker not found"
-                fi
-                exit 0
+                # Check updates - use self-update
+                exec "$0" --update
                 ;;
             3)
                 # Reconfigure - continue with setup
