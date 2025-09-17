@@ -19,7 +19,6 @@
 ## 🛠️ Active Framework Rules
 <!-- RULES_START -->
 - [spec-kit Rules](./rules/spec-kit-rules.md) - TDD phases, tasks.md enforcement
-- [aider Rules](./rules/aider-rules.md) - Convention management, review process
 <!-- RULES_END -->
 
 ## 🛠️ Installed Specification Frameworks
@@ -27,8 +26,6 @@
 - **spec-kit**: `./.specify/scripts/bash/create-new-feature.sh --json "{feature-name}"`
   - Creates new feature specification in `docs/specs/NNN-feature-name/`
   - Follow with `/plan` and `/tasks` commands for implementation workflow
-- **aider**: `./.aider/commands/add.sh {files}` - Add files to aider context
-- **cursor**: `./.cursor/scripts/generate-rules.sh` - Generate cursor rules
 
 ## 🔄 Spec-Kit Workflow (When Installed)
 **For new features using spec-kit:**
