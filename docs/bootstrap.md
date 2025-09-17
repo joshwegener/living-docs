@@ -16,6 +16,12 @@
 ## 📊 Project Dashboard
 **@docs/current.md** - Complete project status, metrics, and documentation map
 
+## 🛠️ Active Framework Rules
+<!-- RULES_START -->
+- [spec-kit Rules](./rules/spec-kit-rules.md) - TDD phases, tasks.md enforcement
+- [aider Rules](./rules/aider-rules.md) - Convention management, review process
+<!-- RULES_END -->
+
 ## 🛠️ Installed Specification Frameworks
 **Available Commands** (based on installed specs):
 - **spec-kit**: `./.specify/scripts/bash/create-new-feature.sh --json "{feature-name}"`
