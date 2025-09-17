@@ -1,0 +1,41 @@
+name: bmad-method
+version: 1.0.0
+description: BMAD multi-agent development system
+author: BMad Code
+license: MIT
+homepage: https://github.com/bmad-code-org/BMAD-METHOD
+
+# BMAD uses multiple directories
+files:
+  - source: templates/bmad-core/
+    dest: "{{AI_PATH}}/bmad/"
+  - source: templates/spec.md
+    dest: "{{SPECS_PATH}}/spec.md.template"
+  - source: templates/tasks.md
+    dest: "{{SPECS_PATH}}/tasks.md.template"
+
+# Requires Node.js
+dependencies:
+  - node: ">=20.0.0"
+  - npm: ">=10.0.0"
+
+# Claims these directories
+claims:
+  - "{{AI_PATH}}/bmad"
+
+# No direct conflicts but needs Node.js
+conflicts: []
+
+# Works with all AI assistants
+ai_assistants:
+  - claude
+  - copilot
+  - cursor
+  - aider
+  - continue
+
+# Requires path rewriting for custom locations
+requires_path_rewrite: true
+
+# Has npm/npx commands that need special handling
+has_node_dependencies: true

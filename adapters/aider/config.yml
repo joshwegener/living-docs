@@ -1,0 +1,24 @@
+name: aider
+version: 1.0.0
+description: Aider AI coding conventions
+author: Aider AI
+license: MIT
+homepage: https://aider.chat
+
+# Simple adapter - just one file
+files:
+  - source: templates/CONVENTIONS.md
+    dest: CONVENTIONS.md
+
+# No dependencies
+dependencies: []
+
+# No conflicts with other adapters
+conflicts: []
+
+# Works with Aider
+ai_assistants:
+  - aider
+
+# Path rewriting not needed for root file
+requires_path_rewrite: false

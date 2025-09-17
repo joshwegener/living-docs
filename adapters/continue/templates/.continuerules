@@ -1,0 +1,115 @@
+# Continue.dev Rules
+
+Configuration for Continue.dev AI assistance in your development workflow.
+
+## Model Preferences
+
+### Code Generation
+- Prefer completeness over brevity
+- Generate full implementations
+- Include error handling
+- Add type annotations
+
+### Code Review
+- Check for common bugs
+- Suggest performance improvements
+- Identify security issues
+- Recommend refactoring opportunities
+
+## Context Awareness
+
+### File Context
+- Consider imports and dependencies
+- Respect file structure
+- Maintain consistency with surrounding code
+- Follow established patterns
+
+### Project Context
+- Understand project architecture
+- Follow project conventions
+- Use existing utilities and helpers
+- Respect coding standards
+
+## Language-Specific Rules
+
+### Python
+- Follow PEP 8 style guide
+- Use type hints
+- Prefer f-strings for formatting
+- Use list comprehensions appropriately
+
+### JavaScript/TypeScript
+- Use modern ES6+ features
+- Prefer const over let
+- Use async/await over promises
+- Add JSDoc comments
+
+### Go
+- Follow Go conventions
+- Handle errors explicitly
+- Use defer for cleanup
+- Keep functions small
+
+### Rust
+- Follow Rust naming conventions
+- Use Result and Option appropriately
+- Minimize unsafe code
+- Write idiomatic Rust
+
+## Development Workflow
+
+### Feature Development
+- Start with tests
+- Implement incrementally
+- Refactor as needed
+- Document changes
+
+### Debugging
+- Add helpful debug output
+- Use proper logging levels
+- Include context in errors
+- Clean up debug code
+
+### Code Review
+- Explain complex changes
+- Highlight breaking changes
+- Suggest test cases
+- Document assumptions
+
+## Quality Standards
+
+### Code Quality
+- Write self-documenting code
+- Keep functions focused
+- Avoid deep nesting
+- Use meaningful names
+
+### Documentation
+- Document public APIs
+- Explain complex algorithms
+- Add usage examples
+- Keep docs up to date
+
+### Testing
+- Write unit tests
+- Include integration tests
+- Test edge cases
+- Maintain coverage
+
+## AI Behavior
+
+### Suggestions
+- Provide multiple options
+- Explain trade-offs
+- Show examples
+- Reference documentation
+
+### Learning
+- Learn from corrections
+- Adapt to feedback
+- Recognize patterns
+- Improve over time
+
+---
+
+*Customize these rules for your specific needs. Continue.dev will apply these guidelines when providing AI assistance.*

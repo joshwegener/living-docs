@@ -20,17 +20,37 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
-- [vscode-extension](active/08-vscode-extension.md) - [Description needed]
-- [examples-library](active/07-examples-library.md) - [Description needed]
-- [testing-framework](active/06-testing-framework.md) - [Description needed]
-- [universal-spec-adapter](active/03-universal-spec-adapter.md) - [Description needed]
-2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
-3. [Universal Spec Adapters](./active/03-universal-spec-adapter.md) - 🔴 Not Implemented
+1. [Multi-Spec Adapter System](../specs/multi-spec-adapter-system.md) - 🟡 In Progress
+   - ✅ Path rewriting engine complete
+   - ✅ All 6 adapters implemented
+   - ⬜ Wizard multi-select pending
+   - ⬜ Testing needed
+2. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+3. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
+- [wizard-v2-update-system](completed/2025-09-16-wizard-v2-update-system.md) - [Description needed]
+- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
+- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
+- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
+- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
+- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
+- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
+- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
+- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
+- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
+- [wizard-v2-update-system](completed/2025-09-16-wizard-v2-update-system.md) - [Description needed]
+- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
+- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
+- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
+- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
+- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
+- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
+- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
+- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
+- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
 - [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
 - [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
 - [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
@@ -53,13 +73,13 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Core Files
 - [README.md](../README.md) - Public introduction (GitHub standard)
-<!-- BROKEN: - [project.md](../project.md) - Internal development guidelines -->
-<!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights -->
-<!-- BROKEN: - [migration.md](../migration.md) - Version migration guide -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [project.md](../project.md) - Internal development guidelines --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [migration.md](../migration.md) - Version migration guide --> --> -->
 
 ### Quick Capture
-<!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) -->
-<!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) --> --> -->
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -75,14 +95,20 @@ Create a documentation framework that actually stays alive throughout a project'
 - [CLAUDE-BOOTSTRAP.md](../templates/ai-projects/CLAUDE-BOOTSTRAP.md) - [Description needed]
 - [templates/ai-projects/CLAUDE.md.template](../templates/ai-projects/CLAUDE.md.template) - Claude AI
 - [templates/ai-projects/AI.md.template](../templates/ai-projects/AI.md.template) - Universal AI
-<!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker --> --> -->
 - [templates/docs/current.md.template](../templates/docs/current.md.template) - Dashboard
 
 ### Spec Adapters
-<!-- BROKEN: - [specs/README.md](../specs/README.md) - Adapter system docs -->
-- [specs/github-spec-kit/](../specs/github-spec-kit/) - GitHub integration
-- [specs/bmad-method/](../specs/bmad-method/) - BMAD integration
-- [specs/agent-os/](../specs/agent-os/) - Agent OS integration
+- [adapters/README.md](../adapters/README.md) - 📚 Complete adapter documentation
+- [specs/multi-spec-adapter-system.md](../specs/multi-spec-adapter-system.md) - Multi-spec architecture
+- [specs/path-rewriting-system.md](../specs/path-rewriting-system.md) - Path customization system
+- [adapters/](../adapters/) - All 6 framework adapters:
+  - `spec-kit/` - GitHub specification toolkit ✅
+  - `bmad-method/` - Multi-agent system (Node.js) ✅
+  - `agent-os/` - Dated specs methodology ✅
+  - `aider/` - AI coding conventions ✅
+  - `cursor/` - Cursor IDE rules ✅
+  - `continue/` - Continue.dev rules ✅
 - [specs/wizard-enhancement.md](../specs/wizard-enhancement.md) - Wizard improvement spec
 - [specs/auto-update-feature.md](../specs/auto-update-feature.md) - Auto-update specification
 - [specs/ai-specific-paths.md](../specs/ai-specific-paths.md) - AI-specific path mapping
@@ -101,10 +127,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 
 ## 🐛 Quick Issues
-<!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed --> --> -->
 
 ## 💡 Ideas Backlog
-<!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas --> --> -->
 
 ## 🔮 Roadmap
 - [x] **v0.1**: Core framework
@@ -136,7 +162,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ls docs/active/
 
 # Add new issue
-<!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md --> --> -->
 
 # Complete a task
 mv docs/active/task.md docs/completed/$(date +%Y-%m-%d)-task.md
