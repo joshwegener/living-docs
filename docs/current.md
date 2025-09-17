@@ -1,15 +1,16 @@
 # living-docs - Project Dashboard (Single Source of Truth)
 
-**Status**: ALPHA | **Version**: 0.2.0 | **Updated**: Sept 14, 2025
+**Status**: BETA | **Version**: 0.3.0 | **Updated**: Sept 16, 2025
 
 ## 🎯 Project Mission
 Create a documentation framework that actually stays alive throughout a project's lifecycle.
 
 ## 📊 Current Status
-- **Unified Wizard**: ✅ Complete v2.1.0 (intelligent detection, preview mode)
-- **Update System**: ✅ Complete (update.sh self-updates, version tracking)
+- **Unified Wizard**: ✅ Complete v3.0.0 (multi-adapter support, interactive selection)
+- **Multi-Spec Adapters**: ✅ Complete (6 frameworks: spec-kit, bmad, agent-os, aider, cursor, continue)
+- **Update System**: ✅ Complete (checks core + all adapters, version tracking)
+- **Path Rewriting**: ✅ Complete (dynamic path customization for all adapters)
 - **Documentation Repair**: ✅ Complete with drift detection
-- **Universal Adapters**: 🟡 Spec-kit adapter complete, others pending
 - **AI-Agnostic**: ✅ Complete (auto-detects 9+ AI assistants)
 - **Bootstrap System**: ✅ Complete with auto-injection
 - **Minimal Impact**: ✅ Complete
@@ -20,66 +21,35 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Multi-Spec Adapter System](../specs/multi-spec-adapter-system.md) - 🟡 In Progress
-   - ✅ Path rewriting engine complete
-   - ✅ All 6 adapters implemented
-   - ⬜ Wizard multi-select pending
-   - ⬜ Testing needed
-2. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
-3. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
-4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
+3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
+- [Multi-Spec Adapter System](./completed/2025-09-16-multi-spec-adapter.md) - Support for 6 frameworks ✅
+- [Wizard v3.0.0](./completed/2025-09-16-wizard-v3.md) - Multi-select framework installation ✅
+- [Update System Enhancement](./completed/2025-09-16-update-system.md) - Adapter version tracking ✅
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
-- [wizard-v2-update-system](completed/2025-09-16-wizard-v2-update-system.md) - [Description needed]
-- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
-- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
-- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
-- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
-- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
-- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
-- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
-- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
-- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
-- [wizard-v2-update-system](completed/2025-09-16-wizard-v2-update-system.md) - [Description needed]
-- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
-- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
-- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
-- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
-- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
-- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
-- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
-- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
-- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
-- [spec-kit-adapter](completed/2025-09-15-spec-kit-adapter.md) - [Description needed]
-- [drift-detection](completed/2025-09-15-drift-detection.md) - [Description needed]
-- [speckit-adapter](completed/2025-09-14-speckit-adapter.md) - [Description needed]
-- [minimal-impact-fix](completed/2025-09-14-minimal-impact-fix.md) - [Description needed]
-- [initial-setup](completed/2025-09-14-initial-setup.md) - [Description needed]
-- [enforcement-rules](completed/2025-09-14-enforcement-rules.md) - [Description needed]
-- [documentation-repair-system](completed/2025-09-14-documentation-repair-system.md) - [Description needed]
-- [configurable-docs-location](completed/2025-09-14-configurable-docs-location.md) - [Description needed]
-- [bootstrap-implementation](completed/2025-09-14-bootstrap-implementation.md) - [Description needed]
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
-- [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation
-- [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING
-- [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs
-- [Enforcement Rules](./completed/2025-09-14-enforcement-rules.md) - Bootstrap enforcement
-- [Initial Setup](./completed/2025-09-14-initial-setup.md) - Core structure
-- [Configurable Paths](./completed/2025-09-14-configurable-docs-location.md) - Flexible locations
-- [Documentation Repair](./completed/2025-09-14-documentation-repair-system.md) - Brownfield projects
+- [Bootstrap Implementation](./completed/2025-09-14-bootstrap-implementation.md) - Clean separation ✅
+- [GitHub Standards](./completed/2025-09-14-github-standards.md) - PR template, CONTRIBUTING ✅
+- [Minimal Impact Fix](./completed/2025-09-14-minimal-impact-fix.md) - Clean root dirs ✅
+- [Enforcement Rules](./completed/2025-09-14-enforcement-rules.md) - Bootstrap enforcement ✅
+- [Initial Setup](./completed/2025-09-14-initial-setup.md) - Core structure ✅
+- [Configurable Paths](./completed/2025-09-14-configurable-docs-location.md) - Flexible locations ✅
+- [Documentation Repair](./completed/2025-09-14-documentation-repair-system.md) - Brownfield projects ✅
 
 ## 📂 Complete Documentation Map
 
 ### Core Files
 - [README.md](../README.md) - Public introduction (GitHub standard)
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [project.md](../project.md) - Internal development guidelines --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [migration.md](../migration.md) - Version migration guide --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [project.md](../project.md) - Internal development guidelines --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [insights.md](../insights.md) - Architecture decisions & key insights --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [migration.md](../migration.md) - Version migration guide --> --> --> --> -->
 
 ### Quick Capture
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) --> --> -->
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [bugs.md](../bugs.md) - Lightweight bug tracking (one-liners) --> --> --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [ideas.md](../ideas.md) - Feature ideas backlog (one-liners) --> --> --> --> -->
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -95,7 +65,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [CLAUDE-BOOTSTRAP.md](../templates/ai-projects/CLAUDE-BOOTSTRAP.md) - [Description needed]
 - [templates/ai-projects/CLAUDE.md.template](../templates/ai-projects/CLAUDE.md.template) - Claude AI
 - [templates/ai-projects/AI.md.template](../templates/ai-projects/AI.md.template) - Universal AI
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: - [templates/bugs.md.template](../templates/bugs.md.template) - Bug tracker --> --> --> --> -->
 - [templates/docs/current.md.template](../templates/docs/current.md.template) - Dashboard
 
 ### Spec Adapters
@@ -127,16 +97,17 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 
 ## 🐛 Quick Issues
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [bugs.md](./bugs.md) - Current count: 16 open, 2 closed --> --> --> --> -->
 
 ## 💡 Ideas Backlog
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: See [ideas.md](./ideas.md) - Current count: 26 ideas --> --> --> --> -->
 
 ## 🔮 Roadmap
 - [x] **v0.1**: Core framework
 - [x] **v0.2**: Unified wizard
-- [ ] **v0.3**: Real-world examples
-- [ ] **v0.4**: Community features
+- [x] **v0.3**: Multi-spec adapter system (6 frameworks)
+- [ ] **v0.4**: Real-world examples
+- [ ] **v0.5**: Community features
 - [ ] **v1.0**: Production ready
 
 ## 📖 External Resources
@@ -162,7 +133,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ls docs/active/
 
 # Add new issue
-<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md --> --> -->
+<!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: <!-- BROKEN: echo "- [ ] Issue description" >> ../bugs.md --> --> --> --> -->
 
 # Complete a task
 mv docs/active/task.md docs/completed/$(date +%Y-%m-%d)-task.md

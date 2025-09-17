@@ -21,14 +21,15 @@ BOX_BOTTOM_RIGHT="╝"
 BOX_HORIZONTAL="═"
 BOX_VERTICAL="║"
 
-# Available adapters
-declare -A ADAPTERS=(
-    ["spec-kit"]="GitHub specification-driven development toolkit"
-    ["bmad-method"]="Multi-agent development system (requires Node.js 20+)"
-    ["agent-os"]="Dated specification folders methodology"
-    ["aider"]="AI coding conventions (CONVENTIONS.md)"
-    ["cursor"]="Cursor IDE rules (.cursorrules)"
-    ["continue"]="Continue.dev rules (.continuerules)"
+# Available adapters - using parallel arrays for compatibility
+ADAPTER_KEYS=("spec-kit" "bmad-method" "agent-os" "aider" "cursor" "continue")
+ADAPTER_DESCS=(
+    "GitHub specification-driven development toolkit"
+    "Multi-agent development system (requires Node.js 20+)"
+    "Dated specification folders methodology"
+    "AI coding conventions (CONVENTIONS.md)"
+    "Cursor IDE rules (.cursorrules)"
+    "Continue.dev rules (.continuerules)"
 )
 
 # Selected adapters
@@ -67,14 +68,13 @@ draw_box_border() {
 
 # Function: Multi-select menu for adapters
 select_adapters() {
-    local selected=()
-    local adapter_keys=("spec-kit" "bmad-method" "agent-os" "aider" "cursor" "continue")
     local cursor_pos=0
     local done=false
 
-    # Initialize all as unselected
-    for key in "${adapter_keys[@]}"; do
-        selected[$key]=0
+    # Initialize selection array (0=unselected, 1=selected)
+    local selected=()
+    for i in "${!ADAPTER_KEYS[@]}"; do
+        selected[$i]=0
     done
 
     clear
@@ -87,12 +87,12 @@ select_adapters() {
         echo ""
 
         # Display options
-        for i in "${!adapter_keys[@]}"; do
-            local key="${adapter_keys[$i]}"
-            local desc="${ADAPTERS[$key]}"
+        for i in "${!ADAPTER_KEYS[@]}"; do
+            local key="${ADAPTER_KEYS[$i]}"
+            local desc="${ADAPTER_DESCS[$i]}"
 
             # Determine checkbox state
-            if [ "${selected[$key]}" = "1" ]; then
+            if [ "${selected[$i]}" = "1" ]; then
                 local checkbox="[✓]"
             else
                 local checkbox="[ ]"
@@ -119,21 +119,20 @@ select_adapters() {
                 case "$key" in
                     '[A') # Up
                         ((cursor_pos--))
-                        [ "$cursor_pos" -lt 0 ] && cursor_pos=$((${#adapter_keys[@]} - 1))
+                        [ "$cursor_pos" -lt 0 ] && cursor_pos=$((${#ADAPTER_KEYS[@]} - 1))
                         ;;
                     '[B') # Down
                         ((cursor_pos++))
-                        [ "$cursor_pos" -ge "${#adapter_keys[@]}" ] && cursor_pos=0
+                        [ "$cursor_pos" -ge "${#ADAPTER_KEYS[@]}" ] && cursor_pos=0
                         ;;
                 esac
                 ;;
             # Space - toggle selection
             ' ')
-                local current_key="${adapter_keys[$cursor_pos]}"
-                if [ "${selected[$current_key]}" = "1" ]; then
-                    selected[$current_key]=0
+                if [ "${selected[$cursor_pos]}" = "1" ]; then
+                    selected[$cursor_pos]=0
                 else
-                    selected[$current_key]=1
+                    selected[$cursor_pos]=1
                 fi
                 ;;
             # Enter - done selecting
@@ -148,9 +147,9 @@ select_adapters() {
 
     # Collect selected adapters
     SELECTED_ADAPTERS=()
-    for key in "${adapter_keys[@]}"; do
-        if [ "${selected[$key]}" = "1" ]; then
-            SELECTED_ADAPTERS+=("$key")
+    for i in "${!ADAPTER_KEYS[@]}"; do
+        if [ "${selected[$i]}" = "1" ]; then
+            SELECTED_ADAPTERS+=("${ADAPTER_KEYS[$i]}")
         fi
     done
 }

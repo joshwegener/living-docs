@@ -69,8 +69,12 @@ for file in $ALL_MD_FILES; do
     # Convert file path to link format
     REL_PATH=$(echo "$file" | sed 's/^\.\///')
 
-    # Check if linked in current.md
-    if ! grep -q "$REL_PATH" docs/current.md 2>/dev/null; then
+    # Get just the filename without date prefix for searching
+    BASE_NAME=$(basename "$file" .md | sed 's/^[0-9]*-[0-9]*-[0-9]*-//' | sed 's/^[0-9]*-//')
+
+    # Check if linked in current.md (search for both full path and base name)
+    if ! grep -q "$REL_PATH" docs/current.md 2>/dev/null && \
+       ! grep -q "$BASE_NAME" docs/current.md 2>/dev/null; then
         echo -e "${YELLOW}⚠ Orphaned:${NC} $file"
         ORPHANED_FILES+=("$file")
     fi
@@ -138,8 +142,10 @@ if [ ${#ORPHANED_FILES[@]} -gt 0 ] && [ "$AUTO_FIX" = true ]; then
             if [ "$DRY_RUN" = true ]; then
                 echo "  Would add to $SECTION: $LINK_LINE"
             else
-                # Find section and add link
-                if grep -q "^$SECTION" docs/current.md; then
+                # Double-check it's not already there (may have been added in a previous run)
+                if grep -q "$LINK_TEXT" docs/current.md; then
+                    echo "  ✓ Already listed: $LINK_TEXT"
+                elif grep -q "^$SECTION" docs/current.md; then
                     # Add after section header
                     awk -v section="$SECTION" -v link="$LINK_LINE" '
                         $0 ~ section { print; getline; print; print link; next }
