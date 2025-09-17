@@ -19,7 +19,7 @@ When you use living-docs, you can choose:
 
 ## For Your Project
 
-Run `./setup.sh` and choose YOUR preferred methodology. You don't have to use what we use!
+Run `./wizard.sh` and choose YOUR preferred frameworks. You don't have to use what we use!
 
 ---
 
