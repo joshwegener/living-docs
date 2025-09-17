@@ -1,0 +1,40 @@
+name: spec-kit
+version: 2.0.0
+description: GitHub's specification-driven development toolkit
+author: GitHub
+license: MIT
+homepage: https://github.com/github/spec-kit
+
+# Spec-kit uses multiple directories
+files:
+  - source: templates/memory/
+    dest: "{{MEMORY_PATH}}/"
+  - source: templates/specs/
+    dest: "{{SPECS_PATH}}/"
+  - source: templates/scripts/
+    dest: "{{SCRIPTS_PATH}}/"
+  - source: templates/.github/
+    dest: ".github/"
+
+# No hard dependencies
+dependencies: []
+
+# Claims these directories
+claims:
+  - "{{MEMORY_PATH}}"
+  - "{{SPECS_PATH}}"
+  - "{{SCRIPTS_PATH}}"
+
+# No conflicts with other adapters
+conflicts: []
+
+# Works with all AI assistants
+ai_assistants:
+  - claude
+  - copilot
+  - cursor
+  - aider
+  - continue
+
+# Requires path rewriting for custom locations
+requires_path_rewrite: true

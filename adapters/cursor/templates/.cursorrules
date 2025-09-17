@@ -1,0 +1,92 @@
+# Cursor IDE Rules
+
+You are an AI assistant integrated with Cursor IDE. Follow these rules when generating code:
+
+## Code Generation Rules
+
+### Style Guidelines
+- Match the existing code style in the project
+- Use consistent indentation (spaces or tabs as per project)
+- Follow the project's naming conventions
+- Add meaningful variable and function names
+
+### Code Quality
+- Write clean, maintainable code
+- Avoid code duplication - use functions and modules
+- Handle errors appropriately
+- Add null/undefined checks where needed
+- Follow SOLID principles when applicable
+
+### Documentation
+- Add comments for complex logic
+- Document function parameters and return types
+- Include examples in documentation when helpful
+- Keep comments concise and relevant
+
+### Testing
+- Suggest tests for new functions
+- Maintain test coverage
+- Consider edge cases
+- Write descriptive test names
+
+### Performance
+- Avoid premature optimization
+- Use efficient algorithms for large datasets
+- Consider memory usage
+- Profile before optimizing
+
+### Security
+- Never expose sensitive data in code
+- Validate and sanitize inputs
+- Use parameterized queries for databases
+- Follow OWASP guidelines
+
+## Project-Specific Rules
+
+### File Organization
+- Keep files focused and single-purpose
+- Group related functionality
+- Follow existing directory structure
+- Use meaningful file names
+
+### Dependencies
+- Prefer built-in libraries when possible
+- Document why external dependencies are needed
+- Keep dependencies up to date
+- Avoid deprecated packages
+
+### Git Workflow
+- Make atomic commits
+- Write clear commit messages
+- Reference issue numbers in commits
+- Keep feature branches up to date
+
+## AI Assistance Preferences
+
+### Code Completion
+- Complete current line contextually
+- Suggest entire functions when appropriate
+- Provide multiple options when unclear
+- Respect existing patterns
+
+### Refactoring
+- Suggest improvements without breaking changes
+- Maintain backward compatibility
+- Extract methods for reusability
+- Simplify complex conditionals
+
+### Bug Detection
+- Highlight potential null pointer exceptions
+- Identify infinite loops
+- Spot incorrect comparisons
+- Find unreachable code
+
+### Learning
+- Explain code when asked
+- Provide examples of best practices
+- Suggest relevant documentation
+- Teach new language features when appropriate
+
+---
+
+*Customize these rules based on your project needs. Cursor will use these guidelines when assisting with code.*

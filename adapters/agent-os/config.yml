@@ -1,0 +1,35 @@
+name: agent-os
+version: 1.0.0
+description: Agent OS specification system with dated folders
+author: Builder Methods
+license: MIT
+homepage: https://buildermethods.com/agent-os
+
+# Agent OS uses .agent-os directory structure
+files:
+  - source: templates/.agent-os/
+    dest: "{{AI_PATH}}/agent-os/"
+
+# No hard dependencies
+dependencies: []
+
+# Claims these directories
+claims:
+  - "{{AI_PATH}}/agent-os"
+
+# No conflicts with other adapters
+conflicts: []
+
+# Works with all AI assistants
+ai_assistants:
+  - claude
+  - copilot
+  - cursor
+  - aider
+  - continue
+
+# Requires path rewriting for custom locations
+requires_path_rewrite: true
+
+# Uses dated folders for specs
+spec_format: dated

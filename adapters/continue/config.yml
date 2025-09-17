@@ -1,0 +1,24 @@
+name: continue
+version: 1.0.0
+description: Continue.dev AI coding rules
+author: Continue.dev
+license: MIT
+homepage: https://continue.dev
+
+# Simple adapter - just one file
+files:
+  - source: templates/.continuerules
+    dest: .continuerules
+
+# No dependencies
+dependencies: []
+
+# No conflicts with other adapters
+conflicts: []
+
+# Works with Continue.dev
+ai_assistants:
+  - continue
+
+# Path rewriting not needed for root file
+requires_path_rewrite: false

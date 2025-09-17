@@ -1,0 +1,24 @@
+name: cursor
+version: 1.0.0
+description: Cursor IDE rules and conventions
+author: Cursor
+license: MIT
+homepage: https://cursor.sh
+
+# Simple adapter - just one file
+files:
+  - source: templates/.cursorrules
+    dest: .cursorrules
+
+# No dependencies
+dependencies: []
+
+# No conflicts with other adapters
+conflicts: []
+
+# Works with Cursor IDE
+ai_assistants:
+  - cursor
+
+# Path rewriting not needed for root file
+requires_path_rewrite: false
