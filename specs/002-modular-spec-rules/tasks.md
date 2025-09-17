@@ -99,21 +99,21 @@
 ## Phase 3.5: Compliance Tests First ⚠️ MUST COMPLETE BEFORE 3.6
 
 ### Contract Tests - Compliance Review
-- [ ] T030 [P] Write test tests/compliance/test_review_compliance.sh - verify review logic
-- [ ] T031 [P] Write test tests/compliance/test_check_gate.sh - verify gate validation
-- [ ] T032 Write test tests/compliance/test_spawn_review.sh - verify isolation mechanism
+- [x] T030 [P] Write test tests/compliance/test_review_compliance.sh - verify review logic
+- [x] T031 [P] Write test tests/compliance/test_check_gate.sh - verify gate validation
+- [x] T032 Write test tests/compliance/test_spawn_review.sh - verify isolation mechanism
 
 ## Phase 3.6: Compliance Implementation
 
 ### Review System Implementation
-- [ ] T033 Implement scripts/compliance/compliance-review.sh::review_compliance() - main review
-- [ ] T034 Implement scripts/compliance/compliance-review.sh::check_gate() - gate validation
-- [ ] T035 Implement scripts/compliance/spawn-review.sh - terminal isolation script
+- [x] T033 Implement scripts/compliance/compliance-review.sh::review_compliance() - main review
+- [x] T034 Implement scripts/compliance/compliance-review.sh::check_gate() - gate validation
+- [x] T035 Implement scripts/compliance/spawn-review.sh - terminal isolation script
 
 ### Review Agent Creation
-- [ ] T036 [P] Create .claude/agents/compliance-reviewer.md - Claude review agent
-- [ ] T037 [P] Create .github/copilot-review.md - GitHub Copilot fallback
-- [ ] T038 [P] Create scripts/fresh-context-review.sh - generic AI review script
+- [x] T036 [P] Create .claude/agents/compliance-reviewer.md - Claude review agent
+- [x] T037 [P] Create .github/copilot-review.md - GitHub Copilot fallback
+- [x] T038 [P] Create scripts/fresh-context-review.sh - generic AI review script
 
 ## Phase 3.7: Polish & Documentation
 
