@@ -12,7 +12,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Path Rewriting**: ✅ Complete (dynamic path customization for all adapters)
 - **Documentation Repair**: ✅ Complete with drift detection
 - **AI-Agnostic**: ✅ Complete (auto-detects 9+ AI assistants)
-- **Bootstrap System**: ✅ Complete with auto-injection
+- **Bootstrap System**: ✅ Complete with auto-injection and modular rules
 - **Minimal Impact**: ✅ Complete
 - **GitHub Standards**: ✅ Complete with custom locations
 - **Auto-updates**: ✅ Complete (manual trigger, preserves customizations)
@@ -21,14 +21,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Modular Spec Rules](./specs/002-modular-spec-rules/) - Phase 1 Complete ✅
-2. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
-3. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
-4. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
+3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
+- [Modular Spec Rules System](./specs/002-modular-spec-rules/) - Dynamic framework rule inclusion with compliance review ✅
 - [Multi-Spec Adapter System](./completed/2025-09-16-multi-spec-adapter.md) - Support for 6 frameworks ✅
-- [system-consistency-fixes](completed/2025-09-16-system-consistency-fixes.md) - [Description needed]
+- [System Consistency Fixes](completed/2025-09-16-system-consistency-fixes.md) - Fixed drift detection and path issues ✅
 - [Wizard v3.0.0](./completed/2025-09-16-wizard-v3.md) - Multi-select framework installation ✅
 - [Update System Enhancement](./completed/2025-09-16-update-system.md) - Adapter version tracking ✅
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅

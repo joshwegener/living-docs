@@ -117,10 +117,10 @@
 
 ## Phase 3.7: Polish & Documentation
 
-- [ ] T039 [P] Add comprehensive error handling to all scripts
-- [ ] T040 [P] Test on macOS with BSD sed
+- [x] T039 [P] Add comprehensive error handling to all scripts
+- [x] T040 [P] Test on macOS with BSD sed
 - [ ] T041 [P] Test on Linux with GNU sed
-- [ ] T042 Update docs/current.md with new rule system documentation
+- [x] T042 Update docs/current.md with new rule system documentation
 - [ ] T043 Create docs/procedures/rule-management.md - how to manage rules
 - [ ] T044 Update README.md with modular rules feature
 
