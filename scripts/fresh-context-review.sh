@@ -14,23 +14,42 @@ echo "   FRESH CONTEXT COMPLIANCE REVIEW"
 echo "==================================="
 echo ""
 
-# Check if we have changes to review
-if [ -z "$(git status --porcelain)" ] && [ -z "$(git diff --staged)" ]; then
-    echo -e "${YELLOW}No changes to review${NC}"
-    exit 0
+# Get the base branch (usually main or master)
+BASE_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$BASE_BRANCH" ]; then
+    # Fallback: try to find main or master
+    if git rev-parse --verify main >/dev/null 2>&1; then
+        BASE_BRANCH="main"
+    elif git rev-parse --verify master >/dev/null 2>&1; then
+        BASE_BRANCH="master"
+    else
+        BASE_BRANCH="HEAD~1"  # Fallback to parent commit
+    fi
 fi
 
-# Get the diff
-echo "Gathering changes..."
-DIFF=$(git diff --staged)
+CURRENT_BRANCH=$(git branch --show-current)
+
+echo "Reviewing changes: $CURRENT_BRANCH vs $BASE_BRANCH"
+echo ""
+
+# Get all changes on current branch compared to base
+DIFF=$(git diff $BASE_BRANCH...HEAD 2>/dev/null || git diff $BASE_BRANCH..HEAD 2>/dev/null)
+
+# If no diff from base, check for uncommitted changes
 if [ -z "$DIFF" ]; then
-    DIFF=$(git diff)
+    echo "No branch changes found, checking working directory..."
+    DIFF=$(git diff HEAD)
+    if [ -z "$DIFF" ]; then
+        DIFF=$(git diff --staged)
+    fi
 fi
 
 if [ -z "$DIFF" ]; then
     echo -e "${GREEN}✓ No changes to review${NC}"
     exit 0
 fi
+
+echo "Gathering changes..."
 
 # Source compliance functions
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
