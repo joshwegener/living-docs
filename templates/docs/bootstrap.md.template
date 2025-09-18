@@ -146,6 +146,11 @@ ls {{DOCS_PATH}}/active/ | wc -l  # Count actual files
 - ❌ Marking bugs fixed without verifying the fix
 - ❌ Creating documentation without creating functionality
 
+## 🛠️ Active Framework Rules
+<!-- RULES_START -->
+<!-- Framework-specific rules will be dynamically included here -->
+<!-- RULES_END -->
+
 ## 🎯 Key Principles (ENFORCED)
 1. **Truth Over Optimism**: Report what IS, not what SHOULD BE
 2. **Verify Before Claiming**: Run commands, see output, then speak
