@@ -4,7 +4,7 @@
 set -e
 
 # Output file
-CONTEXT_FILE="docs/CONTEXT.md"
+CONTEXT_FILE="docs/context.md"
 
 # Get current directory relative to project root
 CURRENT_DIR=$(pwd)

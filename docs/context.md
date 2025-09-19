@@ -1,5 +1,5 @@
 # Dynamic Context
-<!-- Generated: 2025-09-18 20:23:36 -->
+<!-- Generated: 2025-09-18 20:30:56 -->
 
 ## Current Work
 - **Directory**: project root
@@ -8,7 +8,7 @@
 - **Frameworks**: spec-kit
 
 ## Recent Activity
-- **Last Commit**: 3cddf52 feat: Implement v5.0 documentation optimization system
+- **Last Commit**: 697c47d fix: Standardize versioning and clean up documentation references
 - **Recent Commands**: none tracked
 
 ## Current Tasks

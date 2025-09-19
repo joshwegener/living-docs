@@ -3,11 +3,11 @@
 <!-- This is a ROUTER, not a container. It loads only what's needed. -->
 
 ## 🎯 Core Gates (Always Loaded)
-**@docs/GATES.xml** - Mandatory compliance checks (immutable, cache-optimized)
+**@docs/gates.xml** - Mandatory compliance checks (immutable, cache-optimized)
 **FIRST GATE**: Run `./scripts/build-context.sh` before any work
 
 ## 📍 Current Context
-**@docs/CONTEXT.md** - Dynamic context (auto-generated, includes active tasks)
+**@docs/context.md** - Dynamic context (auto-generated, includes active tasks)
 **@docs/current.md** - Project dashboard (loaded if full status needed)
 
 ## 🧭 Conditional Documentation Loading
@@ -47,7 +47,7 @@ agent-os:
 ```
 
 ### Default Context
-**@docs/MINIMAL.md** - Loaded when no specific context detected
+**@docs/minimal.md** - Loaded when no specific context detected
 
 ## 📊 Quick Status Checks
 ```bash
