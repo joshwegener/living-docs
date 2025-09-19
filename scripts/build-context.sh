@@ -51,6 +51,18 @@ cat > "$CONTEXT_FILE" << EOF
 - **Last Commit**: ${RECENT_GIT}
 - **Recent Commands**: ${RECENT_COMMANDS:-none tracked}
 
+## Current Tasks
+EOF
+
+# Add active work from current.md
+if [ -f "docs/current.md" ]; then
+    echo "$(grep -A 3 '## 🔥 Active Development' docs/current.md | tail -n +2 | head -3)" >> "$CONTEXT_FILE"
+else
+    echo "- No active tasks found" >> "$CONTEXT_FILE"
+fi
+
+cat >> "$CONTEXT_FILE" << EOF
+
 ## Relevant Documentation
 EOF
 

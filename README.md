@@ -123,9 +123,9 @@ your-project/
 ├── CLAUDE.md          # AI instructions (auto-detected)
 └── docs/              # Or .claude/ or .github/ - you choose
     ├── bootstrap.md   # Router - loads only what's needed (v5.0)
-    ├── GATES.xml      # Immutable compliance checks (v5.0)
-    ├── CONTEXT.md     # Dynamic context based on work (v5.0)
-    ├── MINIMAL.md     # Default minimal context (v5.0)
+    ├── gates.xml      # Immutable compliance checks (v5.0)
+    ├── context.md     # Dynamic context based on work (v5.0)
+    ├── minimal.md     # Default minimal context (v5.0)
     ├── current.md     # Dashboard - single source of truth
     ├── bugs.md        # One-liner bug tracker
     ├── ideas.md       # Feature backlog
@@ -140,7 +140,13 @@ your-project/
         └── deployment.md
 ```
 
-**The Magic**: Documentation lives where you work. Update it as you code. One-liner captures for bugs. Progressive disclosure that scales.
+### 📄 File Purposes
+- **current.md**: Complete project map, what exists where (permanent record)
+- **context.md**: What's relevant NOW - current dir, active tasks, recent work (regenerated)
+- **log.md**: Chronological one-liner updates (permanent history)
+- **bootstrap.md**: Router that loads only needed docs (not everything)
+
+**The Magic**: Context.md gives AI agents exactly what they need for the current task (720 tokens) instead of loading everything (4200+ tokens). Run `./scripts/build-context.sh` to refresh.
 
 ## 🗺 Roadmap
 

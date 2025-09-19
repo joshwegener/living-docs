@@ -3,6 +3,12 @@
 <!-- This file is KV-cache optimized - DO NOT modify unless absolutely necessary -->
 <gates version="1.0">
   <!-- Universal Gates - Always enforced -->
+  <gate id="BUILD_CONTEXT" enforce="MANDATORY" phase="START">
+    <command>./scripts/build-context.sh</command>
+    <fail>Context not built - agents need current context</fail>
+    <fix>Run build-context.sh to generate CONTEXT.md</fix>
+  </gate>
+
   <gate id="DRIFT_CHECK" enforce="MANDATORY" phase="START">
     <command>./scripts/check-drift.sh</command>
     <fail>Documentation drift detected - fix before proceeding</fail>

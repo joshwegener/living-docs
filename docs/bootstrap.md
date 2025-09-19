@@ -4,10 +4,11 @@
 
 ## 🎯 Core Gates (Always Loaded)
 **@docs/GATES.xml** - Mandatory compliance checks (immutable, cache-optimized)
+**FIRST GATE**: Run `./scripts/build-context.sh` before any work
 
 ## 📍 Current Context
-**@docs/CONTEXT.md** - Dynamic context based on current work
-Run `./scripts/build-context.sh` to refresh context
+**@docs/CONTEXT.md** - Dynamic context (auto-generated, includes active tasks)
+**@docs/current.md** - Project dashboard (loaded if full status needed)
 
 ## 🧭 Conditional Documentation Loading
 
