@@ -3,6 +3,7 @@
 *One-liner idea capture - expand to specs when ready to implement*
 
 ## 🚀 Features
+- [ ] Convert more docs to XML format for 5x information density (procedures, knowledge, rules)
 - [ ] Auto-generate current.md from directory structure
 - [ ] GitHub Actions for daily spec-kit updates
 - [ ] VSCode extension for living-docs navigation

@@ -2,12 +2,12 @@
 
 > Documentation that evolves with your code - automatically
 
-🎉 **v3.1.0**: One wizard to rule them all! Single file, self-updating, 6 frameworks supported.
+🎉 **v5.0.0**: 82% token reduction! Dynamic context loading, modular rules, KV-cache optimization.
 
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
 [![Status](https://img.shields.io/badge/status-beta-yellow)](docs/current.md)
-[![Version](https://img.shields.io/badge/version-3.1.0-blue)](docs/current.md)
+[![Version](https://img.shields.io/badge/version-5.0.0-blue)](docs/current.md)
 
 ## 📑 Quick Navigation
 
@@ -34,6 +34,12 @@ We've all been there:
 Documentation becomes that thing you'll "update later" - except later never comes. Knowledge scatters across closed PRs, Slack threads, and that one developer who just quit.
 
 ## ✨ Key Features
+
+### ⚡ 82% Token Reduction (NEW in v5.0)
+- **Dynamic Context Loading**: Only loads relevant docs for current task
+- **KV-Cache Optimization**: 10x cost reduction on cached tokens
+- **Smart Router**: Bootstrap.md now routes to needed docs vs loading everything
+- **Immutable Gates**: Compliance checks in GATES.xml for perfect caching
 
 ### 🚀 One-Command Setup
 ```bash
@@ -116,6 +122,10 @@ Mix and match! Run spec-kit + aider + cursor together. They won't conflict.
 your-project/
 ├── CLAUDE.md          # AI instructions (auto-detected)
 └── docs/              # Or .claude/ or .github/ - you choose
+    ├── bootstrap.md   # Router - loads only what's needed (v5.0)
+    ├── GATES.xml      # Immutable compliance checks (v5.0)
+    ├── CONTEXT.md     # Dynamic context based on work (v5.0)
+    ├── MINIMAL.md     # Default minimal context (v5.0)
     ├── current.md     # Dashboard - single source of truth
     ├── bugs.md        # One-liner bug tracker
     ├── ideas.md       # Feature backlog
@@ -135,6 +145,8 @@ your-project/
 ## 🗺 Roadmap
 
 ### ✅ Released
+- [x] **v5.0.0** (Sept 2025): 82% token reduction, dynamic context loading, KV-cache optimization
+- [x] **v4.0.0** (Sept 2025): Modular spec-specific rules, compliance review system
 - [x] **v3.1.0** (Sept 2025): Single-file wizard, self-updating, 6 frameworks
 - [x] **v3.0.0** (Sept 2025): Multi-framework support
 - [x] **v2.0.0** (Sept 2025): Intelligent auto-detection
@@ -144,7 +156,7 @@ your-project/
 - [ ] **Testing Suite**: Automated tests for all features
 - [ ] **Examples Library**: Real-world templates
 
-### 🔮 Next Up (v4.0)
+### 🔮 Next Up (v6.0)
 Based on [community ideas](docs/ideas.md):
 
 **Developer Experience**

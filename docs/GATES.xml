@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GATES.xml - Immutable compliance checks for living-docs -->
+<!-- This file is KV-cache optimized - DO NOT modify unless absolutely necessary -->
+<gates version="1.0">
+  <!-- Universal Gates - Always enforced -->
+  <gate id="DRIFT_CHECK" enforce="MANDATORY" phase="START">
+    <command>./scripts/check-drift.sh</command>
+    <fail>Documentation drift detected - fix before proceeding</fail>
+    <fix>Run check-drift.sh and resolve all issues</fix>
+  </gate>
+
+  <gate id="UPDATE_DOCS" enforce="MANDATORY" phase="CREATE">
+    <condition>new_file_created</condition>
+    <check>current.md contains {filename}</check>
+    <fail>New file not documented in current.md</fail>
+    <fix>Add file to current.md with description</fix>
+  </gate>
+
+  <gate id="COMPLETE_TASK" enforce="MANDATORY" phase="COMPLETE">
+    <condition>task_completed</condition>
+    <check>tasks.md has [x] for {task}</check>
+    <fail>Task not marked complete in tasks.md</fail>
+    <fix>Update tasks.md with [x] for completed task</fix>
+  </gate>
+
+  <!-- Framework-Specific Gates (loaded conditionally) -->
+  <gate id="TDD_TESTS_FIRST" enforce="MANDATORY" phase="IMPLEMENT" framework="spec-kit">
+    <condition>creating_implementation</condition>
+    <check>tests exist AND failed first</check>
+    <fail>Implementation without failing tests</fail>
+    <fix>Write failing tests before implementation</fix>
+  </gate>
+
+  <gate id="PHASE_ORDER" enforce="MANDATORY" phase="ALL" framework="spec-kit">
+    <condition>spec_workflow_active</condition>
+    <check>phases in order: research → design → tasks → implement</check>
+    <fail>Spec phases out of order</fail>
+    <fix>Complete previous phase before proceeding</fix>
+  </gate>
+
+  <!-- Git Gates -->
+  <gate id="COMMIT_TESTS" enforce="WARNING" phase="COMMIT">
+    <condition>committing_code</condition>
+    <check>tests pass OR commit message explains why not</check>
+    <fail>Committing with failing tests</fail>
+    <fix>Fix tests or document reason in commit</fix>
+  </gate>
+</gates>
