@@ -15,6 +15,8 @@ Create a documentation framework that actually stays alive throughout a project'
 - **AI Command Support**: ✅ Complete ([auto-installs commands](procedures/ai-commands.md) to AI-specific directories)
 - **Bootstrap System**: ✅ Complete with auto-injection and modular rules
 - **Minimal Impact**: ✅ Complete
+- **Debug System**: ✅ Complete (comprehensive logging with security)
+- **Troubleshooting**: ✅ Complete (634-line guide covering all scenarios)
 - **GitHub Standards**: ✅ Complete with custom locations
 - **Auto-updates**: ✅ Complete (manual trigger, preserves customizations)
 - **Examples**: 🔴 Not Started
@@ -74,6 +76,15 @@ Create a documentation framework that actually stays alive throughout a project'
 - [scripts/check-drift.sh](../scripts/check-drift.sh) - Documentation drift detection
 - [setup.sh](../setup.sh) - Legacy setup (deprecated)
 - [repair.sh](../repair.sh) - Legacy repair (deprecated)
+
+### Libraries
+- [lib/debug/logger.sh](../lib/debug/logger.sh) - Debug logging with security & cross-platform support
+- lib/security/sanitize.sh - Input sanitization (pending implementation)
+
+### Tests
+- [tests/debug/logger-compliance.test.sh](../tests/debug/logger-compliance.test.sh) - Debug logger compliance tests
+- [tests/debug/logger-basic.test.sh](../tests/debug/logger-basic.test.sh) - Debug logger basic tests
+- [tests/debug/logger.test.sh](../tests/debug/logger.test.sh) - Debug logger full test suite
 
 ### Templates
 - [templates/PROJECT.md.template](../templates/PROJECT.md.template) - Standard projects

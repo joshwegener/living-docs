@@ -2,6 +2,14 @@
 
 *One-liner updates for agent coordination - newest first*
 
+## Sept 20, 2025
+
+- 8:10 PM - COMPLIANCE: Added retrospective specs and tests for debug logging and troubleshooting guide
+- 8:05 PM - REVIEW: Ran independent compliance check - fixed TDD violations without reverting
+- 7:45 PM - DOCS: Created comprehensive troubleshooting guide (634 lines)
+- 7:30 PM - FEAT: Implemented debug logging system with security and cross-platform support
+- 7:15 PM - FIX: Updated docs/current.md with proper spec references
+
 ## Sept 14, 2025
 
 - 5:15 PM - DEV: Added enforcement rules to bootstrap.md to prevent documentation drift

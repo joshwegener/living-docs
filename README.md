@@ -67,6 +67,8 @@ That's it. No npm install, no dependencies, just works.
 - **Quick capture**: One-liner bugs and ideas
 - **Progressive disclosure**: Only see what you need
 - **Drift detection**: Auto-fixes broken links and orphaned docs
+- **Debug system**: Comprehensive logging with `LIVING_DOCS_DEBUG=1`
+- **Troubleshooting guide**: 600+ lines covering every scenario
 
 ### 🎨 Works Your Way
 - **Any directory**: `.claude/`, `.github/`, `docs/`, wherever you want
@@ -115,6 +117,29 @@ Our adapter system lets you run multiple frameworks simultaneously:
 | **continue** | Continue.dev assistant | `.continuerules` |
 
 Mix and match! Run spec-kit + aider + cursor together. They won't conflict.
+
+## 🐛 Troubleshooting & Debug
+
+**Quick diagnosis:**
+```bash
+# Enable debug mode for detailed output
+export LIVING_DOCS_DEBUG=1
+export LIVING_DOCS_DEBUG_LEVEL=TRACE
+./wizard.sh
+
+# Check for documentation drift
+./scripts/check-drift.sh --dry-run
+
+# See comprehensive troubleshooting guide
+cat docs/troubleshooting.md
+```
+
+**Common issues:** See [docs/troubleshooting.md](docs/troubleshooting.md) for 600+ lines of solutions covering:
+- Permission errors
+- Network issues
+- Cross-platform compatibility (macOS vs Linux)
+- Adapter-specific problems
+- Emergency recovery procedures
 
 ## 📂 How It Works
 
