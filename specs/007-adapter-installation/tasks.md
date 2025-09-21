@@ -111,19 +111,19 @@ Create main installation logic with temp directory.
 - Functions: stage_in_temp, validate_installation, atomic_move
 - Integrate all validation and rewriting
 
-### T018: Implement remove.sh - complete removal
+### T018: Implement remove.sh - complete removal [X]
 Create adapter removal using manifest.
 - File: `lib/adapter/remove.sh`
 - Functions: load_manifest, remove_files, cleanup_directories
 - Handle missing files gracefully
 
-### T019: Implement update.sh - smart updates
+### T019: Implement update.sh - smart updates [X]
 Create update logic preserving customizations.
 - File: `lib/adapter/update.sh`
 - Functions: fetch_upstream, compare_checksums, merge_changes
 - Show diffs for customized files
 
-### T020: Implement agents/install.sh - agent support
+### T020: Implement agents/install.sh - agent support [X]
 Create agent template installation.
 - File: `lib/agents/install.sh`
 - Functions: detect_ai_tool, install_to_agents_dir, track_in_manifest
