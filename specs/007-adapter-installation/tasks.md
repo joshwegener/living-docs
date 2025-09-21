@@ -131,43 +131,43 @@ Create agent template installation.
 
 ## Integration Tasks (T021-T027)
 
-### T021: Integrate with wizard.sh - installation flow
+### T021: Integrate with wizard.sh - installation flow [X]
 Modify wizard.sh to use new installation system.
 - File: `wizard.sh`
 - Add safe installation option
 - Call lib/adapter/install.sh
 
-### T022: Add removal option to wizard.sh
+### T022: Add removal option to wizard.sh [X]
 Add adapter removal menu option.
 - File: `wizard.sh`
 - New option: "Remove installed adapter"
 - Call lib/adapter/remove.sh
 
-### T023: Add update checking to wizard.sh
+### T023: Add update checking to wizard.sh [X]
 Add adapter update checking option.
 - File: `wizard.sh`
 - New option: "Check for adapter updates"
 - Call lib/adapter/update.sh
 
-### T024: Create adapter listing function
+### T024: Create adapter listing function [X]
 Show installed adapters with versions.
 - File: `wizard.sh`
 - Read all manifests
 - Display name, version, file count
 
-### T025: Add dry-run mode support
+### T025: Add dry-run mode support [X]
 Implement preview mode for operations.
 - File: `lib/adapter/install.sh`
 - Environment variable: LIVING_DOCS_DRY_RUN
 - Show what would be done without doing it
 
-### T026: Add no-prefix mode option
+### T026: Add no-prefix mode option [X]
 Allow disabling prefixing for single-adapter users.
 - File: `lib/adapter/prefix.sh`
 - Environment variable: LIVING_DOCS_NO_PREFIX
 - Skip prefixing when set
 
-### T027: Create backup/restore functions
+### T027: Create backup/restore functions [X]
 Add manifest backup before updates.
 - File: `lib/adapter/manifest.sh`
 - Auto-backup before destructive operations
