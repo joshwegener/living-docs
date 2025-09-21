@@ -11,15 +11,16 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Adapter repository mappings
-declare -A ADAPTER_REPOS=(
-    ["spec-kit"]="github/spec-kit"
-    ["bmad-method"]="bmad-code-org/BMAD-METHOD"
-    ["agent-os"]="buildermethods/agent-os"
-    ["aider"]="Aider-AI/conventions"
-    ["cursor"]="cursor/rules"  # Placeholder - no official repo
-    ["continue"]="continue/rules"  # Placeholder - no official repo
-)
+# Adapter repository mappings (using portable format)
+# Format: adapter_name:repo_path
+ADAPTER_REPOS="
+spec-kit:github/spec-kit
+bmad-method:bmad-code-org/BMAD-METHOD
+agent-os:buildermethods/agent-os
+aider:Aider-AI/conventions
+cursor:cursor/rules
+continue:continue/rules
+"
 
 # Function: Check GitHub for latest release/commit
 check_github_version() {
@@ -48,7 +49,13 @@ check_local_version() {
     local adapter_dir="$(dirname "$0")/$adapter"
 
     if [ -f "$adapter_dir/config.yml" ]; then
-        grep "version:" "$adapter_dir/config.yml" | cut -d: -f2 | tr -d ' '
+        # Look for upstream_version first, fall back to version
+        local upstream=$(grep "upstream_version:" "$adapter_dir/config.yml" | cut -d: -f2 | tr -d ' ' | cut -d'#' -f1)
+        if [ -n "$upstream" ] && [ "$upstream" != "none" ]; then
+            echo "$upstream"
+        else
+            grep "version:" "$adapter_dir/config.yml" | head -1 | cut -d: -f2 | tr -d ' ' | cut -d'#' -f1
+        fi
     else
         echo "not-installed"
     fi
@@ -61,8 +68,12 @@ check_adapter_updates() {
 
     local updates_available=false
 
-    for adapter in "${!ADAPTER_REPOS[@]}"; do
-        local repo="${ADAPTER_REPOS[$adapter]}"
+    # Parse adapter repos into arrays
+    while IFS= read -r line; do
+        [ -z "$line" ] && continue
+
+        local adapter="${line%%:*}"
+        local repo="${line#*:}"
         local local_version=$(check_local_version "$adapter")
 
         if [ "$local_version" = "not-installed" ]; then
@@ -87,7 +98,7 @@ check_adapter_updates() {
         else
             echo -e "${GREEN}✓${NC} Up to date ($local_version)"
         fi
-    done
+    done <<< "$ADAPTER_REPOS"
 
     echo ""
 

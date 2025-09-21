@@ -1,0 +1,188 @@
+# CLI Interface Contract for living-docs v5.1.0
+
+# Main wizard.sh command interface
+wizard:
+  description: Main entry point for living-docs
+  version: "5.1.0"
+
+  commands:
+    install:
+      description: Install living-docs in current project
+      options:
+        --framework:
+          type: string
+          enum: [spec-kit, bmad-method, agent-os, aider, cursor, continue]
+          description: Framework adapter to install
+        --path:
+          type: string
+          default: "./docs"
+          description: Documentation directory path
+        --verify:
+          type: boolean
+          default: true
+          description: Verify checksums before installation
+      returns:
+        success:
+          code: 0
+          message: "✓ living-docs installed successfully"
+        failure:
+          code: 1
+          message: "✗ Installation failed: {error}"
+
+    update:
+      description: Update living-docs to latest version
+      options:
+        --check-only:
+          type: boolean
+          default: false
+          description: Check for updates without installing
+        --backup:
+          type: boolean
+          default: true
+          description: Create backup before update
+        --verify-gpg:
+          type: boolean
+          default: false
+          description: Verify GPG signature
+      returns:
+        success:
+          code: 0
+          message: "✓ Updated to version {version}"
+        no-update:
+          code: 0
+          message: "✓ Already up to date"
+        failure:
+          code: 1
+          message: "✗ Update failed: {error}"
+
+    rollback:
+      description: Rollback to previous version
+      options:
+        --list:
+          type: boolean
+          default: false
+          description: List available rollback points
+        --to:
+          type: string
+          description: Specific version to rollback to
+      returns:
+        success:
+          code: 0
+          message: "✓ Rolled back to version {version}"
+        failure:
+          code: 1
+          message: "✗ Rollback failed: {error}"
+
+    check-drift:
+      description: Check for documentation drift
+      options:
+        --fix:
+          type: boolean
+          default: false
+          description: Automatically fix drift issues
+        --verbose:
+          type: boolean
+          default: false
+          description: Show detailed drift information
+      returns:
+        no-drift:
+          code: 0
+          message: "✓ No documentation drift detected"
+        drift-found:
+          code: 1
+          message: "⚠ Documentation drift detected in {count} files"
+        fixed:
+          code: 0
+          message: "✓ Fixed drift in {count} files"
+
+    test:
+      description: Run test suite
+      options:
+        --coverage:
+          type: boolean
+          default: true
+          description: Generate coverage report
+        --filter:
+          type: string
+          description: Filter tests by pattern
+        --verbose:
+          type: boolean
+          default: false
+          description: Verbose test output
+      returns:
+        all-pass:
+          code: 0
+          message: "✓ All tests passed ({count} tests)"
+        failures:
+          code: 1
+          message: "✗ {failed} tests failed out of {total}"
+
+    validate:
+      description: Validate documentation and configuration
+      options:
+        --lint:
+          type: boolean
+          default: true
+          description: Run Vale linting
+        --accessibility:
+          type: boolean
+          default: false
+          description: Check accessibility compliance
+      returns:
+        valid:
+          code: 0
+          message: "✓ All validations passed"
+        warnings:
+          code: 0
+          message: "⚠ {count} warnings found"
+        errors:
+          code: 1
+          message: "✗ {count} errors found"
+
+    debug:
+      description: Debug mode operations
+      options:
+        --enable:
+          type: boolean
+          description: Enable debug mode
+        --trace:
+          type: boolean
+          description: Enable trace mode
+        --log-file:
+          type: string
+          description: Log output to file
+      environment:
+        LIVING_DOCS_DEBUG: "1"
+        LIVING_DOCS_TRACE: "1"
+
+  global_options:
+    --version:
+      short: -v
+      description: Show version information
+    --help:
+      short: -h
+      description: Show help message
+    --dry-run:
+      description: Preview changes without applying
+    --quiet:
+      short: -q
+      description: Suppress non-error output
+    --format:
+      type: string
+      enum: [text, json]
+      default: text
+      description: Output format
+
+# Exit codes contract
+exit_codes:
+  0: Success
+  1: General error
+  2: Invalid arguments
+  3: File not found
+  4: Permission denied
+  5: Network error
+  6: Verification failed
+  7: Rollback required
+  8: Drift detected
+  9: Test failure
+  10: Configuration error

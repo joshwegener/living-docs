@@ -1,0 +1,91 @@
+# living-docs project vocabulary
+# Add project-specific terms that Vale should recognize
+
+# Project name and variations
+living-docs
+Living-Docs
+Living Docs
+
+# Technical terms
+CI/CD
+shellcheck
+Vale
+Bats
+kcov
+GPG
+SHA256
+POSIX
+rollback
+checksum
+checksums
+dogfood
+dogfooding
+spec-kit
+aider
+cursor
+agent-os
+bmad
+quickstart
+TDD
+FR-[0-9]+
+CLI
+macOS
+Ubuntu
+GitHub
+repo
+config
+configs
+markdown
+YAML
+JSON
+webhook
+webhooks
+lifecycle
+filesystem
+async
+dev
+ops
+DevOps
+GitOps
+
+# Commands and flags
+--dry-run
+--backup
+--verbose
+--debug
+--framework
+--version
+--help
+
+# File paths
+wizard.sh
+docs/
+lib/
+tests/
+.living-docs.config
+.living-docs/
+
+# Framework terms
+adapters
+middleware
+validators
+linting
+linter
+sanitization
+serializable
+idempotent
+orchestrator
+refactor
+refactoring
+
+# Version-specific
+v5.0
+v5.1
+v5.0.0
+v5.1.0
+
+# Abbreviations
+e.g.
+i.e.
+etc.
+vs.

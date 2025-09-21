@@ -1,0 +1,24 @@
+# ShellCheck configuration for living-docs
+# https://www.shellcheck.net/wiki/Ignore
+
+# Set minimum severity level
+# -S error: Only show errors
+# -S warning: Show errors and warnings (default)
+# -S info: Show errors, warnings, and info
+# -S style: Show all issues
+severity=warning
+
+# Enable specific checks
+enable=all
+
+# Disable specific checks that don't apply to our use case
+# SC2034: Variable appears unused (we export many variables)
+# SC2154: Variable is referenced but not assigned (often set by sourcing)
+disable=SC2034,SC2154
+
+# Shell dialect
+shell=bash
+
+# External sources (files we commonly source)
+# These paths are relative to the file being checked
+external-sources=true

@@ -1,5 +1,6 @@
 name: aider
-version: 1.0.0
+version: 1.0.0  # Adapter wrapper version
+upstream_version: unknown  # Set when adapter is installed
 description: Aider AI coding conventions
 author: Aider AI
 license: MIT

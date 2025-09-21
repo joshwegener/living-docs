@@ -1,5 +1,6 @@
 name: bmad-method
-version: 1.0.0
+version: 1.0.0  # Adapter wrapper version
+upstream_version: unknown  # Set when adapter is installed
 description: BMAD multi-agent development system
 author: BMad Code
 license: MIT

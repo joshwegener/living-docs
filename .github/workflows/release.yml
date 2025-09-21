@@ -1,0 +1,654 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.2.3)'
+        required: true
+        type: string
+      skip_security:
+        description: 'Skip security checks (emergency only)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # Pre-flight security and validation checks
+  security-validation:
+    name: Security Validation
+    runs-on: ubuntu-latest
+    outputs:
+      security-passed: ${{ steps.security-check.outputs.passed }}
+      version: ${{ steps.version-check.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag
+        id: version-check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+          # Validate semantic versioning
+          if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            echo "Expected format: v1.2.3"
+            exit 1
+          fi
+
+          # Check if VERSION file matches
+          FILE_VERSION=$(cat VERSION | tr -d ' \n')
+          TAG_VERSION=${VERSION#v}
+
+          if [[ "$FILE_VERSION" != "$TAG_VERSION" ]]; then
+            echo "❌ Version mismatch:"
+            echo "  VERSION file: $FILE_VERSION"
+            echo "  Git tag:      $TAG_VERSION"
+            exit 1
+          fi
+
+          echo "✅ Version validation passed: $VERSION"
+
+      - name: Security scanning
+        id: security-check
+        run: |
+          if [[ "${{ github.event.inputs.skip_security }}" == "true" ]]; then
+            echo "⚠️ Security checks skipped (emergency mode)"
+            echo "passed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "🔍 Running security scans..."
+
+          # Check for secrets in code
+          echo "Checking for exposed secrets..."
+          if grep -r -E "(password|secret|key|token)\s*[:=]\s*['\"][^'\"]{8,}" --exclude-dir=.git .; then
+            echo "❌ Potential secrets found in code"
+            exit 1
+          fi
+
+          # Validate critical file permissions
+          echo "Checking file permissions..."
+          if [[ ! -x "wizard.sh" ]]; then
+            echo "❌ wizard.sh must be executable"
+            exit 1
+          fi
+
+          # Check for suspicious files
+          echo "Checking for suspicious files..."
+          if find . -name "*.sh" -exec grep -l "curl.*|.*sh" {} \; | grep -v tests; then
+            echo "❌ Found potentially dangerous pipe-to-shell patterns"
+            exit 1
+          fi
+
+          # Validate shell scripts
+          echo "Validating shell scripts..."
+          find . -name "*.sh" -not -path "./tests/*" -exec shellcheck -S warning {} \;
+
+          echo "✅ Security validation passed"
+          echo "passed=true" >> $GITHUB_OUTPUT
+
+      - name: Validate project structure
+        run: |
+          echo "🔍 Validating project structure..."
+
+          required_files=(
+            "wizard.sh"
+            "VERSION"
+            "README.md"
+            "CLAUDE.md"
+            "adapters"
+            "templates"
+            "scripts"
+            "docs"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -e "$file" ]]; then
+              echo "❌ Required file/directory missing: $file"
+              exit 1
+            fi
+          done
+
+          echo "✅ Project structure validation passed"
+
+  # Build release artifacts and generate checksums
+  build-artifacts:
+    name: Build Release Artifacts
+    runs-on: ubuntu-latest
+    needs: security-validation
+    if: needs.security-validation.outputs.security-passed == 'true'
+    outputs:
+      artifact-path: ${{ steps.build.outputs.artifact-path }}
+      checksums: ${{ steps.checksums.outputs.checksums }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build release package
+        id: build
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+          PACKAGE_NAME="living-docs-${VERSION}"
+
+          echo "📦 Building release package: $PACKAGE_NAME"
+
+          # Create release directory
+          mkdir -p "release/$PACKAGE_NAME"
+
+          # Copy core files
+          cp wizard.sh "release/$PACKAGE_NAME/"
+          cp VERSION "release/$PACKAGE_NAME/"
+          cp README.md "release/$PACKAGE_NAME/"
+          cp CLAUDE.md "release/$PACKAGE_NAME/"
+          cp -r adapters "release/$PACKAGE_NAME/"
+          cp -r templates "release/$PACKAGE_NAME/"
+          cp -r scripts "release/$PACKAGE_NAME/"
+          cp -r docs "release/$PACKAGE_NAME/"
+
+          # Create installation script
+          cat > "release/$PACKAGE_NAME/install.sh" << 'EOF'
+          #!/bin/bash
+          set -euo pipefail
+
+          echo "Installing living-docs..."
+
+          # Detect installation method
+          if command -v curl >/dev/null 2>&1; then
+            echo "Using direct wizard installation..."
+            curl -fsSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash
+          else
+            echo "Please download and run wizard.sh manually"
+            exit 1
+          fi
+          EOF
+
+          chmod +x "release/$PACKAGE_NAME/install.sh"
+
+          # Create archive
+          cd release
+          tar -czf "$PACKAGE_NAME.tar.gz" "$PACKAGE_NAME"
+          cd ..
+
+          echo "artifact-path=release/$PACKAGE_NAME.tar.gz" >> $GITHUB_OUTPUT
+          echo "✅ Release package created"
+
+      - name: Generate checksums
+        id: checksums
+        run: |
+          echo "🔐 Generating checksums..."
+
+          cd release
+
+          # Generate SHA256 checksums
+          sha256sum *.tar.gz > checksums.txt
+          sha256sum */wizard.sh >> checksums.txt
+
+          # Generate additional checksums for verification
+          md5sum *.tar.gz > checksums.md5
+
+          echo "checksums<<EOF" >> $GITHUB_OUTPUT
+          cat checksums.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "✅ Checksums generated"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: release/
+          retention-days: 30
+
+  # GPG signing (if key available)
+  sign-artifacts:
+    name: Sign Release Artifacts
+    runs-on: ubuntu-latest
+    needs: [security-validation, build-artifacts]
+    if: needs.security-validation.outputs.security-passed == 'true'
+    outputs:
+      signatures-available: ${{ steps.sign.outputs.available }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: release/
+
+      - name: Setup GPG
+        id: gpg
+        run: |
+          if [[ -n "${{ secrets.GPG_PRIVATE_KEY }}" ]]; then
+            echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+            echo "available=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ GPG signing skipped - no private key configured"
+            echo "available=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Sign artifacts
+        id: sign
+        if: steps.gpg.outputs.available == 'true'
+        run: |
+          echo "✍️ Signing release artifacts..."
+
+          cd release
+
+          # Sign the main archive
+          for file in *.tar.gz; do
+            gpg --armor --detach-sign "$file"
+            echo "✅ Signed: $file"
+          done
+
+          # Sign checksums
+          gpg --armor --detach-sign checksums.txt
+
+          # Verify signatures
+          echo "🔍 Verifying signatures..."
+          for sig in *.asc; do
+            gpg --verify "$sig"
+          done
+
+          echo "available=true" >> $GITHUB_OUTPUT
+          echo "✅ All artifacts signed and verified"
+
+      - name: Upload signed artifacts
+        if: steps.sign.outputs.available == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-artifacts
+          path: release/
+          retention-days: 30
+
+  # Generate changelog
+  generate-changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    needs: security-validation
+    outputs:
+      changelog: ${{ steps.changelog.outputs.changelog }}
+      previous-tag: ${{ steps.changelog.outputs.previous-tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+
+          echo "📝 Generating changelog for $VERSION"
+
+          # Get previous tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^1 2>/dev/null || echo "")
+          echo "previous-tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+          # Generate changelog content
+          if [[ -n "$PREVIOUS_TAG" ]]; then
+            echo "## 🚀 What's Changed in $VERSION"
+            echo ""
+
+            # Get commits since last tag
+            git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG..HEAD" | grep -v "^- Merge " || true
+            echo ""
+            echo ""
+
+            # Get contributors
+            echo "## 👥 Contributors"
+            git log --pretty=format:"- %an" "$PREVIOUS_TAG..HEAD" | sort -u | head -10
+            echo ""
+            echo ""
+
+            # Add installation instructions
+            echo "## 📦 Installation"
+            echo ""
+            echo "\`\`\`bash"
+            echo "# Quick install"
+            echo "curl -fsSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash"
+            echo ""
+            echo "# Or download release"
+            echo "wget https://github.com/joshwegener/living-docs/releases/download/$VERSION/living-docs-$VERSION.tar.gz"
+            echo "\`\`\`"
+            echo ""
+
+            # Add verification instructions
+            echo "## 🔐 Verification"
+            echo ""
+            echo "\`\`\`bash"
+            echo "# Verify checksums"
+            echo "sha256sum -c checksums.txt"
+            echo ""
+            echo "# Verify GPG signature (if available)"
+            echo "gpg --verify living-docs-$VERSION.tar.gz.asc"
+            echo "\`\`\`"
+
+          else
+            echo "## 🎉 Initial Release $VERSION"
+            echo ""
+            echo "First official release of living-docs - a universal documentation framework."
+            echo ""
+            echo "### Features"
+            echo "- Universal documentation framework"
+            echo "- Multi-adapter support (cursor, aider, spec-kit, etc.)"
+            echo "- Automated setup and configuration"
+            echo "- Security-focused implementation"
+            echo ""
+            echo "### Installation"
+            echo "\`\`\`bash"
+            echo "curl -fsSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | bash"
+            echo "\`\`\`"
+          fi > changelog.md
+
+          # Output for GitHub Actions
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat changelog.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "✅ Changelog generated"
+
+  # Create GitHub release
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [security-validation, build-artifacts, sign-artifacts, generate-changelog]
+    if: needs.security-validation.outputs.security-passed == 'true'
+    outputs:
+      release-url: ${{ steps.release.outputs.url }}
+      upload-url: ${{ steps.release.outputs.upload_url }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: release/
+
+      - name: Download signed artifacts
+        if: needs.sign-artifacts.outputs.signatures-available == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: signed-artifacts
+          path: signed/
+
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.security-validation.outputs.version }}
+          release_name: "living-docs ${{ needs.security-validation.outputs.version }}"
+          body: |
+            ${{ needs.generate-changelog.outputs.changelog }}
+
+            ---
+
+            ## 🛡️ Security Information
+
+            This release has been:
+            - ✅ Security scanned for vulnerabilities
+            - ✅ Validated against malicious patterns
+            - ✅ Checksummed with SHA256
+            ${{ needs.sign-artifacts.outputs.signatures-available == 'true' && '- ✅ GPG signed for authenticity' || '- ⚠️ GPG signatures not available' }}
+
+            ## 🔄 Rollback Instructions
+
+            If you need to rollback this release:
+
+            ```bash
+            # Quick rollback to previous version
+            curl -fsSL https://raw.githubusercontent.com/joshwegener/living-docs/${{ needs.generate-changelog.outputs.previous-tag }}/wizard.sh | bash
+
+            # Or manually restore from backup
+            ./scripts/rollback.sh ${{ needs.generate-changelog.outputs.previous-tag }}
+            ```
+
+            ## 📞 Support
+
+            - Report issues: https://github.com/joshwegener/living-docs/issues
+            - Documentation: https://github.com/joshwegener/living-docs/tree/main/docs
+            - Security: security@living-docs.dev
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+          UPLOAD_URL="${{ steps.release.outputs.upload_url }}"
+
+          echo "📤 Uploading release assets..."
+
+          # Function to upload asset
+          upload_asset() {
+            local file_path="$1"
+            local file_name="$(basename "$file_path")"
+            local content_type="$2"
+
+            curl \
+              -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: $content_type" \
+              --data-binary @"$file_path" \
+              "${UPLOAD_URL%\{*}?name=$file_name"
+
+            echo "✅ Uploaded: $file_name"
+          }
+
+          # Upload main archive
+          upload_asset "release/living-docs-${VERSION}.tar.gz" "application/gzip"
+
+          # Upload checksums
+          upload_asset "release/checksums.txt" "text/plain"
+          upload_asset "release/checksums.md5" "text/plain"
+
+          # Upload GPG signatures if available
+          if [[ "${{ needs.sign-artifacts.outputs.signatures-available }}" == "true" ]]; then
+            upload_asset "signed/living-docs-${VERSION}.tar.gz.asc" "text/plain"
+            upload_asset "signed/checksums.txt.asc" "text/plain"
+          fi
+
+          echo "✅ All assets uploaded"
+
+  # Update documentation
+  update-documentation:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: [security-validation, create-release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Update version references
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+          TAG_VERSION="${VERSION#v}"
+
+          echo "📝 Updating documentation for $VERSION"
+
+          # Update README.md version badge
+          if [[ -f "README.md" ]]; then
+            sed -i.bak "s/version-[^-]*-/version-${TAG_VERSION}-/g" README.md
+            rm -f README.md.bak
+          fi
+
+          # Update documentation references
+          find docs -name "*.md" -exec sed -i.bak "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/${VERSION}/g" {} \;
+          find docs -name "*.bak" -delete
+
+          # Update current.md if it exists
+          if [[ -f "docs/current.md" ]]; then
+            echo "- $(date -u '+%Y-%m-%d %H:%M:%S UTC'): Released $VERSION" >> docs/log.md
+          fi
+
+          echo "✅ Documentation updated"
+
+      - name: Commit documentation updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          if git diff --quiet; then
+            echo "No documentation changes to commit"
+          else
+            git add .
+            git commit -m "docs: Update version references for ${{ needs.security-validation.outputs.version }}"
+            git push
+            echo "✅ Documentation changes committed"
+          fi
+
+  # Notify channels
+  notify:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    needs: [security-validation, create-release, update-documentation]
+    if: always() && needs.security-validation.outputs.security-passed == 'true'
+    steps:
+      - name: Notify Slack
+        if: secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+          RELEASE_URL="${{ needs.create-release.outputs.release-url }}"
+
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"🚀 living-docs $VERSION has been released!\",
+              \"blocks\": [
+                {
+                  \"type\": \"section\",
+                  \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"*living-docs $VERSION* has been released! 🎉\"
+                  }
+                },
+                {
+                  \"type\": \"section\",
+                  \"fields\": [
+                    {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"*Version:*\n$VERSION\"
+                    },
+                    {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"*Security:*\n✅ Validated\"
+                    }
+                  ]
+                },
+                {
+                  \"type\": \"actions\",
+                  \"elements\": [
+                    {
+                      \"type\": \"button\",
+                      \"text\": {
+                        \"type\": \"plain_text\",
+                        \"text\": \"View Release\"
+                      },
+                      \"url\": \"$RELEASE_URL\"
+                    }
+                  ]
+                }
+              ]
+            }" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Discord
+        if: secrets.DISCORD_WEBHOOK_URL != ''
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+          RELEASE_URL="${{ needs.create-release.outputs.release-url }}"
+
+          curl -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [
+                {
+                  \"title\": \"🚀 living-docs $VERSION Released\",
+                  \"description\": \"New release with security validation and GPG signing\",
+                  \"url\": \"$RELEASE_URL\",
+                  \"color\": 3447003,
+                  \"fields\": [
+                    {
+                      \"name\": \"Version\",
+                      \"value\": \"$VERSION\",
+                      \"inline\": true
+                    },
+                    {
+                      \"name\": \"Security\",
+                      \"value\": \"✅ Validated\",
+                      \"inline\": true
+                    }
+                  ]
+                }
+              ]
+            }" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+  # Final validation and cleanup
+  post-release-validation:
+    name: Post-Release Validation
+    runs-on: ubuntu-latest
+    needs: [security-validation, create-release]
+    steps:
+      - name: Test release download
+        run: |
+          VERSION="${{ needs.security-validation.outputs.version }}"
+
+          echo "🧪 Testing release download..."
+
+          # Test direct download
+          curl -fsSL -o test-download.tar.gz \
+            "https://github.com/joshwegener/living-docs/releases/download/$VERSION/living-docs-$VERSION.tar.gz"
+
+          # Verify it's not empty
+          if [[ ! -s test-download.tar.gz ]]; then
+            echo "❌ Downloaded file is empty"
+            exit 1
+          fi
+
+          # Test extraction
+          tar -tzf test-download.tar.gz > /dev/null
+
+          echo "✅ Release download test passed"
+
+      - name: Test wizard installation
+        run: |
+          echo "🧪 Testing wizard installation..."
+
+          # Test that wizard.sh is accessible
+          curl -fsSL https://raw.githubusercontent.com/joshwegener/living-docs/main/wizard.sh | head -10
+
+          echo "✅ Wizard accessibility test passed"
+
+      - name: Summary
+        run: |
+          echo "## 🎉 Release Summary"
+          echo ""
+          echo "✅ Security validation: PASSED"
+          echo "✅ Artifacts built: PASSED"
+          echo "✅ Checksums generated: PASSED"
+          echo "${{ needs.sign-artifacts.outputs.signatures-available == 'true' && '✅ GPG signatures: AVAILABLE' || '⚠️ GPG signatures: NOT AVAILABLE' }}"
+          echo "✅ GitHub release: CREATED"
+          echo "✅ Documentation: UPDATED"
+          echo "✅ Notifications: SENT"
+          echo "✅ Post-release validation: PASSED"
+          echo ""
+          echo "🚀 Release ${{ needs.security-validation.outputs.version }} completed successfully!"

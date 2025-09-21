@@ -1,0 +1,6 @@
+# Security Libraries
+# This directory contains security functions for living-docs:
+# - checksum.sh: SHA256 checksum generation and verification
+# - gpg.sh: GPG signature creation and validation
+# - sanitize.sh: Input sanitization and validation
+# - paths.sh: Path traversal prevention and validation

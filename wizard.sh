@@ -5,15 +5,35 @@ set -euo pipefail
 WIZARD_VERSION="3.1.0"
 REPO_URL="https://raw.githubusercontent.com/joshwegener/living-docs/main"
 
+# Source security libraries if available
+if [[ -f "lib/security/checksum.sh" ]]; then
+    source "lib/security/checksum.sh"
+fi
+
+# Source backup library if available
+if [[ -f "lib/backup/rollback.sh" ]]; then
+    source "lib/backup/rollback.sh"
+fi
+
 # Parse command line arguments
 UPDATE_ONLY=false
 SHOW_VERSION=false
 SHOW_HELP=false
+DRY_RUN=false
+BACKUP_BEFORE_UPDATE=false
 
 for arg in "$@"; do
     case $arg in
         --update|--update-only|-u)
             UPDATE_ONLY=true
+            shift
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --backup)
+            BACKUP_BEFORE_UPDATE=true
             shift
             ;;
         --version|-v)
@@ -49,6 +69,13 @@ if [ "$SHOW_HELP" = true ]; then
     echo "Usage: wizard.sh [OPTIONS]"
     echo ""
     echo "Options:"
+    echo "  --update, -u      Check for and apply updates"
+    echo "  --dry-run         Show what would be done without making changes"
+    echo "  --backup          Create backup before updates"
+    echo "  --version, -v     Show version information"
+    echo "  --help, -h        Show this help message"
+    echo ""
+    echo "Options:"
     echo "  --update, -u     Update wizard to latest version"
     echo "  --version, -v    Show version"
     echo "  --help, -h       Show this help message"
@@ -73,35 +100,102 @@ fi
 
 # Handle update flag
 if [ "$UPDATE_ONLY" = true ]; then
+    if [ "$DRY_RUN" = true ]; then
+        echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+        echo ""
+    fi
+
     echo -e "${CYAN}Checking for updates...${NC}"
     echo ""
 
     # Update wizard.sh first
     echo -e "${BLUE}Checking wizard.sh...${NC}"
     TEMP_FILE=$(mktemp)
+    CHECKSUM_FILE=$(mktemp)
+
+    # Download wizard.sh and its checksum
     if curl -sL "$REPO_URL/wizard.sh" -o "$TEMP_FILE" 2>/dev/null; then
+        # Try to download and verify checksum if available
+        if curl -sL "$REPO_URL/wizard.sh.sha256" -o "$CHECKSUM_FILE" 2>/dev/null; then
+            echo -e "${BLUE}Verifying checksum...${NC}"
+
+            # If checksum library is available, use it
+            if type -t verify_checksum &>/dev/null; then
+                EXPECTED_CHECKSUM=$(awk '{print $1}' "$CHECKSUM_FILE")
+                if ! verify_checksum "$TEMP_FILE" "$EXPECTED_CHECKSUM" &>/dev/null; then
+                    echo -e "${RED}✗${NC} Checksum verification failed!"
+                    echo -e "${YELLOW}⚠${NC} Update aborted for security reasons"
+                    rm -f "$TEMP_FILE" "$CHECKSUM_FILE"
+                    exit 1
+                fi
+                echo -e "${GREEN}✓${NC} Checksum verified"
+            else
+                # Fallback to basic verification
+                if command -v sha256sum &>/dev/null; then
+                    ACTUAL_CHECKSUM=$(sha256sum "$TEMP_FILE" | awk '{print $1}')
+                elif command -v shasum &>/dev/null; then
+                    ACTUAL_CHECKSUM=$(shasum -a 256 "$TEMP_FILE" | awk '{print $1}')
+                fi
+
+                if [[ -n "${ACTUAL_CHECKSUM:-}" ]]; then
+                    EXPECTED_CHECKSUM=$(awk '{print $1}' "$CHECKSUM_FILE")
+                    if [[ "$ACTUAL_CHECKSUM" != "$EXPECTED_CHECKSUM" ]]; then
+                        echo -e "${RED}✗${NC} Checksum mismatch!"
+                        echo -e "${YELLOW}⚠${NC} Update aborted for security reasons"
+                        rm -f "$TEMP_FILE" "$CHECKSUM_FILE"
+                        exit 1
+                    fi
+                    echo -e "${GREEN}✓${NC} Checksum verified"
+                fi
+            fi
+            rm -f "$CHECKSUM_FILE"
+        else
+            echo -e "${YELLOW}⚠${NC} No checksum file available (proceeding without verification)"
+        fi
         # Extract version from downloaded file
         NEW_VERSION=$(grep "^WIZARD_VERSION=" "$TEMP_FILE" | cut -d'"' -f2)
 
         if [ "$NEW_VERSION" != "$WIZARD_VERSION" ]; then
             echo -e "${GREEN}✓${NC} Update available: v$WIZARD_VERSION → v$NEW_VERSION"
-            mv "$TEMP_FILE" wizard.sh
-            chmod +x wizard.sh
-            echo -e "${GREEN}✓${NC} Wizard updated!"
+
+            if [ "$DRY_RUN" = true ]; then
+                echo -e "${YELLOW}[DRY RUN]${NC} Would update wizard.sh to v$NEW_VERSION"
+                if [ "$BACKUP_BEFORE_UPDATE" = true ] || type -t backup_create_snapshot &>/dev/null; then
+                    echo -e "${YELLOW}[DRY RUN]${NC} Would create backup before update"
+                fi
+                rm "$TEMP_FILE"
+            else
+                # Create backup before update if requested or backup function is available
+                if [ "$BACKUP_BEFORE_UPDATE" = true ] || type -t backup_create_snapshot &>/dev/null; then
+                    if type -t backup_create_snapshot &>/dev/null; then
+                        echo -e "${BLUE}Creating backup before update...${NC}"
+                        backup_create_snapshot "Pre-update backup (v$WIZARD_VERSION to v$NEW_VERSION)" >/dev/null
+                        echo -e "${GREEN}✓${NC} Backup created"
+                    fi
+                fi
+
+                mv "$TEMP_FILE" wizard.sh
+                chmod +x wizard.sh
+                echo -e "${GREEN}✓${NC} Wizard updated!"
+            fi
         else
             echo -e "${GREEN}✓${NC} Wizard already up to date (v$WIZARD_VERSION)"
             rm "$TEMP_FILE"
         fi
     else
-        echo -e "${RED}✗${NC} Failed to check wizard updates"
-        rm -f "$TEMP_FILE"
+        echo -e "${RED}✗${NC} Failed to download wizard.sh"
+        rm -f "$TEMP_FILE" "$CHECKSUM_FILE"
     fi
 
     # Check adapter updates if installed
     if [ -f ".living-docs.config" ] && [ -f "adapters/check-updates.sh" ]; then
         echo ""
         echo -e "${BLUE}Checking adapter updates...${NC}"
-        bash adapters/check-updates.sh
+        if [ "$DRY_RUN" = true ]; then
+            DRY_RUN=true bash adapters/check-updates.sh
+        else
+            bash adapters/check-updates.sh
+        fi
     elif [ -f ".living-docs.config" ]; then
         # Download and run adapter update checker
         echo ""
@@ -109,7 +203,11 @@ if [ "$UPDATE_ONLY" = true ]; then
         mkdir -p adapters
         if curl -sL "$REPO_URL/adapters/check-updates.sh" -o "adapters/check-updates.sh" 2>/dev/null; then
             chmod +x adapters/check-updates.sh
-            bash adapters/check-updates.sh
+            if [ "$DRY_RUN" = true ]; then
+                echo -e "${YELLOW}[DRY RUN]${NC} Would check adapter updates"
+            else
+                bash adapters/check-updates.sh
+            fi
         fi
     fi
 

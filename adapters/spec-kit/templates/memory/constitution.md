@@ -1,89 +1,50 @@
-# Constitution
-
-This document defines the foundational guidelines and principles for this project.
+# [PROJECT_NAME] Constitution
+<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
 
 ## Core Principles
 
-1. **Clarity**: Write specifications before implementation
-2. **Consistency**: Follow established patterns and conventions
-3. **Quality**: Maintain high standards for code and documentation
-4. **Collaboration**: Work effectively with AI assistants and team members
+### [PRINCIPLE_1_NAME]
+<!-- Example: I. Library-First -->
+[PRINCIPLE_1_DESCRIPTION]
+<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
 
-## Development Process
+### [PRINCIPLE_2_NAME]
+<!-- Example: II. CLI Interface -->
+[PRINCIPLE_2_DESCRIPTION]
+<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
 
-### 1. Specification Phase
-- Define clear requirements in `{{SPECS_PATH}}/[feature-number]-[feature-name]/spec.md`
-- Research and document findings
-- Create data models and API contracts
+### [PRINCIPLE_3_NAME]
+<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
+[PRINCIPLE_3_DESCRIPTION]
+<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
 
-### 2. Planning Phase
-- Break down work into manageable tasks
-- Identify dependencies and risks
-- Create implementation timeline
+### [PRINCIPLE_4_NAME]
+<!-- Example: IV. Integration Testing -->
+[PRINCIPLE_4_DESCRIPTION]
+<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
 
-### 3. Implementation Phase
-- Follow the task breakdown
-- Write tests alongside code
-- Document as you go
+### [PRINCIPLE_5_NAME]
+<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
+[PRINCIPLE_5_DESCRIPTION]
+<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
 
-### 4. Review Phase
-- Code review with team or AI
-- Update documentation
-- Ensure tests pass
+## [SECTION_2_NAME]
+<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
 
-## File Structure
+[SECTION_2_CONTENT]
+<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
 
-```
-{{LIVING_DOCS_PATH}}/
-├── memory/
-│   ├── constitution.md (this file)
-│   └── constitution_update_checklist.md
-├── specs/
-│   └── [feature-number]-[feature-name]/
-│       ├── spec.md
-│       ├── plan.md
-│       ├── tasks.md
-│       └── research.md
-└── scripts/
-    ├── create-new-feature.sh
-    └── check-task-prerequisites.sh
-```
+## [SECTION_3_NAME]
+<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
 
-## Specification Standards
+[SECTION_3_CONTENT]
+<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
 
-### File Naming
-- Use kebab-case for directories and files
-- Prefix feature directories with numbers (01-, 02-, etc.)
-- Use descriptive names
+## Governance
+<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-### Documentation
-- Write in Markdown
-- Include examples
-- Keep it concise but complete
+[GOVERNANCE_RULES]
+<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
 
-### Code Standards
-- Follow language-specific conventions
-- Write self-documenting code
-- Add comments for complex logic
-
-## Working with AI Assistants
-
-### Best Practices
-1. Provide clear context through specifications
-2. Reference this constitution for consistency
-3. Use the spec-driven workflow
-4. Review AI-generated code carefully
-
-### Communication
-- Be specific in requests
-- Provide examples when possible
-- Iterate on unclear outputs
-- Document decisions
-
-## Updating This Document
-
-See `constitution_update_checklist.md` for the process to update this constitution.
-
----
-
-*This constitution is a living document. Update it as the project evolves.*
+**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->

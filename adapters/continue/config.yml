@@ -1,5 +1,6 @@
 name: continue
-version: 1.0.0
+version: 1.0.0  # Adapter wrapper version
+upstream_version: none  # No official upstream repo
 description: Continue.dev AI coding rules
 author: Continue.dev
 license: MIT

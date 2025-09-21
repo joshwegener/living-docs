@@ -52,6 +52,29 @@ if [ -d "$TEMP_DIR/memory" ]; then
     cp -r "$TEMP_DIR/memory/"* "$PROJECT_ROOT/$MEMORY_PATH/" 2>/dev/null || true
 fi
 
+# Handle AI-specific command installation
+if [ -d "$TEMP_DIR/commands" ]; then
+    echo "  Installing commands..."
+    mkdir -p "$PROJECT_ROOT/$MEMORY_PATH/commands"
+    cp -r "$TEMP_DIR/commands/"* "$PROJECT_ROOT/$MEMORY_PATH/commands/" 2>/dev/null || true
+
+    # Source AI detection if available
+    if [ -f "$ADAPTER_DIR/../common/ai-detect.sh" ]; then
+        source "$ADAPTER_DIR/../common/ai-detect.sh"
+        install_ai_commands "$PROJECT_ROOT/$MEMORY_PATH/commands" "$PROJECT_ROOT"
+    fi
+
+    # Special case: If memory path is in .claude, also copy to .claude/commands
+    if [[ "$MEMORY_PATH" == *".claude"* ]] && [ -d "$PROJECT_ROOT/$MEMORY_PATH/commands" ]; then
+        CLAUDE_COMMANDS="$PROJECT_ROOT/.claude/commands"
+        if [ ! -d "$CLAUDE_COMMANDS" ]; then
+            echo "  Setting up Claude commands in .claude/commands..."
+            mkdir -p "$CLAUDE_COMMANDS"
+            cp "$PROJECT_ROOT/$MEMORY_PATH/commands/"*.md "$CLAUDE_COMMANDS/" 2>/dev/null || true
+        fi
+    fi
+fi
+
 # Copy scripts
 if [ -d "$TEMP_DIR/scripts" ]; then
     echo "  Installing scripts..."

@@ -13,6 +13,8 @@
 ## 🟡 High Priority
 - [ ] Auto-detection sometimes misses Python projects without requirements.txt
 - [ ] Wizard should validate DOCS_PATH before creating structure
+- [ ] Adapter version mismatch: local versions (e.g., 2.0.0) don't match GitHub tags (e.g., v0.0.47) → [docs/issues/adapter-version-mismatch.md](../issues/adapter-version-mismatch.md)
+- [ ] check-drift.sh incorrectly adds orphaned spec files as top-level entries instead of under their parent specs
 
 ## 🟢 Normal
 - [ ] Add --version flag to wizard.sh

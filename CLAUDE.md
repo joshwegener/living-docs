@@ -32,6 +32,12 @@ When modifying wizard.sh or templates:
 - `templates/` - What gets installed for users
 - `insights.md` - Architecture decisions
 
+## Documentation Rules (PREVENT DRIFT!)
+- **NEVER create orphaned docs**: When creating ANY new documentation file, IMMEDIATELY update `docs/current.md` or appropriate index
+- **Run drift check after creating files**: `./scripts/check-drift.sh` to verify
+- **Link issues to detailed docs**: When creating docs/issues/*, reference in bugs.md or ideas.md
+- **Check before committing**: Ensure all new files are linked somewhere
+
 ## Git Discipline
 - Commit every 30 minutes
 - Meaningful commit messages
