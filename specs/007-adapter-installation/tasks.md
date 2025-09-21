@@ -33,42 +33,42 @@ Define and validate the manifest JSON schema.
 
 ## Contract Test Tasks (T004-T011) - Write Tests First (TDD)
 
-### T004: Write install adapter default test [P]
+### T004: Write install adapter default test [P] [X]
 Implement test for basic adapter installation.
 - File: `tests/unit/test_install_adapter_default.sh`
 - Test manifest creation, command installation, success return
 
-### T005: Write custom paths installation test [P]
+### T005: Write custom paths installation test [P] [X]
 Test adapter installation with custom SCRIPTS_PATH and SPECS_PATH.
 - File: `tests/unit/test_install_adapter_custom_paths.sh`
 - Verify path rewriting in installed files
 
-### T006: Write adapter removal test [P]
+### T006: Write adapter removal test [P] [X]
 Test complete adapter removal using manifest.
 - File: `tests/unit/test_remove_adapter.sh`
 - Verify all tracked files removed
 
-### T007: Write update with customizations test [P]
+### T007: Write update with customizations test [P] [X]
 Test updating adapter while preserving user customizations.
 - File: `tests/unit/test_update_adapter_customizations.sh`
 - Verify customized files preserved
 
-### T008: Write path validation test [P]
+### T008: Write path validation test [P] [X]
 Test detection of hardcoded paths before installation.
 - File: `tests/unit/test_validate_paths.sh`
 - Check for scripts/bash, .spec, memory paths
 
-### T009: Write command prefixing test [P]
+### T009: Write command prefixing test [P] [X]
 Test automatic command name prefixing.
 - File: `tests/unit/test_command_prefixing.sh`
 - Verify prefix applied to prevent conflicts
 
-### T010: Write conflict handling test [P]
+### T010: Write conflict handling test [P] [X]
 Test detection and resolution of command conflicts.
 - File: `tests/unit/test_handle_conflicts.sh`
 - Verify existing files preserved
 
-### T011: Write agent installation test [P]
+### T011: Write agent installation test [P] [X]
 Test installation of agent templates.
 - File: `tests/unit/test_install_agents.sh`
 - Verify agents installed to correct directory

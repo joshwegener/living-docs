@@ -85,6 +85,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - [tests/debug/logger-compliance.test.sh](../tests/debug/logger-compliance.test.sh) - Debug logger compliance tests
 - [tests/debug/logger-basic.test.sh](../tests/debug/logger-basic.test.sh) - Debug logger basic tests
 - [tests/debug/logger.test.sh](../tests/debug/logger.test.sh) - Debug logger full test suite
+- [tests/unit/test_install_adapter_default.sh](../tests/unit/test_install_adapter_default.sh) - Test default adapter installation
+- [tests/unit/test_install_adapter_custom_paths.sh](../tests/unit/test_install_adapter_custom_paths.sh) - Test custom path adapter installation
+- [tests/unit/test_remove_adapter.sh](../tests/unit/test_remove_adapter.sh) - Test complete adapter removal using manifest (T006)
+- [tests/unit/test_update_adapter_customizations.sh](../tests/unit/test_update_adapter_customizations.sh) - Test updating adapter while preserving user customizations (T007)
+- [tests/unit/test_validate_paths.sh](../tests/unit/test_validate_paths.sh) - Test detection of hardcoded paths before installation (T008)
+- [tests/unit/test_command_prefixing.sh](../tests/unit/test_command_prefixing.sh) - Test automatic command name prefixing (T009)
+- [tests/unit/test_handle_conflicts.sh](../tests/unit/test_handle_conflicts.sh) - Test detection and resolution of command conflicts (T010)
+- [tests/unit/test_install_agents.sh](../tests/unit/test_install_agents.sh) - Test installation of agent templates (T011)
 
 ### Templates
 - [templates/PROJECT.md.template](../templates/PROJECT.md.template) - Standard projects
