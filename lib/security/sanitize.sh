@@ -32,7 +32,7 @@ has_command_injection() {
         return 0  # Has injection
     fi
 
-    if [[ "$input" == *'`'* ]] || [[ "$input" == *'$('* ]] || [[ "$input" == *'${'* ]]; then
+    if [[ "$input" == *'`'* ]] || [[ "$input" == *"\$("* ]] || [[ "$input" == *"\${"* ]]; then
         return 0  # Has injection
     fi
 
