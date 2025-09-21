@@ -2,6 +2,13 @@
 
 *One-liner updates for agent coordination - newest first*
 
+## Sept 21, 2025
+
+- 10:15 AM - REVIEW: Comprehensive documentation consistency review and fixes
+- 10:10 AM - FIX: Updated all version references to 5.1.0 across README, current.md, wizard.sh
+- 10:05 AM - FIX: Marked spec 004 (living-docs-review) as completed with 43/43 tasks done
+- 10:00 AM - CLEANUP: Moved 002-planning from active to completed, cleaned up bugs.md
+
 ## Sept 20, 2025
 
 - 8:10 PM - COMPLIANCE: Added retrospective specs and tests for debug logging and troubleshooting guide

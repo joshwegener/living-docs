@@ -2,12 +2,12 @@
 
 > Documentation that evolves with your code - automatically
 
-🎉 **v5.0.0**: 82% token reduction! Dynamic context loading, modular rules, KV-cache optimization.
+🎉 **v5.1.0**: Debug system, comprehensive testing framework, 82% token reduction!
 
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
 [![Status](https://img.shields.io/badge/status-beta-yellow)](docs/current.md)
-[![Version](https://img.shields.io/badge/version-5.0.0-blue)](docs/current.md)
+[![Version](https://img.shields.io/badge/version-5.1.0-blue)](docs/current.md)
 
 ## 📑 Quick Navigation
 
@@ -35,7 +35,7 @@ Documentation becomes that thing you'll "update later" - except later never come
 
 ## ✨ Key Features
 
-### ⚡ 82% Token Reduction (NEW in v5.0)
+### ⚡ 82% Token Reduction (v5.0+)
 - **Dynamic Context Loading**: Only loads relevant docs for current task
 - **KV-Cache Optimization**: 10x cost reduction on cached tokens
 - **Smart Router**: Bootstrap.md now routes to needed docs vs loading everything
@@ -176,6 +176,7 @@ your-project/
 ## 🗺 Roadmap
 
 ### ✅ Released
+- [x] **v5.1.0** (Sept 2025): Debug system, comprehensive testing, troubleshooting guide
 - [x] **v5.0.0** (Sept 2025): 82% token reduction, dynamic context loading, KV-cache optimization
 - [x] **v4.0.0** (Sept 2025): Modular spec-specific rules, compliance review system
 - [x] **v3.1.0** (Sept 2025): Single-file wizard, self-updating, 6 frameworks

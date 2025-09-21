@@ -1,6 +1,6 @@
 # living-docs - Project Dashboard (Single Source of Truth)
 
-**Status**: BETA | **Version**: 5.0.0 | **Updated**: Sept 18, 2025
+**Status**: BETA | **Version**: 5.1.0 | **Updated**: Sept 21, 2025
 
 ## 🎯 Project Mission
 Create a documentation framework that actually stays alive throughout a project's lifecycle.
@@ -27,13 +27,14 @@ Create a documentation framework that actually stays alive throughout a project'
 1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
    - ✅ Created comprehensive input sanitization test suite
    - 🔴 Need to implement lib/security/sanitize.sh module
-- [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed]
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
+- [Living Docs Review](./specs/004-living-docs-review/) - Comprehensive security and infrastructure improvements ✅
 - [Documentation Optimization](./specs/003-documentation-optimization/) - 82% token reduction via dynamic loading ✅
 - [Modular Spec Rules System](./specs/002-modular-spec-rules/) - Dynamic framework rule inclusion with compliance review ✅
+- [Spec 002 Planning](./completed/2025-09-21-002-planning-modular-rules.md) - Planning documentation for modular rules ✅
 - [Multi-Spec Adapter System](./completed/2025-09-16-multi-spec-adapter.md) - Support for 6 frameworks ✅
 - [System Consistency Fixes](completed/2025-09-16-system-consistency-fixes.md) - Fixed drift detection and path issues ✅
 - [Wizard v3.0.0](./completed/2025-09-16-wizard-v3.md) - Multi-select framework installation ✅
@@ -42,16 +43,16 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 
 ## 📐 Project Specifications
-- [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
+- [Spec 001: System Consistency](./specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
 - [Spec 002: Modular Rules](../specs/002-modular-spec-rules/spec.md) - Framework-specific rules system
-- [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading
+- [Spec 003: Bootstrap System](../specs/003-documentation-optimization/spec.md) - Token-optimized context loading
 - [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
 
 ## 📂 Complete Documentation Map
 
-### Core Files (v5.0 Architecture)
+### Core Files (v5.1 Architecture)
 - [README.md](../README.md) - Public introduction (GitHub standard)
 - [VERSION](../VERSION) - Current version number
 - [docs/versioning.md](./versioning.md) - Versioning strategy and history
@@ -116,6 +117,7 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
+- [mermaid-validation](procedures/mermaid-validation.md) - [Description needed]
 - [maintenance](procedures/maintenance.md) - [Description needed]
 - [docs/completed/](./completed/) - Finished tasks with full details (dated)
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
@@ -124,10 +126,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 17 open
+See [bugs.md](./bugs.md) - Current count: 10 open
 
 ## 💡 Ideas Backlog
-See [ideas.md](./ideas.md) - Feature ideas and improvements
+See [ideas.md](./ideas.md) - Feature ideas and improvements (33 items)
 
 ## 🔮 Roadmap
 - [x] **v1.0.0**: Core framework (Sept 2025)
@@ -135,7 +137,7 @@ See [ideas.md](./ideas.md) - Feature ideas and improvements
 - [x] **v3.0.0**: Multi-spec adapter system (Sept 2025)
 - [x] **v4.0.0**: Modular rules system (Sept 2025)
 - [x] **v5.0.0**: Documentation optimization - 82% token reduction (Sept 2025)
-- [ ] **v5.1.0**: Testing framework
+- [x] **v5.1.0**: Debug system and comprehensive testing (Sept 2025)
 - [ ] **v5.2.0**: Examples library
 - [ ] **v6.0.0**: XML format conversion for all docs
 - [ ] **v10.0.0**: Production ready with enterprise features

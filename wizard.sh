@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Version
-WIZARD_VERSION="3.1.0"
+WIZARD_VERSION="5.1.0"
 REPO_URL="https://raw.githubusercontent.com/joshwegener/living-docs/main"
 
 # Source security libraries if available
