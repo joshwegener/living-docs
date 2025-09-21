@@ -29,6 +29,10 @@ shell_scripts:
 bug_fixing:
   trigger: [bugs.md, fix, debug, error]
   load: [@bugs.md, @knowledge/gotchas.md]
+
+adapter_work:
+  trigger: [adapter, wizard.sh, update-all.sh, check-updates.sh]
+  load: @procedures/adapter-versioning.md
 ```
 
 ### By Framework (Auto-detected from .living-docs.config)

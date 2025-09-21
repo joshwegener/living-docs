@@ -1,0 +1,185 @@
+# GitHub Actions Workflow Contracts
+
+workflows:
+  test:
+    name: Test Pipeline
+    triggers:
+      - pull_request
+      - push: [main, develop]
+
+    jobs:
+      lint:
+        name: Lint and Validate
+        runs-on: ubuntu-latest
+        steps:
+          - checkout
+          - shellcheck:
+              files: ["*.sh", "scripts/*.sh", "adapters/**/*.sh"]
+              severity: warning
+          - vale:
+              files: ["docs/**/*.md", "README.md"]
+              config: .vale.ini
+          - markdownlint:
+              files: ["**/*.md"]
+              config: .markdownlint.yml
+        outputs:
+          status: [pass, fail]
+          report: lint-report.json
+
+      security:
+        name: Security Scan
+        runs-on: ubuntu-latest
+        steps:
+          - checkout
+          - secret-scanning:
+              patterns: .gitleaks.toml
+          - dependency-check:
+              scan: ["scripts", "adapters"]
+          - path-traversal-check:
+              custom: true
+        outputs:
+          status: [pass, fail]
+          vulnerabilities: security-report.json
+
+      test-matrix:
+        name: Test Suite
+        strategy:
+          matrix:
+            os: [ubuntu-latest, macos-latest]
+            bash: ["4.0", "5.0", "5.1"]
+        steps:
+          - checkout
+          - setup-bash:
+              version: ${{ matrix.bash }}
+          - run-tests:
+              script: tests/run-tests.sh
+              coverage: true
+        outputs:
+          coverage: coverage.xml
+          report: test-report.xml
+
+      documentation:
+        name: Documentation Validation
+        runs-on: ubuntu-latest
+        steps:
+          - checkout
+          - check-drift:
+              script: scripts/check-drift.sh
+              auto-fix: false
+          - validate-links:
+              files: ["**/*.md"]
+          - check-references:
+              validate: true
+        outputs:
+          drift: [none, detected]
+          broken-links: count
+
+  release:
+    name: Release Pipeline
+    triggers:
+      - tag: "v*"
+
+    jobs:
+      prepare:
+        name: Prepare Release
+        steps:
+          - checkout
+          - version-check:
+              validate: semantic
+          - changelog-generate:
+              since: last-tag
+          - checksum-generate:
+              files: ["wizard.sh", "scripts/**", "adapters/**"]
+              output: checksums.txt
+        outputs:
+          version: string
+          changelog: string
+          checksums: file
+
+      sign:
+        name: Sign Release
+        needs: prepare
+        steps:
+          - gpg-sign:
+              key: ${{ secrets.GPG_KEY }}
+              files: ["wizard.sh", "checksums.txt"]
+          - create-signatures:
+              output: signatures/
+        outputs:
+          signatures: directory
+
+      publish:
+        name: Publish Release
+        needs: [prepare, sign]
+        steps:
+          - create-release:
+              tag: ${{ github.ref }}
+              name: "living-docs ${{ needs.prepare.outputs.version }}"
+              body: ${{ needs.prepare.outputs.changelog }}
+          - upload-assets:
+              files:
+                - wizard.sh
+                - checksums.txt
+                - signatures/*.sig
+          - update-readme:
+              badge: version
+        outputs:
+          release-url: string
+
+  documentation-update:
+    name: Documentation Update
+    triggers:
+      - push:
+          paths: ["docs/**", "*.md"]
+
+    jobs:
+      update:
+        name: Update Documentation
+        steps:
+          - checkout
+          - build-context:
+              script: scripts/build-context.sh
+          - update-current:
+              script: scripts/update-current.sh
+          - commit:
+              message: "docs: Auto-update documentation"
+              skip-ci: true
+
+# Reusable workflow contracts
+reusable:
+  run-tests:
+    inputs:
+      os:
+        type: string
+        required: true
+      coverage:
+        type: boolean
+        default: true
+    outputs:
+      status: [pass, fail]
+      coverage-percent: number
+      report: file
+
+  validate-pr:
+    inputs:
+      pr-number:
+        type: number
+        required: true
+    outputs:
+      checks: object
+      approved: boolean
+
+# Environment contracts
+environments:
+  test:
+    variables:
+      LIVING_DOCS_ENV: test
+      LIVING_DOCS_DEBUG: "0"
+
+  release:
+    variables:
+      LIVING_DOCS_ENV: production
+      LIVING_DOCS_VERIFY_GPG: "1"
+    secrets:
+      - GPG_KEY
+      - GITHUB_TOKEN

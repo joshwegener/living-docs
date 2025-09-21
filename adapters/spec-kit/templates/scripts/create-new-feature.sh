@@ -1,162 +1,76 @@
-#!/bin/bash
-
-# Create a new feature specification directory
-# Usage: ./create-new-feature.sh [feature-number] [feature-name]
-
+#!/usr/bin/env bash
+# (Moved to scripts/bash/) Create a new feature with branch, directory structure, and template
 set -e
 
-# Get the directory where specs should be created
-SPECS_DIR="{{SPECS_PATH}}"
+JSON_MODE=false
+ARGS=()
+for arg in "$@"; do
+    case "$arg" in
+        --json) JSON_MODE=true ;;
+        --help|-h) echo "Usage: $0 [--json] <feature_description>"; exit 0 ;;
+        *) ARGS+=("$arg") ;;
+    esac
+done
 
-# Check arguments
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 [feature-number] [feature-name]"
-    echo "Example: $0 01 user-authentication"
+FEATURE_DESCRIPTION="${ARGS[*]}"
+if [ -z "$FEATURE_DESCRIPTION" ]; then
+    echo "Usage: $0 [--json] <feature_description>" >&2
     exit 1
 fi
 
-FEATURE_NUMBER="$1"
-FEATURE_NAME="$2"
-FEATURE_DIR="$SPECS_DIR/${FEATURE_NUMBER}-${FEATURE_NAME}"
-
-# Check if directory already exists
-if [ -d "$FEATURE_DIR" ]; then
-    echo "Error: Feature directory already exists: $FEATURE_DIR"
-    exit 1
+# Resolve repository root. Prefer git information when available, but fall back
+# to the script location so the workflow still functions in repositories that
+# were initialised with --no-git.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FALLBACK_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+    REPO_ROOT=$(git rev-parse --show-toplevel)
+    HAS_GIT=true
+else
+    REPO_ROOT="$FALLBACK_ROOT"
+    HAS_GIT=false
 fi
 
-# Create feature directory
-echo "Creating feature directory: $FEATURE_DIR"
+cd "$REPO_ROOT"
+
+SPECS_DIR="$REPO_ROOT/specs"
+mkdir -p "$SPECS_DIR"
+
+HIGHEST=0
+if [ -d "$SPECS_DIR" ]; then
+    for dir in "$SPECS_DIR"/*; do
+        [ -d "$dir" ] || continue
+        dirname=$(basename "$dir")
+        number=$(echo "$dirname" | grep -o '^[0-9]\+' || echo "0")
+        number=$((10#$number))
+        if [ "$number" -gt "$HIGHEST" ]; then HIGHEST=$number; fi
+    done
+fi
+
+NEXT=$((HIGHEST + 1))
+FEATURE_NUM=$(printf "%03d" "$NEXT")
+
+BRANCH_NAME=$(echo "$FEATURE_DESCRIPTION" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+WORDS=$(echo "$BRANCH_NAME" | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed 's/-$//')
+BRANCH_NAME="${FEATURE_NUM}-${WORDS}"
+
+if [ "$HAS_GIT" = true ]; then
+    git checkout -b "$BRANCH_NAME"
+else
+    >&2 echo "[specify] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"
+fi
+
+FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
 mkdir -p "$FEATURE_DIR"
 
-# Create spec.md template
-cat > "$FEATURE_DIR/spec.md" << 'EOF'
-# Specification: [Feature Name]
+TEMPLATE="$REPO_ROOT/templates/spec-template.md"
+SPEC_FILE="$FEATURE_DIR/spec.md"
+if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 
-## Overview
-Brief description of the feature.
-
-## Requirements
-- Requirement 1
-- Requirement 2
-- Requirement 3
-
-## User Stories
-As a [type of user], I want [goal] so that [reason].
-
-## Acceptance Criteria
-- [ ] Criteria 1
-- [ ] Criteria 2
-- [ ] Criteria 3
-
-## Technical Design
-Describe the technical approach.
-
-## API Design
-Define any APIs if applicable.
-
-## Data Model
-Describe data structures and database schema.
-
-## Security Considerations
-List security requirements and considerations.
-
-## Performance Requirements
-Define performance expectations.
-
-## Testing Strategy
-Outline testing approach.
-EOF
-
-# Create plan.md template
-cat > "$FEATURE_DIR/plan.md" << 'EOF'
-# Implementation Plan: [Feature Name]
-
-## Overview
-Summary of implementation approach.
-
-## Architecture
-Describe system architecture changes.
-
-## Dependencies
-- Dependency 1
-- Dependency 2
-
-## Implementation Phases
-1. Phase 1: [Description]
-2. Phase 2: [Description]
-3. Phase 3: [Description]
-
-## Risk Assessment
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Risk 1 | High | Mitigation strategy |
-
-## Timeline
-- Week 1: [Tasks]
-- Week 2: [Tasks]
-EOF
-
-# Create tasks.md template
-cat > "$FEATURE_DIR/tasks.md" << 'EOF'
-# Task Breakdown: [Feature Name]
-
-## Prerequisites
-- [ ] Prerequisite 1
-- [ ] Prerequisite 2
-
-## Implementation Tasks
-- [ ] Task 1: [Description]
-- [ ] Task 2: [Description]
-- [ ] Task 3: [Description]
-
-## Testing Tasks
-- [ ] Write unit tests
-- [ ] Write integration tests
-- [ ] Perform manual testing
-
-## Documentation Tasks
-- [ ] Update API documentation
-- [ ] Update user guide
-- [ ] Create examples
-
-## Review Tasks
-- [ ] Code review
-- [ ] Security review
-- [ ] Performance review
-EOF
-
-# Create research.md template
-cat > "$FEATURE_DIR/research.md" << 'EOF'
-# Research: [Feature Name]
-
-## Background
-Context and background information.
-
-## Existing Solutions
-Research on how others solve this problem.
-
-## Technologies Considered
-- Option 1: Pros/Cons
-- Option 2: Pros/Cons
-
-## Decision
-Chosen approach and rationale.
-
-## References
-- [Link 1](URL)
-- [Link 2](URL)
-EOF
-
-echo "✅ Feature directory created successfully!"
-echo ""
-echo "Created files:"
-echo "  - $FEATURE_DIR/spec.md"
-echo "  - $FEATURE_DIR/plan.md"
-echo "  - $FEATURE_DIR/tasks.md"
-echo "  - $FEATURE_DIR/research.md"
-echo ""
-echo "Next steps:"
-echo "1. Edit the specification files"
-echo "2. Review with team or AI assistant"
-echo "3. Begin implementation"
+if $JSON_MODE; then
+    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM"
+else
+    echo "BRANCH_NAME: $BRANCH_NAME"
+    echo "SPEC_FILE: $SPEC_FILE"
+    echo "FEATURE_NUM: $FEATURE_NUM"
+fi

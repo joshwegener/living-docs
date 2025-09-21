@@ -1,5 +1,6 @@
 name: spec-kit
-version: 2.0.0
+version: 2.0.0  # Adapter wrapper version
+upstream_version: v0.0.47  # GitHub spec-kit release version
 description: GitHub's specification-driven development toolkit
 author: GitHub
 license: MIT
@@ -15,6 +16,16 @@ files:
     dest: "{{SCRIPTS_PATH}}/"
   - source: templates/.github/
     dest: ".github/"
+  - source: templates/commands/
+    dest: "{{MEMORY_PATH}}/commands/"
+  - source: templates/agent-file-template.md
+    dest: "{{MEMORY_PATH}}/agent-file-template.md"
+  - source: templates/plan-template.md
+    dest: "{{SPECS_PATH}}/plan-template.md"
+  - source: templates/spec-template.md
+    dest: "{{SPECS_PATH}}/spec-template.md"
+  - source: templates/tasks-template.md
+    dest: "{{SPECS_PATH}}/tasks-template.md"
 
 # No hard dependencies
 dependencies: []

@@ -1,5 +1,6 @@
 name: agent-os
-version: 1.0.0
+version: 1.0.0  # Adapter wrapper version
+upstream_version: unknown  # Set when adapter is installed
 description: Agent OS specification system with dated folders
 author: Builder Methods
 license: MIT

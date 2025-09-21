@@ -1,5 +1,6 @@
 name: cursor
-version: 1.0.0
+version: 1.0.0  # Adapter wrapper version
+upstream_version: none  # No official upstream repo (static content)
 description: Cursor IDE rules and conventions
 author: Cursor
 license: MIT

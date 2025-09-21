@@ -12,8 +12,11 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Path Rewriting**: ✅ Complete (dynamic path customization for all adapters)
 - **Documentation Repair**: ✅ Complete with drift detection
 - **AI-Agnostic**: ✅ Complete (auto-detects 9+ AI assistants)
+- **AI Command Support**: ✅ Complete ([auto-installs commands](procedures/ai-commands.md) to AI-specific directories)
 - **Bootstrap System**: ✅ Complete with auto-injection and modular rules
 - **Minimal Impact**: ✅ Complete
+- **Debug System**: ✅ Complete (comprehensive logging with security)
+- **Troubleshooting**: ✅ Complete (634-line guide covering all scenarios)
 - **GitHub Standards**: ✅ Complete with custom locations
 - **Auto-updates**: ✅ Complete (manual trigger, preserves customizations)
 - **Examples**: 🔴 Not Started
@@ -21,7 +24,9 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
+   - ✅ Created comprehensive input sanitization test suite
+   - 🔴 Need to implement lib/security/sanitize.sh module
 - [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed]
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
@@ -35,6 +40,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Update System Enhancement](./completed/2025-09-16-update-system.md) - Adapter version tracking ✅
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
+
+## 📐 Project Specifications
+- [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
+- [Spec 002: Modular Rules](../specs/002-modular-spec-rules/spec.md) - Framework-specific rules system
+- [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading
+- [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
+- [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
+- [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
 
 ## 📂 Complete Documentation Map
 
@@ -50,6 +63,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ### Quick Capture
 - [docs/bugs.md](./bugs.md) - Lightweight bug tracking (one-liners)
 - [docs/ideas.md](./ideas.md) - Feature ideas backlog (one-liners)
+- [docs/troubleshooting.md](./troubleshooting.md) - Comprehensive troubleshooting guide
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -62,6 +76,15 @@ Create a documentation framework that actually stays alive throughout a project'
 - [scripts/check-drift.sh](../scripts/check-drift.sh) - Documentation drift detection
 - [setup.sh](../setup.sh) - Legacy setup (deprecated)
 - [repair.sh](../repair.sh) - Legacy repair (deprecated)
+
+### Libraries
+- [lib/debug/logger.sh](../lib/debug/logger.sh) - Debug logging with security & cross-platform support
+- lib/security/sanitize.sh - Input sanitization (pending implementation)
+
+### Tests
+- [tests/debug/logger-compliance.test.sh](../tests/debug/logger-compliance.test.sh) - Debug logger compliance tests
+- [tests/debug/logger-basic.test.sh](../tests/debug/logger-basic.test.sh) - Debug logger basic tests
+- [tests/debug/logger.test.sh](../tests/debug/logger.test.sh) - Debug logger full test suite
 
 ### Templates
 - [templates/PROJECT.md.template](../templates/PROJECT.md.template) - Standard projects
@@ -89,6 +112,7 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### GitHub Integration
 - [.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/) - Issue templates
+- [.github/workflows/release.yml](../.github/workflows/release.yml) - Automated release pipeline with security validation
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
@@ -97,9 +121,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
 - [docs/procedures/enforcement.md](./procedures/enforcement.md) - Mandatory rules & verification
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
+- [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 16 open
+See [bugs.md](./bugs.md) - Current count: 17 open
 
 ## 💡 Ideas Backlog
 See [ideas.md](./ideas.md) - Feature ideas and improvements
