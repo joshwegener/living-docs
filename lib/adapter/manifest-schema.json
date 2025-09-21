@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["adapter", "version", "installed", "files"],
+  "properties": {
+    "adapter": {
+      "type": "string",
+      "description": "Name of the adapter",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the adapter",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*)?$"
+    },
+    "installed": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Installation timestamp in ISO 8601 format"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp in ISO 8601 format"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "Command prefix for this adapter",
+      "pattern": "^[a-z][a-z0-9_]*_?$"
+    },
+    "files": {
+      "type": "object",
+      "description": "Map of installed files to their metadata",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["checksum", "customized"],
+        "properties": {
+          "checksum": {
+            "type": "string",
+            "description": "SHA256 hash of the file contents",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "customized": {
+            "type": "boolean",
+            "description": "Whether the file has been customized by the user"
+          },
+          "original_path": {
+            "type": "string",
+            "description": "Original path in adapter source"
+          },
+          "original_checksum": {
+            "type": "string",
+            "description": "Checksum before customization",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "file_type": {
+            "type": "string",
+            "enum": ["command", "script", "template", "agent", "config"],
+            "description": "Type of the installed file"
+          }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "description": "List of installed command files",
+      "items": {
+        "type": "string"
+      }
+    },
+    "agents": {
+      "type": "array",
+      "description": "List of installed agent files",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
