@@ -39,6 +39,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Spec-Kit Adapter](./completed/2025-09-15-spec-kit-adapter.md) - GitHub spec-kit integration ✅
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 
+## 📐 Project Specifications
+- [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
+- [Spec 002: Modular Rules](../specs/002-modular-spec-rules/spec.md) - Framework-specific rules system
+- [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading
+- [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
+- [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
+- [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
+
 ## 📂 Complete Documentation Map
 
 ### Core Files (v5.0 Architecture)
