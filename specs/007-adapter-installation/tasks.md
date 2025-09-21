@@ -75,37 +75,37 @@ Test installation of agent templates.
 
 ## Core Library Implementation (T012-T020)
 
-### T012: Implement manifest.sh - tracking system
+### T012: Implement manifest.sh - tracking system [X]
 Create manifest management functions.
 - File: `lib/adapter/manifest.sh`
 - Functions: create_manifest, read_manifest, update_manifest, validate_manifest
 - JSON format per data-model.md
 
-### T013: Implement rewrite.sh - path rewriting engine
+### T013: Implement rewrite.sh - path rewriting engine [X]
 Create path variable substitution engine.
 - File: `lib/adapter/rewrite.sh`
 - Functions: detect_paths, create_mappings, apply_rewrites
 - Handle: scripts/bash → {{SCRIPTS_PATH}}, .spec → {{SPECS_PATH}}
 
-### T014: Implement prefix.sh - command namespacing
+### T014: Implement prefix.sh - command namespacing [X]
 Create command prefixing logic.
 - File: `lib/adapter/prefix.sh`
 - Functions: generate_prefix, apply_prefix, check_conflicts
 - Auto-detect when prefixing needed
 
-### T015: Implement paths.sh - path validation [P]
+### T015: Implement paths.sh - path validation [P] [X]
 Create path validation functions.
 - File: `lib/validation/paths.sh`
 - Functions: validate_no_absolute, check_variables, verify_references
 - Return validation report
 
-### T016: Implement conflicts.sh - conflict detection [P]
+### T016: Implement conflicts.sh - conflict detection [P] [X]
 Create conflict detection for commands and files.
 - File: `lib/validation/conflicts.sh`
 - Functions: scan_existing, detect_conflicts, suggest_resolution
 - Check all AI directories
 
-### T017: Implement install.sh - safe installation
+### T017: Implement install.sh - safe installation [X]
 Create main installation logic with temp directory.
 - File: `lib/adapter/install.sh`
 - Functions: stage_in_temp, validate_installation, atomic_move
