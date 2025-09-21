@@ -12,6 +12,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Path Rewriting**: ✅ Complete (dynamic path customization for all adapters)
 - **Documentation Repair**: ✅ Complete with drift detection
 - **AI-Agnostic**: ✅ Complete (auto-detects 9+ AI assistants)
+- **AI Command Support**: ✅ Complete ([auto-installs commands](procedures/ai-commands.md) to AI-specific directories)
 - **Bootstrap System**: ✅ Complete with auto-injection and modular rules
 - **Minimal Impact**: ✅ Complete
 - **GitHub Standards**: ✅ Complete with custom locations
@@ -21,7 +22,9 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
-1. [Testing Framework](./active/06-testing-framework.md) - 🔴 Not Started (HIGH)
+1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
+   - ✅ Created comprehensive input sanitization test suite
+   - 🔴 Need to implement lib/security/sanitize.sh module
 - [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed]
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
@@ -50,6 +53,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ### Quick Capture
 - [docs/bugs.md](./bugs.md) - Lightweight bug tracking (one-liners)
 - [docs/ideas.md](./ideas.md) - Feature ideas backlog (one-liners)
+- [docs/troubleshooting.md](./troubleshooting.md) - Comprehensive troubleshooting guide
 
 ### Configuration
 - [.living-docs.config](../.living-docs.config) - Our configuration
@@ -89,6 +93,7 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### GitHub Integration
 - [.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/) - Issue templates
+- [.github/workflows/release.yml](../.github/workflows/release.yml) - Automated release pipeline with security validation
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
@@ -97,9 +102,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
 - [docs/procedures/enforcement.md](./procedures/enforcement.md) - Mandatory rules & verification
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
+- [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 16 open
+See [bugs.md](./bugs.md) - Current count: 17 open
 
 ## 💡 Ideas Backlog
 See [ideas.md](./ideas.md) - Feature ideas and improvements
