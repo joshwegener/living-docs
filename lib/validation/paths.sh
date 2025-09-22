@@ -114,26 +114,20 @@ check_file_absolute_paths() {
             continue
         fi
 
-        # Check for absolute paths (starting with /)
-        if [[ "$line" =~ ^[[:space:]]*[^#]*\/.+ ]]; then
-            # Exclude valid path variables
-            local is_valid_variable=false
-            for var in "{{SCRIPTS_PATH}}" "{{SPECS_PATH}}" "{{MEMORY_PATH}}" "{{AI_PATH}}" "{{PROJECT_ROOT}}"; do
-                if [[ "$line" =~ $var ]]; then
-                    is_valid_variable=true
+        # Check for absolute paths (starts with / followed by non-space, or starts with ~/)
+        # Extract potential paths from the line
+        local words=($line)
+        for word in "${words[@]}"; do
+            # Check if word starts with / (absolute) or ~/ (home)
+            if [[ "$word" =~ ^/[^/] ]] || [[ "$word" =~ ^~/ ]]; then
+                # Exclude if it's part of a variable substitution
+                if [[ ! "$line" =~ \{\{.*$word.*\}\} ]]; then
+                    echo "  $file:$line_num - Absolute path found: $word" >> "$report_file"
+                    ((errors++))
                     break
                 fi
-            done
-
-            # If it's not a valid variable, it might be an absolute path
-            if [[ "$is_valid_variable" == "false" ]]; then
-                # Check if it's actually an absolute path (starts with /)
-                if [[ "$line" =~ /[^[:space:]]+ ]]; then
-                    echo "  $file:$line_num - Potential absolute path: $(echo "$line" | sed 's/^[[:space:]]*//')" >> "$report_file"
-                    ((errors++))
-                fi
             fi
-        fi
+        done
 
         ((line_num++))
     done < "$file"

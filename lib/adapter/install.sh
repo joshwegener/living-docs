@@ -159,10 +159,11 @@ validate_installation() {
         return 1
     fi
 
-    # Validate paths
-    if ! quick_validate "$temp_dir"; then
-        echo "Error: Path validation failed" >&2
-        echo "Run path validation report for details" >&2
+    # Skip strict path validation if we're going to rewrite paths
+    # Just check for absolute paths which should never exist
+    if ! validate_no_absolute "$temp_dir" >/dev/null 2>&1; then
+        echo "Error: Absolute paths found in adapter" >&2
+        echo "Adapters should use relative paths only" >&2
         return 1
     fi
 
@@ -171,8 +172,8 @@ validate_installation() {
     path_report=$(detect_paths "$temp_dir" 2>&1)
 
     if [[ -n "$path_report" ]]; then
-        echo "Warning: Hardcoded paths detected (will be rewritten):"
-        echo "$path_report"
+        echo "Note: Hardcoded paths detected (will be rewritten):"
+        echo "$path_report" | head -5
     fi
 
     echo " Validation passed"

@@ -2,17 +2,18 @@
 # Path Rewriting Engine for Adapter Installation System
 # Handles detection and rewriting of hardcoded paths to use variables
 
-# Define path mappings
-declare -A PATH_MAPPINGS=(
-    ["scripts/bash/"]="{{SCRIPTS_PATH}}/bash/"
-    ["scripts/"]="{{SCRIPTS_PATH}}/"
-    [".spec/"]="{{SPECS_PATH}}/"
-    ["memory/"]="{{MEMORY_PATH}}/"
-    [".claude/commands/"]="{{AI_PATH}}/commands/"
-    [".claude/agents/"]="{{AI_PATH}}/agents/"
-    [".github/copilot-agents/"]="{{AI_PATH}}/agents/"
-    ["specs/"]="{{SPECS_PATH}}/"
-)
+# Define path mappings (bash 3.2 compatible)
+# Format: search_pattern|replacement
+PATH_MAPPINGS="
+scripts/bash/|{{SCRIPTS_PATH}}/bash/
+scripts/|{{SCRIPTS_PATH}}/
+.spec/|{{SPECS_PATH}}/
+memory/|{{MEMORY_PATH}}/
+.claude/commands/|{{AI_PATH}}/commands/
+.claude/agents/|{{AI_PATH}}/agents/
+.github/copilot-agents/|{{AI_PATH}}/agents/
+specs/|{{SPECS_PATH}}/
+"
 
 # Detect hardcoded paths in a file or directory
 detect_paths() {
@@ -47,12 +48,13 @@ check_file_for_paths() {
 
     local found=0
 
-    for pattern in "${!PATH_MAPPINGS[@]}"; do
+    while IFS='|' read -r pattern replacement; do
+        [[ -z "$pattern" ]] && continue
         if grep -q "$pattern" "$file"; then
             echo "Found hardcoded path in $file: $pattern" >> "$report_file"
             ((found++))
         fi
-    done
+    done <<< "$PATH_MAPPINGS"
 
     return $found
 }
@@ -63,13 +65,13 @@ create_mappings() {
 
     # Generate sed script for path replacements
     {
-        for pattern in "${!PATH_MAPPINGS[@]}"; do
-            replacement="${PATH_MAPPINGS[$pattern]}"
+        while IFS='|' read -r pattern replacement; do
+            [[ -z "$pattern" ]] && continue
             # Escape special characters for sed
             escaped_pattern=$(echo "$pattern" | sed 's/[[\.*^$(){}?+|]/\\&/g')
             escaped_replacement=$(echo "$replacement" | sed 's/[[\.*^$(){}?+|]/\\&/g')
             echo "s|$escaped_pattern|$escaped_replacement|g"
-        done
+        done <<< "$PATH_MAPPINGS"
     } > "$mappings_file"
 
     echo "$mappings_file"
@@ -203,7 +205,8 @@ validate_rewritten_paths() {
     local validation_errors=0
 
     # Check for any remaining hardcoded paths
-    for pattern in "${!PATH_MAPPINGS[@]}"; do
+    while IFS='|' read -r pattern replacement; do
+        [[ -z "$pattern" ]] && continue
         if [[ -f "$target" ]]; then
             if grep -q "$pattern" "$target"; then
                 echo "Validation Error: Hardcoded path still present in $target: $pattern" >&2
@@ -217,7 +220,7 @@ validate_rewritten_paths() {
                 fi
             done < <(find "$target" -type f \( -name "*.md" -o -name "*.sh" -o -name "*.txt" \))
         fi
-    done
+    done <<< "$PATH_MAPPINGS"
 
     return $validation_errors
 }

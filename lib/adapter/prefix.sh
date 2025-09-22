@@ -6,6 +6,12 @@
 get_ai_command_dir() {
     local ai_type="${1:-auto}"
 
+    # Use AI_PATH if set
+    if [[ -n "$AI_PATH" ]]; then
+        echo "${AI_PATH}/commands"
+        return 0
+    fi
+
     # Auto-detect AI type from environment or existing directories
     if [[ "$ai_type" == "auto" ]]; then
         if [[ -d ".claude" ]]; then

@@ -7,27 +7,35 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../adapter/manifest.sh" 2>/dev/null || true
 source "$SCRIPT_DIR/../adapter/prefix.sh" 2>/dev/null || true
 
-# AI tool detection mappings
-declare -A AI_TOOL_AGENTS_DIRS=(
-    ["claude"]=".claude/agents"
-    ["cursor"]=".cursor/agents"
-    ["copilot"]=".github/copilot-agents"
-    ["continue"]=".continue/agents"
-    ["aider"]=".aider/agents"
-    ["agent-os"]="agents"
-    ["open-interpreter"]="agents"
-)
+# AI tool detection mappings (bash 3.2 compatible)
+# Get agents directory for a tool
+get_tool_agents_dir() {
+    local tool="$1"
+    case "$tool" in
+        claude) echo ".claude/agents" ;;
+        cursor) echo ".cursor/agents" ;;
+        copilot) echo ".github/copilot-agents" ;;
+        continue) echo ".continue/agents" ;;
+        aider) echo ".aider/agents" ;;
+        agent-os|open-interpreter) echo "agents" ;;
+        *) return 1 ;;
+    esac
+}
 
-# AI tool detection patterns
-declare -A AI_TOOL_PATTERNS=(
-    ["claude"]=".claude"
-    ["cursor"]=".cursor"
-    ["copilot"]=".github/copilot"
-    ["continue"]=".continue"
-    ["aider"]=".aider"
-    ["agent-os"]="agent-os.yml"
-    ["open-interpreter"]="interpreter"
-)
+# Get detection pattern for a tool
+get_tool_pattern() {
+    local tool="$1"
+    case "$tool" in
+        claude) echo ".claude" ;;
+        cursor) echo ".cursor" ;;
+        copilot) echo ".github/copilot" ;;
+        continue) echo ".continue" ;;
+        aider) echo ".aider" ;;
+        agent-os) echo "agent-os.yml" ;;
+        open-interpreter) echo "interpreter" ;;
+        *) return 1 ;;
+    esac
+}
 
 # Main agent installation function
 install_agents() {
@@ -126,9 +134,10 @@ detect_ai_tool() {
     fi
 
     # Check for directory patterns
-    for tool in "${!AI_TOOL_PATTERNS[@]}"; do
-        local pattern="${AI_TOOL_PATTERNS[$tool]}"
-        if [[ -e "$project_root/$pattern" ]]; then
+    for tool in claude cursor copilot continue aider agent-os open-interpreter; do
+        local pattern
+        pattern=$(get_tool_pattern "$tool")
+        if [[ -n "$pattern" && -e "$project_root/$pattern" ]]; then
             echo "$tool"
             return 0
         fi
@@ -163,7 +172,8 @@ get_agents_dir() {
         return 1
     fi
 
-    local agents_dir="${AI_TOOL_AGENTS_DIRS[$ai_tool]}"
+    local agents_dir
+    agents_dir=$(get_tool_agents_dir "$ai_tool")
     if [[ -z "$agents_dir" ]]; then
         echo "Error: Unknown AI tool: $ai_tool" >&2
         return 1
@@ -435,13 +445,15 @@ generate_agent_report() {
 
         # Detected AI tools
         echo "Detected AI Tools:"
-        for tool in "${!AI_TOOL_PATTERNS[@]}"; do
-            local pattern="${AI_TOOL_PATTERNS[$tool]}"
+        for tool in claude cursor copilot continue aider agent-os open-interpreter; do
+            local pattern
+            pattern=$(get_tool_pattern "$tool")
             local project_root="${PROJECT_ROOT:-$(pwd)}"
-            if [[ -e "$project_root/$pattern" ]]; then
-                local agents_dir="${AI_TOOL_AGENTS_DIRS[$tool]}"
+            if [[ -n "$pattern" && -e "$project_root/$pattern" ]]; then
+                local agents_dir
+                agents_dir=$(get_tool_agents_dir "$tool")
                 echo "  - $tool (agents: $agents_dir)"
-                if [[ -d "$project_root/$agents_dir" ]]; then
+                if [[ -n "$agents_dir" && -d "$project_root/$agents_dir" ]]; then
                     local agent_count
                     agent_count=$(find "$project_root/$agents_dir" -type f 2>/dev/null | wc -l)
                     echo "    Existing agents: $agent_count"
