@@ -69,97 +69,97 @@ setup_test_environment() {
     mkdir -p "$TEST_DIR/docs"
 
     # Create comprehensive adapter with all file types
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/commands"
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/templates/project"
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/templates/config"
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/scripts/automation"
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/scripts/utils"
-    mkdir -p "$TEST_DIR/tmp/comprehensive-adapter/docs"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/commands"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/templates/project"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/templates/config"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/scripts/automation"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/scripts/utils"
+    mkdir -p "$TEST_DIR/tmp/comprehensive/docs"
 
     # Commands (multiple files)
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/commands/plan.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/commands/plan.md" <<'EOF'
 # Plan Command
 Execute planning workflow
 Check specs at .spec/current
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/commands/implement.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/commands/implement.md" <<'EOF'
 # Implementation Command
 Run implementation scripts
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/commands/test.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/commands/test.md" <<'EOF'
 # Test Command
 Execute test suites
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/commands/deploy.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/commands/deploy.md" <<'EOF'
 # Deploy Command
 Handle deployment workflows
 EOF
 
     # Templates (nested structure)
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/templates/project/readme.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/templates/project/readme.md" <<'EOF'
 # Project README Template
 Scripts: scripts/bash/
 Specs: .spec/
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/templates/project/gitignore.txt" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/templates/project/gitignore.txt" <<'EOF'
 # Gitignore Template
 *.log
 .tmp/
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/templates/config/settings.yml" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/templates/config/settings.yml" <<'EOF'
 # Settings Template
 scripts_path: scripts/bash/
 memory_path: memory/
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/templates/config/database.yml" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/templates/config/database.yml" <<'EOF'
 # Database Template
 host: localhost
 port: 5432
 EOF
 
     # Scripts (nested structure)
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/scripts/automation/setup.sh" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/scripts/automation/setup.sh" <<'EOF'
 #!/bin/bash
 echo "Setup automation script"
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/scripts/automation/deploy.sh" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/scripts/automation/deploy.sh" <<'EOF'
 #!/bin/bash
 echo "Deploy automation script"
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/scripts/utils/helpers.sh" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/scripts/utils/helpers.sh" <<'EOF'
 #!/bin/bash
 echo "Helper utilities"
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/scripts/cleanup.sh" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/scripts/cleanup.sh" <<'EOF'
 #!/bin/bash
 echo "Cleanup script"
 EOF
 
     # Documentation
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/docs/guide.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/docs/guide.md" <<'EOF'
 # User Guide
 Complete documentation for the adapter
 EOF
 
-    cat > "$TEST_DIR/tmp/comprehensive-adapter/docs/api.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/comprehensive/docs/api.md" <<'EOF'
 # API Documentation
 API reference documentation
 EOF
 
     # Mark scripts as executable
-    chmod +x "$TEST_DIR/tmp/comprehensive-adapter/scripts/automation/setup.sh"
-    chmod +x "$TEST_DIR/tmp/comprehensive-adapter/scripts/automation/deploy.sh"
-    chmod +x "$TEST_DIR/tmp/comprehensive-adapter/scripts/utils/helpers.sh"
-    chmod +x "$TEST_DIR/tmp/comprehensive-adapter/scripts/cleanup.sh"
+    chmod +x "$TEST_DIR/tmp/comprehensive/scripts/automation/setup.sh"
+    chmod +x "$TEST_DIR/tmp/comprehensive/scripts/automation/deploy.sh"
+    chmod +x "$TEST_DIR/tmp/comprehensive/scripts/utils/helpers.sh"
+    chmod +x "$TEST_DIR/tmp/comprehensive/scripts/cleanup.sh"
 }
 
 # Track initial state before installation
@@ -182,26 +182,26 @@ test_install_comprehensive_adapter() {
     echo -e "${BLUE}Test 1: Installing comprehensive adapter...${NC}"
 
     # Install the adapter
-    ADAPTER_PATH="$TEST_DIR/tmp/comprehensive-adapter" install_adapter "comprehensive"
-    assert_test "Comprehensive adapter installed" "[ -f '$TEST_DIR/.living-docs-comprehensive-manifest.json' ]"
+    ADAPTER_PATH="$TEST_DIR/tmp/comprehensive" install_adapter "comprehensive"
+    assert_test "Comprehensive adapter installed" "[ -f '$TEST_DIR/adapters/comprehensive/.living-docs-manifest.json' ]"
 
     # Count installed files
-    local manifest_file="$TEST_DIR/.living-docs-comprehensive-manifest.json"
+    local manifest_file="$TEST_DIR/adapters/comprehensive/.living-docs-manifest.json"
     if [ -f "$manifest_file" ]; then
         local installed_count=$(jq -r '.installed_files | length' "$manifest_file" 2>/dev/null || echo "0")
         assert_test "Multiple files installed" "[ '$installed_count' -gt 10 ]"
     fi
 
-    # Verify different file types are installed
-    assert_test "Commands installed" "[ -f '$TEST_DIR/.claude/commands/plan.md' ]"
-    assert_test "Nested templates installed" "[ -f '$TEST_DIR/templates/project/readme.md' ]"
-    assert_test "Nested scripts installed" "[ -f '$TEST_DIR/scripts/automation/setup.sh' ]"
-    assert_test "Documentation installed" "[ -f '$TEST_DIR/docs/guide.md' ]"
+    # Verify different file types are installed (commands have prefix)
+    assert_test "Commands installed" "[ -f '$TEST_DIR/.claude/commands/comprehensive_plan.md' ]"
+    assert_test "Nested templates installed" "[ -f '$TEST_DIR/adapters/comprehensive/templates/project/readme.md' ]"
+    assert_test "Nested scripts installed" "[ -f '$TEST_DIR/adapters/comprehensive/scripts/automation/setup.sh' ]"
+    assert_test "Documentation installed" "[ -f '$TEST_DIR/adapters/comprehensive/docs/guide.md' ]"
 
     # Verify nested directory structure
-    assert_test "Nested template config dir exists" "[ -d '$TEST_DIR/templates/config' ]"
-    assert_test "Nested script automation dir exists" "[ -d '$TEST_DIR/scripts/automation' ]"
-    assert_test "Nested script utils dir exists" "[ -d '$TEST_DIR/scripts/utils' ]"
+    assert_test "Nested template config dir exists" "[ -d '$TEST_DIR/adapters/comprehensive/templates/config' ]"
+    assert_test "Nested script automation dir exists" "[ -d '$TEST_DIR/adapters/comprehensive/scripts/automation' ]"
+    assert_test "Nested script utils dir exists" "[ -d '$TEST_DIR/adapters/comprehensive/scripts/utils' ]"
 }
 
 # Test 2: Track state after installation
@@ -353,7 +353,7 @@ test_multiple_cycles() {
     echo -e "${BLUE}Test 8: Testing multiple install/remove cycles...${NC}"
 
     # Install again
-    ADAPTER_PATH="$TEST_DIR/tmp/comprehensive-adapter" install_adapter "comprehensive-2"
+    ADAPTER_PATH="$TEST_DIR/tmp/comprehensive" install_adapter "comprehensive-2"
     assert_test "Second installation successful" "[ -f '$TEST_DIR/.living-docs-comprehensive-2-manifest.json' ]"
 
     # Remove again

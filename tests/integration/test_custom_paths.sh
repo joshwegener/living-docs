@@ -84,11 +84,11 @@ MEMORY_PATH=$MEMORY_PATH
 EOF
 
     # Create mock adapter with path references
-    mkdir -p "$TEST_DIR/tmp/custom-path-adapter/commands"
-    mkdir -p "$TEST_DIR/tmp/custom-path-adapter/templates"
-    mkdir -p "$TEST_DIR/tmp/custom-path-adapter/scripts"
+    mkdir -p "$TEST_DIR/tmp/custom-path/commands"
+    mkdir -p "$TEST_DIR/tmp/custom-path/templates"
+    mkdir -p "$TEST_DIR/tmp/custom-path/scripts"
 
-    cat > "$TEST_DIR/tmp/custom-path-adapter/commands/plan.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/custom-path/commands/plan.md" <<'EOF'
 # Custom Path Plan Command
 Execute planning script at scripts/bash/plan.sh
 Check specifications at .spec/current.md
@@ -96,14 +96,14 @@ Access project memory at memory/context.md
 Review tasks in memory/tasks.md
 EOF
 
-    cat > "$TEST_DIR/tmp/custom-path-adapter/commands/implement.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/custom-path/commands/implement.md" <<'EOF'
 # Custom Path Implementation
 Run implementation from scripts/bash/implement.sh
 Update specs at .spec/implementation.md
 Log progress to memory/progress.md
 EOF
 
-    cat > "$TEST_DIR/tmp/custom-path-adapter/templates/config.yml" <<'EOF'
+    cat > "$TEST_DIR/tmp/custom-path/templates/config.yml" <<'EOF'
 # Adapter Configuration Template
 scripts_directory: scripts/bash/
 specifications_path: .spec/
@@ -111,14 +111,14 @@ memory_location: memory/context.md
 task_tracking: memory/tasks.md
 EOF
 
-    cat > "$TEST_DIR/tmp/custom-path-adapter/templates/readme.md" <<'EOF'
+    cat > "$TEST_DIR/tmp/custom-path/templates/readme.md" <<'EOF'
 # Project README
 Scripts are located in: scripts/bash/
 Specifications: .spec/
 Memory and context: memory/
 EOF
 
-    cat > "$TEST_DIR/tmp/custom-path-adapter/scripts/setup.sh" <<'EOF'
+    cat > "$TEST_DIR/tmp/custom-path/scripts/setup.sh" <<'EOF'
 #!/bin/bash
 # Setup script
 echo "Setting up with custom paths"
@@ -133,11 +133,11 @@ test_install_with_custom_paths() {
     echo -e "${BLUE}Test 1: Installing adapter with custom paths...${NC}"
 
     # Install the adapter
-    ADAPTER_PATH="$TEST_DIR/tmp/custom-path-adapter" install_adapter "custom-path"
-    assert_test "Adapter installed successfully" "[ -f '$TEST_DIR/.living-docs-custom-path-manifest.json' ]"
+    ADAPTER_PATH="$TEST_DIR/tmp/custom-path" install_adapter "custom-path"
+    assert_test "Adapter installed successfully" "[ -f '$TEST_DIR/adapters/custom-path/.living-docs-manifest.json' ]"
 
     # Verify manifest tracks original paths
-    local manifest_file="$TEST_DIR/.living-docs-custom-path-manifest.json"
+    local manifest_file="$TEST_DIR/adapters/custom-path/.living-docs-manifest.json"
     if [ -f "$manifest_file" ]; then
         local has_original_paths=$(jq -r '.path_mappings | length' "$manifest_file" 2>/dev/null || echo "0")
         assert_test "Manifest tracks path mappings" "[ '$has_original_paths' -gt 0 ]"
@@ -148,17 +148,27 @@ test_install_with_custom_paths() {
 test_path_rewriting() {
     echo -e "${BLUE}Test 2: Verifying path rewriting in installed files...${NC}"
 
-    # Check command files for rewritten paths
-    if [ -f "$TEST_DIR/.claude/commands/plan.md" ]; then
-        assert_test "Scripts path rewritten in plan.md" "grep -q '$SCRIPTS_PATH/plan.sh' '$TEST_DIR/.claude/commands/plan.md'"
-        assert_test "Specs path rewritten in plan.md" "grep -q '$SPECS_PATH/current.md' '$TEST_DIR/.claude/commands/plan.md'"
-        assert_test "Memory path rewritten in plan.md" "grep -q '$MEMORY_PATH/context.md' '$TEST_DIR/.claude/commands/plan.md'"
+    # Check command files for rewritten paths (look for prefixed versions)
+    local plan_file="$TEST_DIR/.claude/commands/plan.md"
+    if [ ! -f "$plan_file" ]; then
+        plan_file="$TEST_DIR/.claude/commands/custompath_plan.md"
     fi
 
-    if [ -f "$TEST_DIR/.claude/commands/implement.md" ]; then
-        assert_test "Scripts path rewritten in implement.md" "grep -q '$SCRIPTS_PATH/implement.sh' '$TEST_DIR/.claude/commands/implement.md'"
-        assert_test "Specs path rewritten in implement.md" "grep -q '$SPECS_PATH/implementation.md' '$TEST_DIR/.claude/commands/implement.md'"
-        assert_test "Memory path rewritten in implement.md" "grep -q '$MEMORY_PATH/progress.md' '$TEST_DIR/.claude/commands/implement.md'"
+    if [ -f "$plan_file" ]; then
+        assert_test "Scripts path rewritten in plan.md" "grep -q '$SCRIPTS_PATH/automation/plan.sh' '$plan_file'"
+        assert_test "Specs path rewritten in plan.md" "grep -q '$SPECS_PATH/current.md' '$plan_file'"
+        assert_test "Memory path rewritten in plan.md" "grep -q '$MEMORY_PATH/context.md' '$plan_file'"
+    fi
+
+    local impl_file="$TEST_DIR/.claude/commands/implement.md"
+    if [ ! -f "$impl_file" ]; then
+        impl_file="$TEST_DIR/.claude/commands/custompath_implement.md"
+    fi
+
+    if [ -f "$impl_file" ]; then
+        assert_test "Scripts path rewritten in implement.md" "grep -q '$SCRIPTS_PATH/automation/implement.sh' '$impl_file'"
+        assert_test "Specs path rewritten in implement.md" "grep -q '$SPECS_PATH/implementation.md' '$impl_file'"
+        assert_test "Memory path rewritten in implement.md" "grep -q '$MEMORY_PATH/progress.md' '$impl_file'"
     fi
 
     # Check template files for rewritten paths
@@ -246,7 +256,7 @@ test_config_file_integration() {
     echo -e "${BLUE}Test 6: Testing configuration file integration...${NC}"
 
     # Re-install to test config file reading
-    ADAPTER_PATH="$TEST_DIR/tmp/custom-path-adapter" install_adapter "custom-path-2"
+    ADAPTER_PATH="$TEST_DIR/tmp/custom-path" install_adapter "custom-path-2"
 
     # Verify that the .living-docs.config file influenced installation
     assert_test "Second adapter installed" "[ -f '$TEST_DIR/.living-docs-custom-path-2-manifest.json' ]"

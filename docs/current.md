@@ -1,6 +1,6 @@
 # living-docs - Project Dashboard (Single Source of Truth)
 
-**Status**: BETA | **Version**: 5.0.0 | **Updated**: Sept 18, 2025
+**Status**: BETA | **Version**: 5.1.0 | **Updated**: Sept 21, 2025
 
 ## 🎯 Project Mission
 Create a documentation framework that actually stays alive throughout a project's lifecycle.
@@ -48,6 +48,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
+- [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅
 
 ## 📂 Complete Documentation Map
 

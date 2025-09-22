@@ -2,12 +2,12 @@
 
 > Documentation that evolves with your code - automatically
 
-🎉 **v5.0.0**: 82% token reduction! Dynamic context loading, modular rules, KV-cache optimization.
+🎉 **v5.1.0**: Safe adapter installation! Conflict prevention, path customization, manifest tracking.
 
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
 [![Status](https://img.shields.io/badge/status-beta-yellow)](docs/current.md)
-[![Version](https://img.shields.io/badge/version-5.0.0-blue)](docs/current.md)
+[![Version](https://img.shields.io/badge/version-5.1.0-blue)](docs/current.md)
 
 ## 📑 Quick Navigation
 
@@ -117,6 +117,38 @@ Our adapter system lets you run multiple frameworks simultaneously:
 | **continue** | Continue.dev assistant | `.continuerules` |
 
 Mix and match! Run spec-kit + aider + cursor together. They won't conflict.
+
+### 🔧 Advanced Adapter Management (NEW in v5.1)
+
+**Safe Installation with Conflict Prevention:**
+```bash
+# Automatic command prefixing prevents conflicts
+./wizard.sh  # Choose "Install Living-Docs Framework"
+# Commands like 'plan.md' become 'speckit_plan.md' if conflicts detected
+```
+
+**Custom Path Configuration:**
+```bash
+# Use your own directory structure
+export SCRIPTS_PATH="my-scripts"
+export SPECS_PATH="specifications"
+export MEMORY_PATH="knowledge"
+./wizard.sh --custom-paths
+```
+
+**Complete Adapter Removal:**
+```bash
+# Manifest tracking ensures clean uninstall
+./wizard.sh  # Choose "Remove Adapter"
+# All files tracked and removed completely
+```
+
+**Features:**
+- **Manifest Tracking**: JSON manifests track every installed file
+- **Path Rewriting**: Adapters work with your custom directory structure
+- **Bash 3.2 Compatible**: Works on macOS out of the box
+- **Atomic Operations**: Staging in temp directories prevents partial installs
+- **Update Detection**: Check for adapter updates while preserving customizations
 
 ## 🐛 Troubleshooting & Debug
 
