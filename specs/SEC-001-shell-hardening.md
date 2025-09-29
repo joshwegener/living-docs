@@ -13,12 +13,20 @@ Multiple shell script security issues detected via ShellCheck scan. Scripts lack
 
 ### Critical Issues
 1. **Unquoted Parameter Expansions** (SC2295)
-   - `scripts/build-context.sh:12` - Pattern matching vulnerability
+   - `scripts/build-context.sh:12` - Pattern matching vulnerability (PARTIALLY FIXED)
    - Risk: Path injection, unexpected globbing
 
 2. **Missing Input Validation** (SC1091)
-   - `scripts/archive-old-work.sh:10` - Sourcing unvalidated config
+   - `scripts/archive-old-work.sh:10` - Sourcing unvalidated config (PARTIALLY FIXED)
    - Risk: Arbitrary code execution
+
+3. **Path Injection in Adapter System** (NEW FROM 007)
+   - `lib/adapter/rewrite.sh` - Unsanitized variable substitution
+   - Risk: Directory traversal, file overwrite
+
+4. **Cross-Platform sed Incompatibilities**
+   - `wizard.sh` - macOS vs Linux sed -i usage
+   - Risk: Silent failures, data corruption
 
 ### High Priority Issues
 1. **Command Substitution in echo** (SC2005, SC2129)

@@ -24,12 +24,22 @@ Comprehensive scan for hardcoded secrets, API keys, and credentials in codebase.
    - Any `.env` files (currently gitignored)
    - Template files that might contain placeholders
 
-2. **Documentation**
+2. **Manifest Tampering** (NEW FROM 007)
+   - `.living-docs-manifest.json` - No integrity checks
+   - Risk: Malicious file injection during updates
+   - No signature verification on manifests
+
+3. **Adapter Namespace Collisions** (NEW FROM 007)
+   - Prefix system could have collisions
+   - Risk: Command hijacking between adapters
+   - No validation of prefix uniqueness
+
+4. **Documentation**
    - Example configs in docs
    - README examples
    - Test fixtures
 
-3. **Git History**
+5. **Git History**
    - Previous commits may contain secrets
    - Deleted files still in history
 
