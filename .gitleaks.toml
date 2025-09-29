@@ -9,9 +9,9 @@ description = "Allowlisted patterns and files"
 # Paths to ignore
 paths = [
     "specs/SEC-002-secrets-scan.md",
-    ".*/test/.*",
-    ".*/tests/.*",
-    ".*_test\..*",
+    '''tests/''',
+    '''test/''',
+    '''.*_test\.''',
     ".gitleaks.toml",
     "docs/procedures/pr-protocol.md"
 ]

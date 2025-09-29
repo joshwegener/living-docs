@@ -109,7 +109,7 @@ if [[ -f "$PROJECT_ROOT/wizard.sh" ]]; then
             continue
         fi
         # Check for potentially unsafe patterns
-        if [[ "$line" =~ \$\([^)]*\| ]]; then
+        if [[ "$line" =~ '\$\([^)]*\|' ]]; then
             echo "Potentially unsafe command substitution: $line"
             unsafe_cmd_subst=true
         fi
