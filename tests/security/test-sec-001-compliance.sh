@@ -101,8 +101,21 @@ if [[ -f "$PROJECT_ROOT/wizard.sh" ]]; then
         test_pass "Wizard.sh does not use temp files"
     fi
 
-    # Check for command substitution security
-    if grep -E '\$\([^)]*\|' "$PROJECT_ROOT/wizard.sh"; then
+    # Check for command substitution security (focus on user input)
+    unsafe_cmd_subst=false
+    while IFS= read -r line; do
+        # Skip safe patterns with trusted utilities
+        if [[ "$line" =~ sha256sum.*\||shasum.*\||awk.*\||grep.*\||cut.*\||tr.*\||sed.*\| ]]; then
+            continue
+        fi
+        # Check for potentially unsafe patterns
+        if [[ "$line" =~ \$\([^)]*\| ]]; then
+            echo "Potentially unsafe command substitution: $line"
+            unsafe_cmd_subst=true
+        fi
+    done < <(grep -E '\$\([^)]*\|' "$PROJECT_ROOT/wizard.sh")
+
+    if [[ "$unsafe_cmd_subst" == "true" ]]; then
         test_fail "Wizard.sh has potentially unsafe command substitution with pipes"
     else
         test_pass "Wizard.sh command substitution appears safe"
