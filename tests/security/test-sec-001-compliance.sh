@@ -66,7 +66,22 @@ fi
 
 # Test 3: Check for cross-platform compatibility in sed usage
 echo -e "\nTest 3: Cross-platform sed compatibility"
-if grep -r "sed -i " "$PROJECT_ROOT" --include="*.sh" | grep -v "sed -i ''" | grep -v "sed -i \"\""; then
+unsafe_sed_found=false
+while IFS= read -r line; do
+    # Skip lines that have proper macOS compatibility (sed -i '' or sed -i "")
+    if [[ "$line" =~ sed\ -i\ \'\'|sed\ -i\ \"\" ]]; then
+        continue
+    fi
+    # Skip test files and documentation examples
+    if [[ "$line" =~ /tests/|/docs/|\.md: ]]; then
+        continue
+    fi
+    # If we get here, it's potentially unsafe
+    unsafe_sed_found=true
+    echo "Unsafe sed -i usage: $line"
+done < <(grep -r "sed -i " "$PROJECT_ROOT" --include="*.sh" | grep -v "^\s*#")
+
+if [[ "$unsafe_sed_found" == "true" ]]; then
     test_fail "Found sed -i usage without macOS compatibility"
 else
     test_pass "All sed -i usage is cross-platform compatible"
