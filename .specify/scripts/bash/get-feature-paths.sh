@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 eval $(get_feature_paths)

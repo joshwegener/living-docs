@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -e
 REPO_ROOT=$(git rev-parse --show-toplevel)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 FEATURE_DIR="$REPO_ROOT/specs/$CURRENT_BRANCH"
