@@ -2,7 +2,7 @@
 
 > Documentation that evolves with your code - automatically
 
-🎉 **v5.1.0**: Safe adapter installation! Conflict prevention, path customization, manifest tracking.
+🎉 **v5.1.0**: Debug system, comprehensive testing framework, 82% token reduction!
 
 [![GitHub](https://img.shields.io/github/license/joshwegener/living-docs)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-living-brightgreen)](docs/current.md)
@@ -35,7 +35,7 @@ Documentation becomes that thing you'll "update later" - except later never come
 
 ## ✨ Key Features
 
-### ⚡ 82% Token Reduction (NEW in v5.0)
+### ⚡ 82% Token Reduction (v5.0+)
 - **Dynamic Context Loading**: Only loads relevant docs for current task
 - **KV-Cache Optimization**: 10x cost reduction on cached tokens
 - **Smart Router**: Bootstrap.md now routes to needed docs vs loading everything
@@ -118,38 +118,6 @@ Our adapter system lets you run multiple frameworks simultaneously:
 
 Mix and match! Run spec-kit + aider + cursor together. They won't conflict.
 
-### 🔧 Advanced Adapter Management (NEW in v5.1)
-
-**Safe Installation with Conflict Prevention:**
-```bash
-# Automatic command prefixing prevents conflicts
-./wizard.sh  # Choose "Install Living-Docs Framework"
-# Commands like 'plan.md' become 'speckit_plan.md' if conflicts detected
-```
-
-**Custom Path Configuration:**
-```bash
-# Use your own directory structure
-export SCRIPTS_PATH="my-scripts"
-export SPECS_PATH="specifications"
-export MEMORY_PATH="knowledge"
-./wizard.sh --custom-paths
-```
-
-**Complete Adapter Removal:**
-```bash
-# Manifest tracking ensures clean uninstall
-./wizard.sh  # Choose "Remove Adapter"
-# All files tracked and removed completely
-```
-
-**Features:**
-- **Manifest Tracking**: JSON manifests track every installed file
-- **Path Rewriting**: Adapters work with your custom directory structure
-- **Bash 3.2 Compatible**: Works on macOS out of the box
-- **Atomic Operations**: Staging in temp directories prevents partial installs
-- **Update Detection**: Check for adapter updates while preserving customizations
-
 ## 🐛 Troubleshooting & Debug
 
 **Quick diagnosis:**
@@ -208,6 +176,7 @@ your-project/
 ## 🗺 Roadmap
 
 ### ✅ Released
+- [x] **v5.1.0** (Sept 2025): Debug system, comprehensive testing, troubleshooting guide
 - [x] **v5.0.0** (Sept 2025): 82% token reduction, dynamic context loading, KV-cache optimization
 - [x] **v4.0.0** (Sept 2025): Modular spec-specific rules, compliance review system
 - [x] **v3.1.0** (Sept 2025): Single-file wizard, self-updating, 6 frameworks

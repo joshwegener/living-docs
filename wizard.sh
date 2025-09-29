@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Version
-WIZARD_VERSION="3.1.0"
+WIZARD_VERSION="5.1.0"
 REPO_URL="https://raw.githubusercontent.com/joshwegener/living-docs/main"
 
 # Source security libraries if available
@@ -13,17 +13,6 @@ fi
 # Source backup library if available
 if [[ -f "lib/backup/rollback.sh" ]]; then
     source "lib/backup/rollback.sh"
-fi
-
-# Source new adapter management libraries if available
-if [[ -f "lib/adapter/install.sh" ]]; then
-    source "lib/adapter/install.sh"
-fi
-if [[ -f "lib/adapter/remove.sh" ]]; then
-    source "lib/adapter/remove.sh"
-fi
-if [[ -f "lib/adapter/update.sh" ]]; then
-    source "lib/adapter/update.sh"
 fi
 
 # Parse command line arguments
@@ -392,29 +381,14 @@ install_adapters() {
         echo -e "${BLUE}Installing $adapter...${NC}"
 
         local adapter_dir="adapters/$adapter"
+        if [ -f "$adapter_dir/install.sh" ]; then
+            # Set environment for adapter installation
+            export LIVING_DOCS_PATH="$living_docs_path"
+            export AI_PATH="$living_docs_path"
+            export SPECS_PATH="$living_docs_path/specs"
+            export MEMORY_PATH="$living_docs_path/memory"
+            export SCRIPTS_PATH="$living_docs_path/scripts"
 
-        # Set environment for adapter installation
-        export PROJECT_ROOT="$project_root"
-        export LIVING_DOCS_PATH="$living_docs_path"
-        export AI_PATH="$living_docs_path"
-        export SPECS_PATH="$living_docs_path/specs"
-        export MEMORY_PATH="$living_docs_path/memory"
-        export SCRIPTS_PATH="$living_docs_path/scripts"
-
-        # Use new install_adapter function if available
-        if type -t install_adapter >/dev/null 2>&1; then
-            # New system with manifest tracking
-            local options=""
-            [ "$DRY_RUN" = true ] && options="$options --dry-run"
-            [ -n "$SCRIPTS_PATH" ] && [ -n "$SPECS_PATH" ] && options="$options --custom-paths"
-
-            if install_adapter "$adapter" "$options"; then
-                echo -e "${GREEN}✓${NC} $adapter installed with manifest tracking"
-            else
-                echo -e "${RED}✗${NC} Failed to install $adapter"
-            fi
-        elif [ -f "$adapter_dir/install.sh" ]; then
-            # Fallback to old system
             if bash "$adapter_dir/install.sh" "$project_root"; then
                 echo -e "${GREEN}✓${NC} $adapter installed successfully"
             else
@@ -484,56 +458,25 @@ main() {
         echo ""
         echo "What would you like to do?"
         echo "  1) Add/update adapters"
-        echo "  2) Remove adapter"
-        echo "  3) List installed adapters"
-        echo "  4) Check for updates"
-        echo "  5) Reconfigure paths"
-        echo "  6) Exit"
+        echo "  2) Check for updates"
+        echo "  3) Reconfigure paths"
+        echo "  4) Exit"
         echo ""
-        read -p "Choice [1-6]: " choice
+        read -p "Choice [1-4]: " choice
 
         case $choice in
             1)
-                # Load existing config and add/update adapters
+                # Load existing config
                 source .living-docs.config
                 ;;
             2)
-                # Remove adapter using new system
-                if type -t list_installed_adapters >/dev/null 2>&1; then
-                    echo ""
-                    list_installed_adapters
-                    echo ""
-                    read -p "Enter adapter name to remove: " adapter_to_remove
-                    if [ -n "$adapter_to_remove" ]; then
-                        if type -t remove_adapter >/dev/null 2>&1; then
-                            remove_adapter "$adapter_to_remove"
-                        else
-                            echo -e "${RED}Remove function not available${NC}"
-                        fi
-                    fi
-                else
-                    echo -e "${RED}Adapter management libraries not found${NC}"
-                fi
-                exit 0
-                ;;
-            3)
-                # List installed adapters
-                if type -t list_installed_adapters >/dev/null 2>&1; then
-                    echo ""
-                    list_installed_adapters
-                else
-                    echo -e "${RED}Adapter management libraries not found${NC}"
-                fi
-                exit 0
-                ;;
-            4)
                 # Check updates - use self-update
                 exec "$0" --update
                 ;;
-            5)
+            3)
                 # Reconfigure - continue with setup
                 ;;
-            6)
+            4)
                 exit 0
                 ;;
         esac
