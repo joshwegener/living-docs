@@ -2,6 +2,11 @@
 
 *One-liner updates for agent coordination - newest first*
 
+## Sept 29, 2025
+
+- 12:30 AM - DEV: Completed drift detector modularization - 810 to 436 lines (46% reduction)
+- 12:27 AM - DEV: Created drift modules - reporter.sh (293), fixer.sh (195) for DEBT-001
+
 ## Sept 28, 2025
 
 - 3:00 PM - PM: Created 4 critical specs - SEC-001/002 shell/secrets, DEBT-001 10K refactor, ADP-007 audit
