@@ -168,33 +168,30 @@ apply_custom_paths() {
     local custom_mappings_file
     custom_mappings_file=$(mktemp)
 
+    # Source sanitization library
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -f "$script_dir/../security/sanitize-paths.sh" ]]; then
+        source "$script_dir/../security/sanitize-paths.sh"
+    else
+        echo "Warning: Sanitization library not found, using defaults" >&2
+        sanitize_path() { echo "$1" | tr -cd '[:alnum:]/_.-'; }
+    fi
+
     # Create custom substitutions
     cat "$mappings_file" > "$custom_mappings_file"
 
-    # Replace placeholders with actual paths
-    if [[ -n "${SCRIPTS_PATH}" ]]; then
-        echo "s|{{SCRIPTS_PATH}}|${SCRIPTS_PATH}|g" >> "$custom_mappings_file"
-    else
-        echo "s|{{SCRIPTS_PATH}}|scripts|g" >> "$custom_mappings_file"
-    fi
+    # Replace placeholders with sanitized paths
+    local scripts_path specs_path memory_path ai_path
+    scripts_path=$(sanitize_path "${SCRIPTS_PATH:-scripts}")
+    specs_path=$(sanitize_path "${SPECS_PATH:-.spec}")
+    memory_path=$(sanitize_path "${MEMORY_PATH:-memory}")
+    ai_path=$(sanitize_path "${AI_PATH:-.claude}")
 
-    if [[ -n "${SPECS_PATH}" ]]; then
-        echo "s|{{SPECS_PATH}}|${SPECS_PATH}|g" >> "$custom_mappings_file"
-    else
-        echo "s|{{SPECS_PATH}}|.spec|g" >> "$custom_mappings_file"
-    fi
-
-    if [[ -n "${MEMORY_PATH}" ]]; then
-        echo "s|{{MEMORY_PATH}}|${MEMORY_PATH}|g" >> "$custom_mappings_file"
-    else
-        echo "s|{{MEMORY_PATH}}|memory|g" >> "$custom_mappings_file"
-    fi
-
-    if [[ -n "${AI_PATH}" ]]; then
-        echo "s|{{AI_PATH}}|${AI_PATH}|g" >> "$custom_mappings_file"
-    else
-        echo "s|{{AI_PATH}}|.claude|g" >> "$custom_mappings_file"
-    fi
+    echo "s|{{SCRIPTS_PATH}}|${scripts_path}|g" >> "$custom_mappings_file"
+    echo "s|{{SPECS_PATH}}|${specs_path}|g" >> "$custom_mappings_file"
+    echo "s|{{MEMORY_PATH}}|${memory_path}|g" >> "$custom_mappings_file"
+    echo "s|{{AI_PATH}}|${ai_path}|g" >> "$custom_mappings_file"
 
     echo "$custom_mappings_file"
 }

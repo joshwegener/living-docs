@@ -2,6 +2,10 @@
 
 *One-liner updates for agent coordination - newest first*
 
+## Sept 28, 2025
+
+- 3:00 PM - PM: Created 4 critical specs - SEC-001/002 shell/secrets, DEBT-001 10K refactor, ADP-007 audit
+
 ## Sept 22, 2025
 
 - 11:45 AM - COMPLIANCE: Documented 30,000+ lines of TDD violations in branch 007-adapter-installation

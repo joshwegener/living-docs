@@ -34,6 +34,14 @@ create_manifest() {
 }
 EOF
 
+    # Generate and store integrity checksum
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -f "$script_dir/../security/manifest-integrity.sh" ]]; then
+        source "$script_dir/../security/manifest-integrity.sh"
+        store_manifest_checksum "$manifest_path" 2>/dev/null || true
+    fi
+
     echo "$manifest_path"
 }
 

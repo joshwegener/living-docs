@@ -27,18 +27,18 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### ⚠️ CRITICAL: TDD Remediation (8-week plan)
 **30,000+ lines of code violating TDD_TESTS_FIRST gate**
-1. [Week 1: Security Modules](specs/008-tdd-remediation-week1/spec.md) - 🔴 CRITICAL (lib/security/*)
-2. [Week 2: Core Adapters](specs/009-tdd-remediation-week2/spec.md) - 🔴 HIGH (lib/adapter/*)
-3. [Week 3-4: Validation](specs/010-tdd-remediation-week3/spec.md) - 🟡 MEDIUM (lib/validation/*)
-4. [Week 5-6: UI & Integration](specs/011-tdd-remediation-week5/spec.md) - 🟡 MEDIUM (lib/ui/*, lib/docs/*)
+<!-- BROKEN: <!-- BROKEN: 1. [Week 1: Security Modules](specs/008-tdd-remediation-week1/spec.md) - 🔴 CRITICAL (lib/security/*) --> -->
+<!-- BROKEN: <!-- BROKEN: 2. [Week 2: Core Adapters](specs/009-tdd-remediation-week2/spec.md) - 🔴 HIGH (lib/adapter/*) --> -->
+<!-- BROKEN: <!-- BROKEN: 3. [Week 3-4: Validation](specs/010-tdd-remediation-week3/spec.md) - 🟡 MEDIUM (lib/validation/*) --> -->
+<!-- BROKEN: <!-- BROKEN: 4. [Week 5-6: UI & Integration](specs/011-tdd-remediation-week5/spec.md) - 🟡 MEDIUM (lib/ui/*, lib/docs/*) --> -->
 
 ### Regular Development
 1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
    - ✅ Created comprehensive input sanitization test suite
    - 🔴 Need to implement lib/security/sanitize.sh module
-- [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed]
-2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
-3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
+<!-- BROKEN: <!-- BROKEN: - [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed] --> -->
+<!-- BROKEN: <!-- BROKEN: 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH) --> -->
+<!-- BROKEN: <!-- BROKEN: 3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future --> -->
 
 ## ✅ Recently Completed
 - [Documentation Optimization](./specs/003-documentation-optimization/) - 82% token reduction via dynamic loading ✅
@@ -51,17 +51,23 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 
 ## 📐 Project Specifications
-- [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
+<!-- BROKEN: <!-- BROKEN: - [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues --> -->
 - [Spec 002: Modular Rules](../specs/002-modular-spec-rules/spec.md) - Framework-specific rules system
-- [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading
+<!-- BROKEN: <!-- BROKEN: - [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading --> -->
 - [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
 - [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅ (Merged Sept 28)
-- [Spec 008: TDD Week 1](../specs/008-tdd-remediation-week1/spec.md) - Security module remediation 🔴
-- [Spec 009: TDD Week 2](../specs/009-tdd-remediation-week2/spec.md) - Core adapter remediation 🔴
-- [Spec 010: TDD Week 3-4](../specs/010-tdd-remediation-week3/spec.md) - Validation remediation 🔴
-- [Spec 011: TDD Week 5-6](../specs/011-tdd-remediation-week5/spec.md) - UI & integration remediation 🔴
+<!-- BROKEN: <!-- BROKEN: - [Spec 008: TDD Week 1](../specs/008-tdd-remediation-week1/spec.md) - Security module remediation 🔴 --> -->
+<!-- BROKEN: <!-- BROKEN: - [Spec 009: TDD Week 2](../specs/009-tdd-remediation-week2/spec.md) - Core adapter remediation 🔴 --> -->
+<!-- BROKEN: <!-- BROKEN: - [Spec 010: TDD Week 3-4](../specs/010-tdd-remediation-week3/spec.md) - Validation remediation 🔴 --> -->
+<!-- BROKEN: <!-- BROKEN: - [Spec 011: TDD Week 5-6](../specs/011-tdd-remediation-week5/spec.md) - UI & integration remediation 🔴 --> -->
+
+### 🚨 Security & Debt Specs (CRITICAL)
+- [SEC-001: Shell Hardening](../specs/SEC-001-shell-hardening.md) - Critical ShellCheck violations & path injection 🔴
+- [SEC-002: Secrets Scan](../specs/SEC-002-secrets-scan.md) - Credential exposure & manifest tampering 🔴
+- [DEBT-001: Scripts Structure](../specs/DEBT-001-scripts-structure.md) - 10K+ lines refactoring needed 🔴
+- [ADP-007: Post-Merge Audit](../specs/ADP-007-post-merge-audit.md) - Adapter installation audit 🔴
 
 ## 📂 Complete Documentation Map
 
@@ -130,6 +136,9 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Spec Adapters
 - [adapters/README.md](../adapters/README.md) - 📚 Complete adapter documentation
+- [research](../tests/fixtures/mock-adapter/commands/plan.md) - [Description needed]
+- [quickstart](../tests/fixtures/mock-adapter/commands/plan.md) - [Description needed]
+- [data-model](../tests/fixtures/mock-adapter/commands/plan.md) - [Description needed]
 - [docs/specs/multi-spec-adapter-system.md](../docs/specs/multi-spec-adapter-system.md) - Multi-spec architecture
 - [docs/specs/path-rewriting-system.md](../docs/specs/path-rewriting-system.md) - Path customization system
 - [adapters/](../adapters/) - All 6 framework adapters:
@@ -152,6 +161,7 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
+- [mermaid-validation](procedures/mermaid-validation.md) - [Description needed]
 - [maintenance](procedures/maintenance.md) - [Description needed]
 - [docs/completed/](./completed/) - Finished tasks with full details (dated)
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
@@ -160,7 +170,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 17 open
+See [bugs.md](./bugs.md) - Current count: 19 open
 
 ## 💡 Ideas Backlog
 See [ideas.md](./ideas.md) - Feature ideas and improvements
