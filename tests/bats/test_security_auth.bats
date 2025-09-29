@@ -4,12 +4,14 @@
 # Testing authentication and authorization security
 
 setup() {
-    load test_helper
-    TEST_DIR="$(mktemp -d)"
+    # Don't load test_helper - we have custom setup
+    export BATS_TEST_DIRNAME="$(dirname "$BATS_TEST_FILENAME")"
+    export TEST_DIR="$(mktemp -d)"
     cd "$TEST_DIR"
 
-    # Copy necessary scripts
-    cp -r "${BATS_TEST_DIRNAME}/../../lib/security" lib/
+    # Create lib directory and copy necessary scripts
+    mkdir -p lib/
+    cp -r "${BATS_TEST_DIRNAME}/../../lib/security" lib/ 2>/dev/null || true
     cp "${BATS_TEST_DIRNAME}/../../wizard.sh" . 2>/dev/null || true
 }
 
