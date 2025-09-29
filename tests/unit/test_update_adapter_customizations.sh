@@ -25,12 +25,12 @@ test_update_adapter_customizations() {
     echo "Testing: Update adapter while preserving customizations"
 
     # Setup initial adapter installation
-    mkdir -p "$PROJECT_ROOT/adapters/spec-kit"
-    mkdir -p "$PROJECT_ROOT/.claude/commands"
-    mkdir -p "$PROJECT_ROOT/tmp/spec-kit-v2/commands"
+    mkdir -p ""$PROJECT_ROOT"/adapters/spec-kit"
+    mkdir -p ""$PROJECT_ROOT"/.claude/commands"
+    mkdir -p ""$PROJECT_ROOT"/tmp/spec-kit-v2/commands"
 
     # Create initial installed file
-    cat > "$PROJECT_ROOT/.claude/commands/speckit_plan.md" <<'EOF'
+    cat > ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md" <<'EOF'
 # Plan Command v1.0
 Default content from adapter.
 
@@ -42,7 +42,7 @@ More default content.
 EOF
 
     # Create manifest for existing installation
-    cat > "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json" <<'EOF'
+    cat > ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json" <<'EOF'
 {
   "adapter": "spec-kit",
   "version": "1.0.0",
@@ -69,7 +69,7 @@ EOF
 EOF
 
     # Create new version of adapter with updates
-    cat > "$PROJECT_ROOT/tmp/spec-kit-v2/commands/plan.md" <<'EOF'
+    cat > ""$PROJECT_ROOT"/tmp/spec-kit-v2/commands/plan.md" <<'EOF'
 # Plan Command v2.0
 Updated default content from adapter.
 New feature added here.
@@ -79,7 +79,7 @@ Additional functionality.
 EOF
 
     # Verify customization exists before update
-    if ! grep -q "This is my custom modification" "$PROJECT_ROOT/.claude/commands/speckit_plan.md"; then
+    if ! grep -q "This is my custom modification" ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"; then
         echo "✗ Setup failed: User customization not found"
         return 1
     fi
@@ -94,12 +94,12 @@ EOF
     fi
 
     # Check that new content is present
-    if ! grep -q "Plan Command v2.0" "$PROJECT_ROOT/.claude/commands/speckit_plan.md"; then
+    if ! grep -q "Plan Command v2.0" ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"; then
         echo "✗ New adapter content not found after update"
         return 1
     fi
 
-    if ! grep -q "New feature added here" "$PROJECT_ROOT/.claude/commands/speckit_plan.md"; then
+    if ! grep -q "New feature added here" ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"; then
         echo "✗ New adapter features not found after update"
         return 1
     fi
@@ -107,12 +107,12 @@ EOF
     echo "✓ New adapter content successfully applied"
 
     # Check that user customizations are preserved
-    if ! grep -q "This is my custom modification" "$PROJECT_ROOT/.claude/commands/speckit_plan.md"; then
+    if ! grep -q "This is my custom modification" ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"; then
         echo "✗ User customization lost during update"
         return 1
     fi
 
-    if ! grep -q "Custom rules and preferences" "$PROJECT_ROOT/.claude/commands/speckit_plan.md"; then
+    if ! grep -q "Custom rules and preferences" ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"; then
         echo "✗ User customization details lost during update"
         return 1
     fi
@@ -120,7 +120,7 @@ EOF
     echo "✓ User customizations preserved during update"
 
     # Check manifest updated with new version
-    if ! grep -q '"version": "2.0.0"' "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json"; then
+    if ! grep -q '"version": "2.0.0"' ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json"; then
         echo "✗ Manifest version not updated"
         return 1
     fi
@@ -128,7 +128,7 @@ EOF
     echo "✓ Manifest updated with new version"
 
     # Check backup of previous version created
-    if [[ ! -f "$PROJECT_ROOT/adapters/spec-kit/.living-docs-backup-1.0.0.json" ]]; then
+    if [[ ! -f ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-backup-1.0.0.json" ]]; then
         echo "✗ Backup of previous version not created"
         return 1
     fi

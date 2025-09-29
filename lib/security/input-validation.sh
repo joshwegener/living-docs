@@ -8,6 +8,7 @@ set -euo pipefail
 # Validation constants
 readonly MAX_INPUT_LENGTH=10000
 readonly MAX_PATH_LENGTH=4096
+export MAX_PATH_LENGTH  # Export for external use
 readonly MAX_FILENAME_LENGTH=255
 
 # SQL injection prevention
@@ -225,7 +226,7 @@ validate_integer() {
         return 3
     elif [ ${#abs_value} -eq ${#max_int} ]; then
         # Same length, need to compare
-        if [[ "10#$abs_value" -gt "10#$max_int" ]] 2>/dev/null; then
+        if [[ "$abs_value" -gt "$max_int" ]]; then
             echo "Error: Integer overflow" >&2
             return 3
         fi
@@ -242,7 +243,8 @@ normalize_unicode() {
 
     # Remove RTL/LTR override characters
     local normalized
-    normalized=$(echo "$input" | tr -d '\u202a\u202b\u202c\u202d\u202e')
+    # Remove RTL/LTR override characters one by one
+    normalized=$(echo "$input" | tr -d '\u202a' | tr -d '\u202b' | tr -d '\u202c' | tr -d '\u202d' | tr -d '\u202e')
 
     # Convert common homoglyphs to ASCII
     # This is a simplified version - real implementation would need more comprehensive mapping

@@ -64,7 +64,7 @@ if [ -n "$INSTALLED_SPECS" ]; then
             echo "❌ FAIL: Version not defined for $spec"
             exit 1
         fi
-        echo "  ✓ $spec version: $version_val"
+        echo "  ✓ "$spec" version: $version_val"
     done
 fi
 

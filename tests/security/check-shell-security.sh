@@ -5,7 +5,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_ROOT="$(cd ""$SCRIPT_DIR"/../.." && pwd)"
 
 # Colors for output
 RED='\033[0;31m'
@@ -38,9 +38,9 @@ check_file_permissions() {
     perms=$(stat -c "%a" "$file" 2>/dev/null || stat -f "%A" "$file" 2>/dev/null || echo "unknown")
 
     if [[ "$perms" == "777" ]]; then
-        log_error "File $file has overly permissive permissions (777)"
+        log_error "File "$file" has overly permissive permissions (777)"
     elif [[ "$perms" =~ ^.*[0-9][0-9][2-9]$ ]]; then
-        log_warning "File $file is world-writable ($perms)"
+        log_warning "File "$file" is world-writable ("$perms")"
     fi
 }
 
@@ -53,37 +53,37 @@ check_script_content() {
 
         # Check for dangerous commands
         if [[ "$line" =~ eval.*\$ ]] && [[ ! "$line" =~ ^[[:space:]]*# ]]; then
-            log_error "$file:$line_num: Dangerous use of eval with variable expansion"
+            log_error ""$file":"$line_num": Dangerous use of eval with variable expansion"
         fi
 
         if [[ "$line" =~ \$\(.*\$.*\) ]] && [[ "$line" =~ (curl|wget|bash|sh) ]]; then
-            log_warning "$file:$line_num: Potential command injection via command substitution"
+            log_warning ""$file":"$line_num": Potential command injection via command substitution"
         fi
 
         # Check for unquoted variables in dangerous contexts
         if [[ "$line" =~ (rm|mv|cp|chmod|chown)[[:space:]]+.*\$[A-Za-z_] ]] && [[ ! "$line" =~ \"\$ ]]; then
-            log_warning "$file:$line_num: Unquoted variable in file operation command"
+            log_warning ""$file":"$line_num": Unquoted variable in file operation command"
         fi
 
         # Check for hardcoded credentials patterns
         if [[ "$line" =~ (password|passwd|secret|key|token)[[:space:]]*=[[:space:]]*[\"\']*[^[:space:]\"\'][^[:space:]\"\']+[\"\']*$ ]] && [[ ! "$line" =~ ^[[:space:]]*# ]]; then
-            log_error "$file:$line_num: Potential hardcoded credential"
+            log_error ""$file":"$line_num": Potential hardcoded credential"
         fi
 
         # Check for insecure temp file usage
         if [[ "$line" =~ /tmp/[^/\$] ]] && [[ ! "$line" =~ mktemp ]]; then
-            log_warning "$file:$line_num: Hardcoded temp file path (use mktemp instead)"
+            log_warning ""$file":"$line_num": Hardcoded temp file path (use mktemp instead)"
         fi
 
         # Check for wget/curl without proper error handling
         if [[ "$line" =~ (wget|curl) ]] && [[ ! "$line" =~ (-f|--fail) ]] && [[ ! "$line" =~ \|\| ]]; then
-            log_info "$file:$line_num: Consider adding error handling for network requests"
+            log_info ""$file":"$line_num": Consider adding error handling for network requests"
         fi
 
         # Check for missing set -euo pipefail or equivalent
         if [[ "$line_num" -eq 1 ]] && [[ "$line" =~ ^#!/bin/bash ]]; then
             if ! head -10 "$file" | grep -q "set -.*e"; then
-                log_warning "$file: Script doesn't use 'set -e' for error handling"
+                log_warning ""$file": Script doesn't use 'set -e' for error handling"
             fi
         fi
 
@@ -96,11 +96,11 @@ check_shebang() {
     shebang=$(head -1 "$file")
 
     if [[ ! "$shebang" =~ ^#!/ ]]; then
-        log_warning "$file: Missing or invalid shebang line"
+        log_warning ""$file": Missing or invalid shebang line"
     elif [[ "$shebang" =~ ^#!/bin/sh$ ]]; then
-        log_info "$file: Uses /bin/sh (consider /bin/bash for better features)"
+        log_info ""$file": Uses /bin/sh (consider /bin/bash for better features)"
     elif [[ "$shebang" =~ ^#!/usr/bin/env[[:space:]]+bash$ ]]; then
-        log_info "$file: Uses portable shebang (good practice)"
+        log_info ""$file": Uses portable shebang (good practice)"
     fi
 }
 
@@ -109,12 +109,12 @@ check_function_security() {
 
     # Check for functions that might be security-sensitive
     if grep -q "function.*download\|function.*install\|function.*update" "$file"; then
-        log_info "$file: Contains download/install/update functions - review for security"
+        log_info ""$file": Contains download/install/update functions - review for security"
     fi
 
     # Check for sudo usage
     if grep -q "sudo" "$file" && ! grep -q "# SECURITY:" "$file"; then
-        log_warning "$file: Uses sudo without security comment"
+        log_warning ""$file": Uses sudo without security comment"
     fi
 }
 
@@ -142,11 +142,11 @@ main() {
     echo "Errors found: $issues_found"
     echo "Warnings found: $warnings_found"
 
-    if [[ $issues_found -gt 0 ]]; then
+    if [[ "$issues_found" -gt 0 ]]; then
         echo
         echo -e "${RED}❌ Security issues found that should be addressed${NC}"
         exit 1
-    elif [[ $warnings_found -gt 0 ]]; then
+    elif [[ "$warnings_found" -gt 0 ]]; then
         echo
         echo -e "${YELLOW}⚠️  Warnings found - review recommended${NC}"
         exit 0

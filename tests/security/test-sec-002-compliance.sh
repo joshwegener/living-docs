@@ -5,7 +5,7 @@ set -euo pipefail
 # Tests manifest integrity, credential scanning, and vulnerability alerts
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_ROOT="$(cd ""$SCRIPT_DIR"/../.." && pwd)"
 FAILED_TESTS=0
 PASSED_TESTS=0
 
@@ -61,7 +61,7 @@ fi
 
 # Test 2: Gitleaks configuration and functionality
 echo -e "\nTest 2: Gitleaks configuration"
-if [[ -f "$PROJECT_ROOT/.gitleaks.toml" ]]; then
+if [[ -f ""$PROJECT_ROOT"/.gitleaks.toml" ]]; then
     test_pass "Gitleaks configuration exists"
 
     # Test if gitleaks can run successfully
@@ -83,11 +83,11 @@ echo -e "\nTest 3: Manifest integrity validation"
 manifest_integrity=true
 
 # Check if manifest integrity library exists
-if [[ -f "$PROJECT_ROOT/lib/security/manifest-integrity.sh" ]]; then
+if [[ -f ""$PROJECT_ROOT"/lib/security/manifest-integrity.sh" ]]; then
     test_pass "Manifest integrity library exists"
 
     # Check for manifest validation functions
-    if grep -q "validate_manifest\|verify_manifest\|check_integrity" "$PROJECT_ROOT/lib/security/manifest-integrity.sh"; then
+    if grep -q "validate_manifest\|verify_manifest\|check_integrity" ""$PROJECT_ROOT"/lib/security/manifest-integrity.sh"; then
         test_pass "Manifest validation functions present"
     else
         test_fail "Manifest validation functions missing"
@@ -103,8 +103,8 @@ echo -e "\nTest 4: Configuration file security"
 config_secure=true
 
 # Check .living-docs.config for sensitive patterns
-if [[ -f "$PROJECT_ROOT/.living-docs.config" ]]; then
-    if grep -E "(password|secret|token|key)=" "$PROJECT_ROOT/.living-docs.config" | grep -v "^\s*#"; then
+if [[ -f ""$PROJECT_ROOT"/.living-docs.config" ]]; then
+    if grep -E "(password|secret|token|key)=" ""$PROJECT_ROOT"/.living-docs.config" | grep -v "^\s*#"; then
         test_fail "Potential secrets in .living-docs.config"
         config_secure=false
     else
@@ -121,15 +121,15 @@ fi
 
 # Test 5: GitHub security features
 echo -e "\nTest 5: GitHub security configuration"
-if [[ -f "$PROJECT_ROOT/.github/dependabot.yml" ]]; then
+if [[ -f ""$PROJECT_ROOT"/.github/dependabot.yml" ]]; then
     test_pass "Dependabot configuration exists"
 else
     test_fail "Dependabot configuration missing"
 fi
 
 # Check for security workflows
-if [[ -f "$PROJECT_ROOT/.github/workflows/security.yml" ]] || \
-   [[ -f "$PROJECT_ROOT/.github/workflows/codeql.yml" ]]; then
+if [[ -f ""$PROJECT_ROOT"/.github/workflows/security.yml" ]] || \
+   [[ -f ""$PROJECT_ROOT"/.github/workflows/codeql.yml" ]]; then
     test_pass "Security workflows configured"
 else
     test_warn "Consider adding security workflows"
@@ -143,7 +143,7 @@ echo "  Failed: $FAILED_TESTS"
 echo "===================================================="
 
 # Return non-zero if any tests failed
-if [[ $FAILED_TESTS -gt 0 ]]; then
+if [[ "$FAILED_TESTS" -gt 0 ]]; then
     echo -e "${RED}SEC-002 compliance check FAILED${NC}"
     echo "Implement missing security controls for credential protection"
     exit 1

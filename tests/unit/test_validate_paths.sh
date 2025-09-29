@@ -25,12 +25,12 @@ test_validate_paths() {
     echo "Testing: Detection of hardcoded paths before installation"
 
     # Setup mock adapter with various hardcoded paths
-    mkdir -p "$TEST_DIR/tmp/spec-kit/commands"
-    mkdir -p "$TEST_DIR/tmp/spec-kit/scripts"
-    mkdir -p "$TEST_DIR/tmp/spec-kit/templates"
+    mkdir -p ""$TEST_DIR"/tmp/spec-kit/commands"
+    mkdir -p ""$TEST_DIR"/tmp/spec-kit/scripts"
+    mkdir -p ""$TEST_DIR"/tmp/spec-kit/templates"
 
     # Create files with hardcoded paths
-    cat > "$TEST_DIR/tmp/spec-kit/commands/plan.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/spec-kit/commands/plan.md" <<'EOF'
 # Plan Command
 Execute script: scripts/bash/plan.sh
 Check specification: .spec/current/plan.md
@@ -38,7 +38,7 @@ Access memory: memory/context/plan.txt
 Use template: templates/plan-template.md
 EOF
 
-    cat > "$TEST_DIR/tmp/spec-kit/scripts/setup.sh" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/spec-kit/scripts/setup.sh" <<'EOF'
 #!/bin/bash
 # Setup script
 source scripts/common/utils.sh
@@ -47,7 +47,7 @@ cp templates/default.md .spec/workspace/
 echo "Setup complete" > memory/logs/setup.log
 EOF
 
-    cat > "$TEST_DIR/tmp/spec-kit/templates/spec.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/spec-kit/templates/spec.md" <<'EOF'
 # Spec Template
 Include: templates/includes/header.md
 Scripts: scripts/validation/
@@ -97,13 +97,13 @@ EOF
     fi
 
     # Test validation with clean adapter (no hardcoded paths)
-    mkdir -p "$TEST_DIR/tmp/clean-adapter/commands"
-    cat > "$TEST_DIR/tmp/clean-adapter/commands/plan.md" <<'EOF'
+    mkdir -p ""$TEST_DIR"/tmp/clean-adapter/commands"
+    cat > ""$TEST_DIR"/tmp/clean-adapter/commands/plan.md" <<'EOF'
 # Clean Plan Command
-Execute script: \$SCRIPTS_PATH/plan.sh
-Check specification: \$SPECS_PATH/current/plan.md
-Access memory: \$MEMORY_PATH/context/plan.txt
-Use template: \$TEMPLATES_PATH/plan-template.md
+Execute script: \"$SCRIPTS_PATH"/plan.sh
+Check specification: \"$SPECS_PATH"/current/plan.md
+Access memory: \"$MEMORY_PATH"/context/plan.txt
+Use template: \"$TEMPLATES_PATH"/plan-template.md
 EOF
 
     # Run validation on clean adapter

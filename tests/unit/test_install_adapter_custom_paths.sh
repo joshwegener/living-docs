@@ -30,8 +30,8 @@ test_install_adapter_custom_paths() {
     export MEMORY_PATH="/custom/memory"
 
     # Setup mock adapter with hardcoded paths
-    mkdir -p "$TEST_DIR/tmp/spec-kit/commands"
-    cat > "$TEST_DIR/tmp/spec-kit/commands/plan.md" <<'EOF'
+    mkdir -p ""$TEST_DIR"/tmp/spec-kit/commands"
+    cat > ""$TEST_DIR"/tmp/spec-kit/commands/plan.md" <<'EOF'
 # Plan Command
 Execute script at scripts/bash/plan.sh
 Check spec at .spec/current
@@ -49,10 +49,10 @@ EOF
 
     # Check if paths were rewritten
     local installed_file
-    if [[ -f "$PROJECT_ROOT/.claude/commands/speckit_plan.md" ]]; then
-        installed_file="$PROJECT_ROOT/.claude/commands/speckit_plan.md"
-    elif [[ -f "$PROJECT_ROOT/.claude/commands/plan.md" ]]; then
-        installed_file="$PROJECT_ROOT/.claude/commands/plan.md"
+    if [[ -f ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md" ]]; then
+        installed_file=""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"
+    elif [[ -f ""$PROJECT_ROOT"/.claude/commands/plan.md" ]]; then
+        installed_file=""$PROJECT_ROOT"/.claude/commands/plan.md"
     else
         echo "✗ Command file not found"
         return 1
@@ -81,8 +81,8 @@ EOF
     fi
 
     # Check manifest tracks original paths
-    if [[ -f "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json" ]]; then
-        if grep -q "original_path" "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json"; then
+    if [[ -f ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json" ]]; then
+        if grep -q "original_path" ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json"; then
             echo "✓ Manifest tracks original paths"
         else
             echo "✗ Manifest missing original paths"

@@ -25,9 +25,9 @@ test_install_adapter_default() {
     echo "Testing: Install adapter with default settings"
 
     # Setup mock adapter
-    mkdir -p "$TEST_DIR/tmp/spec-kit/commands"
-    echo "# Plan command" > "$TEST_DIR/tmp/spec-kit/commands/plan.md"
-    echo "# Tasks command" > "$TEST_DIR/tmp/spec-kit/commands/tasks.md"
+    mkdir -p ""$TEST_DIR"/tmp/spec-kit/commands"
+    echo "# Plan command" > ""$TEST_DIR"/tmp/spec-kit/commands/plan.md"
+    echo "# Tasks command" > ""$TEST_DIR"/tmp/spec-kit/commands/tasks.md"
 
     # Run installation
     local result
@@ -39,7 +39,7 @@ test_install_adapter_default() {
     fi
 
     # Check manifest created
-    if [[ -f "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json" ]]; then
         echo "✓ Manifest file created"
     else
         echo "✗ Manifest file not found"
@@ -47,9 +47,9 @@ test_install_adapter_default() {
     fi
 
     # Check commands installed
-    if [[ -f "$PROJECT_ROOT/.claude/commands/speckit_plan.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md" ]]; then
         echo "✓ Commands installed with prefix"
-    elif [[ -f "$PROJECT_ROOT/.claude/commands/plan.md" ]]; then
+    elif [[ -f ""$PROJECT_ROOT"/.claude/commands/plan.md" ]]; then
         echo "✓ Commands installed without prefix"
     else
         echo "✗ Commands not installed"

@@ -11,7 +11,7 @@ FAILED=0
 # Test 1: Check if using predictable pattern
 echo "Test 1: Checking temp directory predictability..."
 
-if grep -q 'mkdir -p.*living-docs-install-\$\$-\$RANDOM' lib/adapter/install.sh; then
+if grep -q 'mkdir -p.*living-docs-install-\$\$-\"$RANDOM"' lib/adapter/install.sh; then
     echo "✗ FAIL: Using predictable temp directory pattern (PID + RANDOM is guessable)"
     FAILED=1
 else

@@ -18,7 +18,7 @@ if [ "$OPTIONS_COUNT" -eq 1 ]; then
     echo "✓ Help output has exactly one Options section"
     exit 0
 else
-    echo "✗ FAIL: Help output has $OPTIONS_COUNT Options sections (expected 1)"
+    echo "✗ FAIL: Help output has "$OPTIONS_COUNT" Options sections (expected 1)"
     echo "Help output:"
     echo "$HELP_OUTPUT"
     exit 1

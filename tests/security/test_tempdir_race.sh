@@ -24,11 +24,11 @@ export TMPDIR="/tmp"
 
 # Get temp dir name from stage_in_temp
 TEST_DIR=$(mktemp -d)
-mkdir -p "$TEST_DIR/source"
-echo "test" > "$TEST_DIR/source/file.txt"
+mkdir -p ""$TEST_DIR"/source"
+echo "test" > ""$TEST_DIR"/source/file.txt"
 
 # Call stage_in_temp multiple times with same PID
-TEMP1=$(stage_in_temp "test-adapter" "$TEST_DIR/source")
+TEMP1=$(stage_in_temp "test-adapter" ""$TEST_DIR"/source")
 rm -rf "$TEMP1"
 
 # Simulate attacker creating symlink with predicted name
@@ -39,7 +39,7 @@ if [[ ! -e "$PREDICTED" ]]; then
 fi
 
 # Try to use stage_in_temp again - should detect and handle symlink
-TEMP2=$(stage_in_temp "test-adapter" "$TEST_DIR/source" 2>/dev/null || echo "FAILED")
+TEMP2=$(stage_in_temp "test-adapter" ""$TEST_DIR"/source" 2>/dev/null || echo "FAILED")
 
 if [[ "$TEMP2" == "FAILED" ]] || [[ -L "$TEMP2" ]]; then
     echo "✗ FAIL: Vulnerable to symlink attack on predictable temp names"
@@ -59,17 +59,17 @@ echo "Test 2: Testing temp directory permissions..."
 unset RANDOM
 
 TEST_DIR2=$(mktemp -d)
-mkdir -p "$TEST_DIR2/source"
-echo "test" > "$TEST_DIR2/source/file.txt"  # Add a test file so cp -R works
+mkdir -p ""$TEST_DIR2"/source"
+echo "test" > ""$TEST_DIR2"/source/file.txt"  # Add a test file so cp -R works
 
-TEMP_DIR=$(stage_in_temp "test-adapter" "$TEST_DIR2/source")
+TEMP_DIR=$(stage_in_temp "test-adapter" ""$TEST_DIR2"/source")
 
 if [[ -d "$TEMP_DIR" ]]; then
     PERMS=$(stat -c %a "$TEMP_DIR" 2>/dev/null || stat -f %A "$TEMP_DIR" 2>/dev/null)
 
     # Check if directory has safe permissions (700 or stricter)
     if [[ "$PERMS" != "700" ]] && [[ "$PERMS" != "600" ]]; then
-        echo "✗ FAIL: Temp directory has unsafe permissions: $PERMS (should be 700)"
+        echo "✗ FAIL: Temp directory has unsafe permissions: "$PERMS" (should be 700)"
         VULNERABLE=1
     else
         echo "✓ Temp directory has safe permissions: $PERMS"

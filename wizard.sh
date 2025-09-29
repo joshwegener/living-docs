@@ -23,7 +23,7 @@ DRY_RUN=false
 BACKUP_BEFORE_UPDATE=false
 
 for arg in "$@"; do
-    case $arg in
+    case "$arg" in
         --update|--update-only|-u)
             UPDATE_ONLY=true
             shift
@@ -278,7 +278,7 @@ select_adapters() {
     # Initialize selection array (0=unselected, 1=selected)
     local selected=()
     for i in "${!ADAPTER_KEYS[@]}"; do
-        selected[$i]=0
+        selected["$i"]=0
     done
 
     clear
@@ -334,9 +334,9 @@ select_adapters() {
             # Space - toggle selection
             ' ')
                 if [ "${selected[$cursor_pos]}" = "1" ]; then
-                    selected[$cursor_pos]=0
+                    selected["$cursor_pos"]=0
                 else
-                    selected[$cursor_pos]=1
+                    selected["$cursor_pos"]=1
                 fi
                 ;;
             # Enter - done selecting
@@ -465,7 +465,7 @@ main() {
         echo ""
         read -p "Choice [1-4]: " choice
 
-        case $choice in
+        case "$choice" in
             1)
                 # Load existing config
                 source .living-docs.config
@@ -493,7 +493,7 @@ main() {
     echo ""
     read -p "Choice [1-5]: " path_choice
 
-    case $path_choice in
+    case "$path_choice" in
         1) DOCS_PATH=".claude" ;;
         2) DOCS_PATH=".github" ;;
         3) DOCS_PATH="docs" ;;
@@ -552,7 +552,7 @@ EOF
 # Bootstrap - AI Assistant Instructions
 
 ## 📊 Project Dashboard
-**@$DOCS_PATH/current.md** - Complete project status
+**@${DOCS_PATH}/current.md** - Complete project status
 
 ## 🛠️ Active Framework Rules
 <!-- RULES_START -->
@@ -560,9 +560,9 @@ EOF
 <!-- RULES_END -->
 
 ## 📁 Documentation Structure
-- $DOCS_PATH/active/ - Current work
-- $DOCS_PATH/completed/ - Finished tasks
-- $DOCS_PATH/current.md - Project dashboard
+- ${DOCS_PATH}/active/ - Current work
+- ${DOCS_PATH}/completed/ - Finished tasks
+- ${DOCS_PATH}/current.md - Project dashboard
 EOF
     fi
 

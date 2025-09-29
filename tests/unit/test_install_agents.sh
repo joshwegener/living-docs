@@ -25,40 +25,40 @@ test_install_agents() {
     echo "Testing: Installation of agent templates"
 
     # Setup mock agent adapter with various agent types
-    mkdir -p "$TEST_DIR/tmp/agent-os/agents"
-    mkdir -p "$TEST_DIR/tmp/agent-os/templates"
-    mkdir -p "$TEST_DIR/tmp/agent-os/config"
+    mkdir -p ""$TEST_DIR"/tmp/agent-os/agents"
+    mkdir -p ""$TEST_DIR"/tmp/agent-os/templates"
+    mkdir -p ""$TEST_DIR"/tmp/agent-os/config"
 
     # Create agent templates for different roles
-    cat > "$TEST_DIR/tmp/agent-os/agents/developer.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/agent-os/agents/developer.md" <<'EOF'
 # Developer Agent
 Role: Senior Software Developer
 Specialization: Full-stack development
-Context: \$SPECS_PATH/current/
-Scripts: \$SCRIPTS_PATH/development/
-Memory: \$MEMORY_PATH/development/
+Context: \"$SPECS_PATH"/current/
+Scripts: \"$SCRIPTS_PATH"/development/
+Memory: \"$MEMORY_PATH"/development/
 EOF
 
-    cat > "$TEST_DIR/tmp/agent-os/agents/reviewer.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/agent-os/agents/reviewer.md" <<'EOF'
 # Code Reviewer Agent
 Role: Technical Lead / Code Reviewer
 Specialization: Code quality and architecture review
-Context: \$SPECS_PATH/review/
-Scripts: \$SCRIPTS_PATH/review/
-Memory: \$MEMORY_PATH/review/
+Context: \"$SPECS_PATH"/review/
+Scripts: \"$SCRIPTS_PATH"/review/
+Memory: \"$MEMORY_PATH"/review/
 EOF
 
-    cat > "$TEST_DIR/tmp/agent-os/agents/tester.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/agent-os/agents/tester.md" <<'EOF'
 # Testing Agent
 Role: QA Engineer
 Specialization: Test automation and quality assurance
-Context: \$SPECS_PATH/testing/
-Scripts: \$SCRIPTS_PATH/testing/
-Memory: \$MEMORY_PATH/testing/
+Context: \"$SPECS_PATH"/testing/
+Scripts: \"$SCRIPTS_PATH"/testing/
+Memory: \"$MEMORY_PATH"/testing/
 EOF
 
     # Create configuration templates
-    cat > "$TEST_DIR/tmp/agent-os/config/agent-config.yml" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/agent-os/config/agent-config.yml" <<'EOF'
 agents:
   developer:
     model: claude-3-sonnet
@@ -80,14 +80,14 @@ paths:
 EOF
 
     # Create workflow templates
-    cat > "$TEST_DIR/tmp/agent-os/templates/workflow.md" <<'EOF'
+    cat > ""$TEST_DIR"/tmp/agent-os/templates/workflow.md" <<'EOF'
 # Agent Workflow Template
 1. Developer creates feature
 2. Reviewer validates code
 3. Tester creates test suite
 4. All agents collaborate on documentation
 
-Agents Directory: \$AGENTS_PATH/
+Agents Directory: \"$AGENTS_PATH"/
 EOF
 
     # Test installation of agent adapter
@@ -100,21 +100,21 @@ EOF
     fi
 
     # Check that agent files are installed in correct location
-    if [[ -f "$PROJECT_ROOT/.claude/agents/developer.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/agents/developer.md" ]]; then
         echo "✓ Developer agent installed"
     else
         echo "✗ Developer agent not found"
         return 1
     fi
 
-    if [[ -f "$PROJECT_ROOT/.claude/agents/reviewer.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/agents/reviewer.md" ]]; then
         echo "✓ Reviewer agent installed"
     else
         echo "✗ Reviewer agent not found"
         return 1
     fi
 
-    if [[ -f "$PROJECT_ROOT/.claude/agents/tester.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/agents/tester.md" ]]; then
         echo "✓ Tester agent installed"
     else
         echo "✗ Tester agent not found"
@@ -122,7 +122,7 @@ EOF
     fi
 
     # Check configuration file installation
-    if [[ -f "$PROJECT_ROOT/.claude/config/agent-config.yml" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/config/agent-config.yml" ]]; then
         echo "✓ Agent configuration installed"
     else
         echo "✗ Agent configuration not found"
@@ -130,7 +130,7 @@ EOF
     fi
 
     # Check template installation
-    if [[ -f "$PROJECT_ROOT/templates/workflow.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/templates/workflow.md" ]]; then
         echo "✓ Workflow template installed"
     else
         echo "✗ Workflow template not found"
@@ -138,7 +138,7 @@ EOF
     fi
 
     # Verify path rewriting in agent files
-    if grep -q "\$SPECS_PATH" "$PROJECT_ROOT/.claude/agents/developer.md"; then
+    if grep -q "\$SPECS_PATH" ""$PROJECT_ROOT"/.claude/agents/developer.md"; then
         echo "✓ Path variables preserved in agent files"
     else
         echo "✗ Path variables not found in agent files"
@@ -149,8 +149,8 @@ EOF
     export AGENTS_PATH="/custom/agents"
     export AGENT_CONFIG_PATH="/custom/config"
 
-    mkdir -p "$TEST_DIR/tmp/custom-agents/agents"
-    echo "# Custom agent" > "$TEST_DIR/tmp/custom-agents/agents/custom.md"
+    mkdir -p ""$TEST_DIR"/tmp/custom-agents/agents"
+    echo "# Custom agent" > ""$TEST_DIR"/tmp/custom-agents/agents/custom.md"
 
     if result=$(install_adapter "custom-agents" --custom-paths 2>&1); then
         echo "✓ Custom agent paths installation completed"
@@ -160,7 +160,7 @@ EOF
     fi
 
     # Check custom path installation
-    if [[ -f "/custom/agents/custom.md" ]] || [[ -f "$PROJECT_ROOT/custom/agents/custom.md" ]]; then
+    if [[ -f "/custom/agents/custom.md" ]] || [[ -f ""$PROJECT_ROOT"/custom/agents/custom.md" ]]; then
         echo "✓ Agent installed with custom path"
     else
         echo "✗ Custom path not used for agent installation"
@@ -168,9 +168,9 @@ EOF
     fi
 
     # Test agent-specific manifest tracking
-    if [[ -f "$PROJECT_ROOT/adapters/agent-os/.living-docs-manifest.json" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/adapters/agent-os/.living-docs-manifest.json" ]]; then
         local manifest_content
-        manifest_content=$(cat "$PROJECT_ROOT/adapters/agent-os/.living-docs-manifest.json")
+        manifest_content=$(cat ""$PROJECT_ROOT"/adapters/agent-os/.living-docs-manifest.json")
 
         if echo "$manifest_content" | grep -q "agents/developer.md"; then
             echo "✓ Agent files tracked in manifest"
@@ -198,8 +198,8 @@ EOF
     fi
 
     # Test multi-agent workflow setup
-    if [[ -f "$PROJECT_ROOT/templates/workflow.md" ]]; then
-        if grep -q "All agents collaborate" "$PROJECT_ROOT/templates/workflow.md"; then
+    if [[ -f ""$PROJECT_ROOT"/templates/workflow.md" ]]; then
+        if grep -q "All agents collaborate" ""$PROJECT_ROOT"/templates/workflow.md"; then
             echo "✓ Multi-agent workflow template properly installed"
         else
             echo "✗ Workflow template content missing"

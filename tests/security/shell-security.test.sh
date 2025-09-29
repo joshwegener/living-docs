@@ -6,7 +6,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_ROOT="$(cd ""$SCRIPT_DIR"/../.." && pwd)"
 FAILED_TESTS=0
 PASSED_TESTS=0
 
@@ -50,7 +50,7 @@ done
 # Test 2: Check for unquoted variable expansions
 echo -e "\nTest 2: Variable quoting enforcement"
 for script in "${SCRIPTS[@]}"; do
-    # Look for unquoted $var patterns (basic check for now)
+    # Look for unquoted "$var" patterns (basic check for now)
     if grep -E '\$[A-Za-z_][A-Za-z0-9_]*[^}"]' "$script" | grep -v '^\s*#' | grep -q .; then
         test_fail "Potentially unquoted variables found in: $script"
     else
@@ -121,7 +121,7 @@ echo "  Failed: $FAILED_TESTS"
 echo "==========================================="
 
 # Exit with failure if any tests failed (expected for TDD)
-if [[ $FAILED_TESTS -gt 0 ]]; then
+if [[ "$FAILED_TESTS" -gt 0 ]]; then
     echo -e "${RED}Security tests failed (expected for TDD - fix implementations next)${NC}"
     exit 1
 else

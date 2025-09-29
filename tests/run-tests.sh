@@ -6,8 +6,8 @@ set -euo pipefail
 
 # Configuration
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TEST_DIR="$REPO_ROOT/tests"
-COVERAGE_DIR="${COVERAGE_DIR:-$REPO_ROOT/coverage}"
+TEST_DIR=""$REPO_ROOT"/tests"
+COVERAGE_DIR="${COVERAGE_DIR:-"$REPO_ROOT"/coverage}"
 TEST_TYPE="${1:-all}"
 VERBOSE="${VERBOSE:-false}"
 CI_MODE="${CI:-false}"
@@ -103,10 +103,10 @@ run_shellcheck() {
         ! -path "*/.living-docs.backup/*")
 
     # Add wizard.sh if it exists
-    [[ -f "$REPO_ROOT/wizard.sh" ]] && scripts+=("$REPO_ROOT/wizard.sh")
+    [[ -f ""$REPO_ROOT"/wizard.sh" ]] && scripts+=(""$REPO_ROOT"/wizard.sh")
 
     local total=${#scripts[@]}
-    print_msg "$BLUE" "Checking $total shell scripts..."
+    print_msg "$BLUE" "Checking "$total" shell scripts..."
 
     for script in "${scripts[@]}"; do
         if [[ "$VERBOSE" == "true" ]]; then
@@ -128,32 +128,32 @@ run_shellcheck() {
         fi
     done
 
-    if [[ $failed -eq 0 ]]; then
-        print_msg "$GREEN" "✓ All $total scripts passed ShellCheck"
+    if [[ "$failed" -eq 0 ]]; then
+        print_msg "$GREEN" "✓ All "$total" scripts passed ShellCheck"
         ((PASSED_TESTS += total))
     else
-        print_msg "$RED" "✗ $failed/$total scripts failed ShellCheck"
+        print_msg "$RED" "✗ "$failed"/"$total" scripts failed ShellCheck"
         ((FAILED_TESTS += failed))
         ((PASSED_TESTS += total - failed))
     fi
 
     ((TOTAL_TESTS += total))
-    return $([[ $failed -eq 0 ]] && echo 0 || echo 1)
+    return $([[ "$failed" -eq 0 ]] && echo 0 || echo 1)
 }
 
 # Run Bats unit tests
 run_bats_tests() {
     print_header "Bats - Unit Tests"
 
-    if [[ ! -d "$TEST_DIR/bats" ]]; then
-        print_msg "$YELLOW" "No Bats tests found in $TEST_DIR/bats"
+    if [[ ! -d ""$TEST_DIR"/bats" ]]; then
+        print_msg "$YELLOW" "No Bats tests found in "$TEST_DIR"/bats"
         return 0
     fi
 
     local test_files=()
     while IFS= read -r test_file; do
         test_files+=("$test_file")
-    done < <(find "$TEST_DIR/bats" -name "*.bats" -type f | sort)
+    done < <(find ""$TEST_DIR"/bats" -name "*.bats" -type f | sort)
 
     if [[ ${#test_files[@]} -eq 0 ]]; then
         print_msg "$YELLOW" "No Bats test files found"
@@ -173,14 +173,14 @@ run_bats_tests() {
         if [[ "$VERBOSE" == "true" ]]; then
             print_msg "$BLUE" "Running: $test_name"
             if bats "$test_file"; then
-                print_msg "$GREEN" "  ✓ $test_name passed"
+                print_msg "$GREEN" "  ✓ "$test_name" passed"
                 ((passed++))
             else
-                print_msg "$RED" "  ✗ $test_name failed"
+                print_msg "$RED" "  ✗ "$test_name" failed"
                 ((failed++))
             fi
         else
-            echo -n "  Testing $test_name... "
+            echo -n "  Testing "$test_name"... "
             if bats "$test_file" &>/dev/null; then
                 print_msg "$GREEN" "PASSED"
                 ((passed++))
@@ -192,24 +192,24 @@ run_bats_tests() {
         ((total++))
     done
 
-    if [[ $failed -eq 0 ]]; then
-        print_msg "$GREEN" "✓ All $total Bats test suites passed"
+    if [[ "$failed" -eq 0 ]]; then
+        print_msg "$GREEN" "✓ All "$total" Bats test suites passed"
     else
-        print_msg "$RED" "✗ $failed/$total Bats test suites failed"
+        print_msg "$RED" "✗ "$failed"/"$total" Bats test suites failed"
     fi
 
     ((TOTAL_TESTS += total))
     ((PASSED_TESTS += passed))
     ((FAILED_TESTS += failed))
 
-    return $([[ $failed -eq 0 ]] && echo 0 || echo 1)
+    return $([[ "$failed" -eq 0 ]] && echo 0 || echo 1)
 }
 
 # Run integration tests
 run_integration_tests() {
     print_header "Integration Tests"
 
-    if [[ ! -d "$TEST_DIR/integration" ]]; then
+    if [[ ! -d ""$TEST_DIR"/integration" ]]; then
         print_msg "$YELLOW" "No integration tests found"
         return 0
     fi
@@ -217,7 +217,7 @@ run_integration_tests() {
     local test_files=()
     while IFS= read -r test_file; do
         test_files+=("$test_file")
-    done < <(find "$TEST_DIR/integration" -name "*.sh" -type f -executable | sort)
+    done < <(find ""$TEST_DIR"/integration" -name "*.sh" -type f -executable | sort)
 
     if [[ ${#test_files[@]} -eq 0 ]]; then
         print_msg "$YELLOW" "No executable integration tests found"
@@ -233,7 +233,7 @@ run_integration_tests() {
         local test_name
         test_name=$(basename "$test_file" .sh)
 
-        echo -n "  Testing $test_name... "
+        echo -n "  Testing "$test_name"... "
         if bash "$test_file" &>/dev/null; then
             print_msg "$GREEN" "PASSED"
             ((passed++))
@@ -246,17 +246,17 @@ run_integration_tests() {
         fi
     done
 
-    if [[ $failed -eq 0 ]]; then
+    if [[ "$failed" -eq 0 ]]; then
         print_msg "$GREEN" "✓ All ${#test_files[@]} integration tests passed"
     else
-        print_msg "$RED" "✗ $failed/${#test_files[@]} integration tests failed"
+        print_msg "$RED" "✗ "$failed"/${#test_files[@]} integration tests failed"
     fi
 
     ((TOTAL_TESTS += ${#test_files[@]}))
     ((PASSED_TESTS += passed))
     ((FAILED_TESTS += failed))
 
-    return $([[ $failed -eq 0 ]] && echo 0 || echo 1)
+    return $([[ "$failed" -eq 0 ]] && echo 0 || echo 1)
 }
 
 # Run tests with coverage
@@ -269,9 +269,9 @@ run_coverage_tests() {
         return 0
     fi
 
-    if [[ -f "$TEST_DIR/run-coverage.sh" ]]; then
+    if [[ -f ""$TEST_DIR"/run-coverage.sh" ]]; then
         print_msg "$BLUE" "Running coverage tests..."
-        if bash "$TEST_DIR/run-coverage.sh"; then
+        if bash ""$TEST_DIR"/run-coverage.sh"; then
             print_msg "$GREEN" "✓ Coverage tests completed"
             ((PASSED_TESTS++))
         else
@@ -298,7 +298,7 @@ generate_report() {
     print_msg "$RED" "Failed Tests:   $FAILED_TESTS"
     print_msg "$YELLOW" "Skipped Tests:  $SKIPPED_TESTS"
 
-    if [[ $TOTAL_TESTS -gt 0 ]]; then
+    if [[ "$TOTAL_TESTS" -gt 0 ]]; then
         local pass_rate=$((PASSED_TESTS * 100 / TOTAL_TESTS))
         echo ""
         print_msg "$BLUE" "Pass Rate: ${pass_rate}%"
@@ -307,7 +307,7 @@ generate_report() {
     echo ""
 
     # Exit code based on results
-    if [[ $FAILED_TESTS -eq 0 ]]; then
+    if [[ "$FAILED_TESTS" -eq 0 ]]; then
         print_msg "$GREEN" "✓ All tests passed successfully!"
         return 0
     else

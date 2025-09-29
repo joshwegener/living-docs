@@ -5,8 +5,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-WIZARD_SCRIPT="$PROJECT_ROOT/wizard.sh"
+PROJECT_ROOT="$(cd ""$SCRIPT_DIR"/../.." && pwd)"
+WIZARD_SCRIPT=""$PROJECT_ROOT"/wizard.sh"
 
 # Colors for output
 RED='\033[0;31m'
@@ -25,7 +25,7 @@ run_test() {
     echo "Running: $test_name"
     ((tests_run++))
 
-    if $test_function; then
+    if "$test_function"; then
         echo -e "${GREEN}✅ PASS:${NC} $test_name"
         test_results+=("PASS: $test_name")
         ((tests_passed++))
@@ -195,7 +195,7 @@ main() {
     echo "Tests failed: $((tests_run - tests_passed))"
     echo
 
-    if [[ $tests_passed -eq $tests_run ]]; then
+    if [[ "$tests_passed" -eq "$tests_run" ]]; then
         echo -e "${GREEN}✅ All security tests passed${NC}"
         exit 0
     else

@@ -23,7 +23,7 @@ echo "Test 1: Testing file path injection in read_manifest..."
 
 # Create malicious adapter name with path traversal
 MALICIOUS_NAME='../../etc/passwd"]; echo "INJECTED'
-mkdir -p "$TEST_DIR/adapters/test-adapter"
+mkdir -p ""$TEST_DIR"/adapters/test-adapter"
 
 # Try to create manifest with malicious name - should be sanitized
 if create_manifest "$MALICIOUS_NAME" "1.0.0" "test" 2>/dev/null; then

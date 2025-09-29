@@ -25,19 +25,19 @@ test_remove_adapter() {
     echo "Testing: Complete adapter removal using manifest"
 
     # Setup mock installed adapter with manifest
-    mkdir -p "$PROJECT_ROOT/adapters/spec-kit"
-    mkdir -p "$PROJECT_ROOT/.claude/commands"
-    mkdir -p "$PROJECT_ROOT/scripts"
-    mkdir -p "$PROJECT_ROOT/templates"
+    mkdir -p ""$PROJECT_ROOT"/adapters/spec-kit"
+    mkdir -p ""$PROJECT_ROOT"/.claude/commands"
+    mkdir -p ""$PROJECT_ROOT"/scripts"
+    mkdir -p ""$PROJECT_ROOT"/templates"
 
     # Create installed files
-    echo "# Plan command" > "$PROJECT_ROOT/.claude/commands/speckit_plan.md"
-    echo "# Tasks command" > "$PROJECT_ROOT/.claude/commands/speckit_tasks.md"
-    echo "#!/bin/bash" > "$PROJECT_ROOT/scripts/speckit_setup.sh"
-    echo "# Template" > "$PROJECT_ROOT/templates/speckit_template.md"
+    echo "# Plan command" > ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md"
+    echo "# Tasks command" > ""$PROJECT_ROOT"/.claude/commands/speckit_tasks.md"
+    echo "#!/bin/bash" > ""$PROJECT_ROOT"/scripts/speckit_setup.sh"
+    echo "# Template" > ""$PROJECT_ROOT"/templates/speckit_template.md"
 
     # Create manifest tracking these files
-    cat > "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json" <<'EOF'
+    cat > ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json" <<'EOF'
 {
   "adapter": "spec-kit",
   "version": "1.0.0",
@@ -68,7 +68,7 @@ test_remove_adapter() {
 EOF
 
     # Verify files exist before removal
-    if [[ ! -f "$PROJECT_ROOT/.claude/commands/speckit_plan.md" ]]; then
+    if [[ ! -f ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md" ]]; then
         echo "✗ Setup failed: Test files not created"
         return 1
     fi
@@ -83,22 +83,22 @@ EOF
     fi
 
     # Check all tracked files are removed
-    if [[ -f "$PROJECT_ROOT/.claude/commands/speckit_plan.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/commands/speckit_plan.md" ]]; then
         echo "✗ Command file still exists after removal"
         return 1
     fi
 
-    if [[ -f "$PROJECT_ROOT/.claude/commands/speckit_tasks.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/.claude/commands/speckit_tasks.md" ]]; then
         echo "✗ Tasks file still exists after removal"
         return 1
     fi
 
-    if [[ -f "$PROJECT_ROOT/scripts/speckit_setup.sh" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/scripts/speckit_setup.sh" ]]; then
         echo "✗ Script file still exists after removal"
         return 1
     fi
 
-    if [[ -f "$PROJECT_ROOT/templates/speckit_template.md" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/templates/speckit_template.md" ]]; then
         echo "✗ Template file still exists after removal"
         return 1
     fi
@@ -106,12 +106,12 @@ EOF
     echo "✓ All tracked files removed successfully"
 
     # Check manifest and adapter directory removed
-    if [[ -f "$PROJECT_ROOT/adapters/spec-kit/.living-docs-manifest.json" ]]; then
+    if [[ -f ""$PROJECT_ROOT"/adapters/spec-kit/.living-docs-manifest.json" ]]; then
         echo "✗ Manifest file still exists after removal"
         return 1
     fi
 
-    if [[ -d "$PROJECT_ROOT/adapters/spec-kit" ]]; then
+    if [[ -d ""$PROJECT_ROOT"/adapters/spec-kit" ]]; then
         echo "✗ Adapter directory still exists after removal"
         return 1
     fi
@@ -119,7 +119,7 @@ EOF
     echo "✓ Manifest and adapter directory removed"
 
     # Check empty directories are cleaned up
-    if [[ -d "$PROJECT_ROOT/.claude/commands" ]] && [[ -z "$(ls -A "$PROJECT_ROOT/.claude/commands")" ]]; then
+    if [[ -d ""$PROJECT_ROOT"/.claude/commands" ]] && [[ -z "$(ls -A ""$PROJECT_ROOT"/.claude/commands")" ]]; then
         echo "✓ Empty command directory preserved (expected)"
     fi
 

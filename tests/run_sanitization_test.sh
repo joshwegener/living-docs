@@ -27,7 +27,7 @@ functions_to_test=("sanitize_input" "sanitize_framework_name" "sanitize_path")
 
 for func in "${functions_to_test[@]}"; do
     if ! type "$func" >/dev/null 2>&1; then
-        echo "❌ EXPECTED FAILURE: Function $func does not exist"
+        echo "❌ EXPECTED FAILURE: Function "$func" does not exist"
         echo "   This is correct for TDD - implement the function to make tests pass"
         exit 1
     fi
