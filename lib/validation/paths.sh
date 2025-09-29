@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Path Validation Functions for Adapter Installation System
 # Handles validation of paths in templates and configurations
 

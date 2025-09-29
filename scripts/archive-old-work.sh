@@ -1,9 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 # Archive old completed work
 # Moves completed work older than 30 days to archived directory
-
-set -e
 
 # Load config if exists
 if [ -f ".living-docs.config" ]; then

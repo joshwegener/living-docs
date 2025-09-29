@@ -57,7 +57,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
-- [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅
+- [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅ (Merged Sept 28)
 - [Spec 008: TDD Week 1](../specs/008-tdd-remediation-week1/spec.md) - Security module remediation 🔴
 - [Spec 009: TDD Week 2](../specs/009-tdd-remediation-week2/spec.md) - Core adapter remediation 🔴
 - [Spec 010: TDD Week 3-4](../specs/010-tdd-remediation-week3/spec.md) - Validation remediation 🔴
@@ -95,7 +95,20 @@ Create a documentation framework that actually stays alive throughout a project'
 - [lib/debug/logger.sh](../lib/debug/logger.sh) - Debug logging with security & cross-platform support
 - lib/security/sanitize.sh - Input sanitization (pending implementation)
 
-### Tests
+### Tests (Bats-based TDD tests)
+- [tests/bats/](../tests/bats/) - Comprehensive TDD test suite using Bats framework
+  - test_adapter_install.bats - Adapter installation tests
+  - test_adapter_manifest.bats - Manifest tracking tests
+  - test_adapter_prefix.bats - Command prefixing tests
+  - test_adapter_remove.bats - Adapter removal tests
+  - test_adapter_rewrite.bats - Path rewriting tests
+  - test_adapter_update.bats - Update system tests
+  - test_agents.bats - Agent installation tests
+  - test_a11y.bats - Accessibility library tests
+  - test_mermaid.bats - Mermaid diagram tests
+  - test_validation.bats - Input validation tests
+
+### Legacy Tests (Shell-based)
 - [tests/debug/logger-compliance.test.sh](../tests/debug/logger-compliance.test.sh) - Debug logger compliance tests
 - [tests/debug/logger-basic.test.sh](../tests/debug/logger-basic.test.sh) - Debug logger basic tests
 - [tests/debug/logger.test.sh](../tests/debug/logger.test.sh) - Debug logger full test suite
@@ -135,6 +148,7 @@ Create a documentation framework that actually stays alive throughout a project'
 ### GitHub Integration
 - [.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/) - Issue templates
 - [.github/workflows/release.yml](../.github/workflows/release.yml) - Automated release pipeline with security validation
+- [.github/workflows/tdd-enforcement.yml](../.github/workflows/tdd-enforcement.yml) - TDD compliance checks on all PRs
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Tracker Lifecycle Management - Manage spec implementation trackers
 
 # create_tracker() - Create a new spec tracker file

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Smart Update Functions for Adapter Installation System
 # Handles updates while preserving user customizations
 

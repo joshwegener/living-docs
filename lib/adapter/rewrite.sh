@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Path Rewriting Engine for Adapter Installation System
 # Handles detection and rewriting of hardcoded paths to use variables
 

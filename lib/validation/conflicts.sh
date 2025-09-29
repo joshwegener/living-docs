@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Conflict Detection Functions for Adapter Installation System
 # Handles detection and resolution of file conflicts across AI directories
 

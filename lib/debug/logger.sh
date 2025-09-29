@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Debug Logging Library for living-docs
 # Comprehensive debug logging with security, performance, and context features
 # Supports levels, file output, timing, and context preservation
-
-set -eo pipefail
 
 # Global variables for debug state management
 LIVING_DOCS_DEBUG_INITIALIZED=0

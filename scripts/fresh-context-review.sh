@@ -1,7 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 # Fresh Context Review - Generic AI compliance review script
-
-set -e
 
 # Colors for output
 RED='\033[0;31m'

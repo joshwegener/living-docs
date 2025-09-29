@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Manifest Management Functions for Adapter Installation System
 # Handles creation, reading, updating, and validation of adapter manifests
 

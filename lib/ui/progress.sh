@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # progress.sh - Progress indicator library for living-docs
 # Provides visual progress indicators for shell scripts
 

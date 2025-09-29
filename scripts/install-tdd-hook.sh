@@ -1,7 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 # install-tdd-hook.sh - Install git pre-commit hook for TDD enforcement
-
-set -e
 
 HOOK_FILE=".git/hooks/pre-commit"
 
