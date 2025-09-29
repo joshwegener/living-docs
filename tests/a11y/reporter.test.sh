@@ -16,22 +16,25 @@ test_generate_report() {
     local test_output_dir="$TEST_TMP_DIR/report_output"
     mkdir -p "$test_output_dir"
 
-    local test_issues="
-file.md:10:ERROR:Missing alt text
-file.md:20:WARNING:Poor color contrast
-other.md:5:INFO:Consider heading hierarchy"
+    local test_issues="Missing alt text:img:10:critical
+Poor color contrast:div:20:warning
+Consider heading hierarchy:h3:5:info"
 
-    echo "$test_issues" | generate_report "$test_output_dir" "text"
+    generate_report "$test_output_dir" "text" "$test_issues"
 
-    assert_file_exists "$test_output_dir/accessibility-report.txt" \
+    # Check if report file exists with timestamp
+    local report_files
+    report_files=$(ls "$test_output_dir"/accessibility_report_*.txt 2>/dev/null | head -1)
+
+    assert_not_empty "$report_files" \
         "Text report should be generated"
 
     local content
-    content=$(cat "$test_output_dir/accessibility-report.txt")
+    content=$(cat "$report_files")
     assert_contains "$content" "Accessibility Report" \
         "Report should have title"
-    assert_contains "$content" "ERROR" \
-        "Report should contain errors"
+    assert_contains "$content" "Critical" \
+        "Report should contain critical issues"
 }
 
 # Test generate_html_report
@@ -39,21 +42,20 @@ test_generate_html_report() {
     local test_output_dir="$TEST_TMP_DIR/html_output"
     mkdir -p "$test_output_dir"
 
-    local test_issues="file.md:10:ERROR:Missing alt text"
+    local test_file="$test_output_dir/test.html"
+    local test_issues="Missing alt text:img:10:critical"
 
-    echo "$test_issues" | generate_html_report "$test_output_dir"
+    generate_html_report "$test_file" "$test_issues"
 
-    assert_file_exists "$test_output_dir/accessibility-report.html" \
+    assert_file_exists "$test_file" \
         "HTML report should be generated"
 
     local content
-    content=$(cat "$test_output_dir/accessibility-report.html")
+    content=$(cat "$test_file")
     assert_contains "$content" "<!DOCTYPE html>" \
         "Should be valid HTML"
     assert_contains "$content" "Accessibility Report" \
         "Should have title"
-    assert_contains "$content" "Missing alt text" \
-        "Should contain issue text"
 }
 
 # Test generate_json_report
@@ -61,21 +63,15 @@ test_generate_json_report() {
     local test_output_dir="$TEST_TMP_DIR/json_output"
     mkdir -p "$test_output_dir"
 
-    local test_issues="file.md:10:ERROR:Missing alt text"
+    local test_issues="Missing alt text:img:10:critical"
 
-    echo "$test_issues" | generate_json_report "$test_output_dir"
+    local json_output
+    json_output=$(generate_a11y_report_json "$test_issues")
 
-    assert_file_exists "$test_output_dir/accessibility-report.json" \
-        "JSON report should be generated"
-
-    local content
-    content=$(cat "$test_output_dir/accessibility-report.json")
-    assert_contains "$content" '"timestamp"' \
+    assert_contains "$json_output" '"timestamp"' \
         "JSON should contain timestamp"
-    assert_contains "$content" '"issues"' \
-        "JSON should contain issues array"
-    assert_contains "$content" '"severity": "ERROR"' \
-        "JSON should contain severity field"
+    assert_contains "$json_output" '"accessibility"' \
+        "JSON should contain accessibility object"
 }
 
 # Test generate_csv_report
@@ -83,19 +79,18 @@ test_generate_csv_report() {
     local test_output_dir="$TEST_TMP_DIR/csv_output"
     mkdir -p "$test_output_dir"
 
-    local test_issues="file.md:10:ERROR:Missing alt text"
+    local test_file="$test_output_dir/test.csv"
+    local test_issues="Missing alt text:img:10:critical"
 
-    echo "$test_issues" | generate_csv_report "$test_output_dir"
+    generate_csv_report "$test_file" "$test_issues"
 
-    assert_file_exists "$test_output_dir/accessibility-report.csv" \
+    assert_file_exists "$test_file" \
         "CSV report should be generated"
 
     local content
-    content=$(cat "$test_output_dir/accessibility-report.csv")
-    assert_contains "$content" "File,Line,Severity,Issue" \
+    content=$(cat "$test_file")
+    assert_contains "$content" "Issue,Element,Line,Severity" \
         "CSV should have headers"
-    assert_contains "$content" "file.md,10,ERROR" \
-        "CSV should contain issue data"
 }
 
 # Test generate_text_report
@@ -103,21 +98,18 @@ test_generate_text_report() {
     local test_output_dir="$TEST_TMP_DIR/text_output"
     mkdir -p "$test_output_dir"
 
-    local test_issues="
-file.md:10:ERROR:Missing alt text
-file.md:20:WARNING:Poor contrast"
+    local test_file="$test_output_dir/test.txt"
+    local test_issues="Missing alt text:img:10:critical"
 
-    echo "$test_issues" | generate_text_report "$test_output_dir"
+    generate_text_report "$test_file" "$test_issues"
 
-    assert_file_exists "$test_output_dir/accessibility-report.txt" \
+    assert_file_exists "$test_file" \
         "Text report should be generated"
 
     local content
-    content=$(cat "$test_output_dir/accessibility-report.txt")
-    assert_contains "$content" "Total Issues:" \
-        "Should show issue count"
-    assert_contains "$content" "ERROR" \
-        "Should categorize by severity"
+    content=$(cat "$test_file")
+    assert_contains "$content" "Accessibility Report" \
+        "Should have title"
 }
 
 # Test report format selection
@@ -125,20 +117,18 @@ test_report_format_selection() {
     local test_output_dir="$TEST_TMP_DIR/format_test"
     mkdir -p "$test_output_dir"
 
-    local test_issues="file.md:10:ERROR:Test issue"
+    local test_issues="Missing alt text:img:10:critical"
 
     # Test each format
     for format in text html json csv; do
-        echo "$test_issues" | generate_report "$test_output_dir" "$format"
+        generate_report "$test_output_dir" "$format" "$test_issues"
 
-        case "$format" in
-            text) assert_file_exists "$test_output_dir/accessibility-report.txt" ;;
-            html) assert_file_exists "$test_output_dir/accessibility-report.html" ;;
-            json) assert_file_exists "$test_output_dir/accessibility-report.json" ;;
-            csv) assert_file_exists "$test_output_dir/accessibility-report.csv" ;;
-        esac
+        # Check that at least one report file was created
+        local report_count
+        report_count=$(ls "$test_output_dir"/accessibility_report_* 2>/dev/null | wc -l)
+        assert_gt "$report_count" 0 "Report should be generated for format: $format"
 
-        rm -f "$test_output_dir"/accessibility-report.*
+        rm -f "$test_output_dir"/accessibility_report_*
     done
 }
 

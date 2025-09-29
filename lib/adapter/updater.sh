@@ -8,6 +8,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../common/logging.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/../common/paths.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/../security/input-sanitizer.sh" 2>/dev/null || true
 
 # Check for adapter updates
 check_adapter_updates() {
@@ -18,10 +19,28 @@ check_adapter_updates() {
         return 1
     fi
 
+    # Validate adapter name
+    if ! validate_adapter_name "$adapter_name"; then
+        log_error "Invalid adapter name: $adapter_name"
+        return 1
+    fi
+
     local manifest_file="${PROJECT_ROOT:-$(pwd)}/.living-docs-manifest.json"
+
+    # Sanitize manifest path
+    manifest_file=$(sanitize_path "$manifest_file") || {
+        log_error "Invalid manifest path"
+        return 1
+    }
 
     if [[ ! -f "$manifest_file" ]]; then
         log_warning "No manifest found for $adapter_name"
+        return 1
+    fi
+
+    # Check file permissions
+    if ! check_file_permissions "$manifest_file"; then
+        log_warning "Manifest has insecure permissions"
         return 1
     fi
 
@@ -46,8 +65,9 @@ compare_versions() {
     local version1="${1:-0.0.0}"
     local version2="${2:-0.0.0}"
 
-    # Remove 'v' prefix if present
-    version1="${version1#v}"
+    # Sanitize versions
+    version1=$(sanitize_version "$version1")
+    version2=$(sanitize_version "$version2")
     version2="${version2#v}"
 
     # Split versions into components

@@ -7,6 +7,7 @@ set -euo pipefail
 # Source common libraries
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../common/logging.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/../security/input-sanitizer.sh" 2>/dev/null || true
 
 # Check for missing alt attributes on images
 check_missing_alt() {
@@ -38,9 +39,11 @@ check_missing_labels() {
             # Check if it has an id attribute
             local input_id
             input_id=$(echo "$line" | sed -n 's/.*id[[:space:]]*=[[:space:]]*["'\'']*\([^"'\'']*\)["'\'']*[^>]*.*/\1/p')
+            # Escape special regex characters
+            input_id=$(escape_regex "$input_id")
             if [[ -n "$input_id" ]]; then
-                # Look for corresponding label
-                if ! grep -q "<label.*for=[\"']${input_id}[\"']" <<< "$content"; then
+                # Look for corresponding label (with escaped id)
+                if ! grep -qF "<label" <<< "$content" | grep -q "for=[\"']${input_id}[\"']"; then
                     issues+="missing-label:input:line-$line_num:critical\n"
                 fi
             else
