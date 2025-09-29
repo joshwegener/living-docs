@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Complete Removal Functions for Adapter Installation System
 # Handles complete removal using manifest tracking
 

@@ -1,7 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 # build-context.sh - Dynamically builds CONTEXT.md based on current work
-
-set -e
 
 # Output file
 CONTEXT_FILE="docs/context.md"

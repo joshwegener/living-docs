@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Compliance Review Service - Check rule adherence
 
 # review_compliance() - Review changes for rule compliance

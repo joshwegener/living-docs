@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Install git hooks for living-docs
 
 echo "Installing git hooks..."

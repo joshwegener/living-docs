@@ -1,0 +1,171 @@
+# Test Coverage Summary - TDD Phase 1 (RED)
+
+## Overview
+This document summarizes the FAILING tests added for core living-docs scripts following TDD principles.
+All tests are intentionally failing (RED phase) to identify functionality that needs implementation.
+
+## Test Files Created
+
+### 1. test_wizard_bootstrap.bats
+**Target**: wizard.sh bootstrap functionality
+**Test Count**: 8 tests
+**Coverage Areas**:
+- Bootstrap.md creation from template
+- Template variable substitution
+- Minimal bootstrap fallback
+- Framework rules inclusion
+- Invalid template handling
+- Customization preservation
+- Directory validation
+- Concurrent update safety
+- Token optimization setup
+
+### 2. test_build_context.bats
+**Target**: scripts/build-context.sh (router functionality)
+**Test Count**: 12 tests
+**Coverage Areas**:
+- Dynamic context.md generation
+- File type detection
+- Active spec identification
+- Framework configuration reading
+- Git repository handling
+- Timestamp updates
+- Task-based documentation routing
+- Deep directory structure support
+- Special character escaping
+- Command history inclusion
+- Token limit enforcement
+- Concurrent execution safety
+
+### 3. test_check_drift.bats
+**Target**: scripts/check-drift.sh
+**Test Count**: 12 tests
+**Coverage Areas**:
+- Orphaned documentation detection
+- Link validation
+- Broken link checking
+- Active/task synchronization
+- Completed work location validation
+- Bug reference validation
+- Duplicate entry detection
+- Template consistency checking
+- Drift report generation
+- Auto-fix mode
+- .driftignore pattern support
+- Cross-reference validation
+
+### 4. test_adapter_core.bats
+**Target**: lib/adapter/*.sh (core adapter scripts)
+**Test Count**: 12 tests
+**Coverage Areas**:
+- Adapter structure validation
+- Command conflict prevention
+- Manifest file creation
+- Manifest schema validation
+- File tracking accuracy
+- Complete adapter removal
+- User customization preservation
+- Command name prefixing
+- Path variable rewriting
+- Update with customization preservation
+- Circular dependency detection
+- Version rollback support
+
+### 5. test_archive_old_work.bats
+**Target**: scripts/archive-old-work.sh
+**Test Count**: 10 tests
+**Coverage Areas**:
+- Old work identification (age-based)
+- Dated archive structure creation
+- File metadata preservation
+- Index updates after archiving
+- Custom age threshold support
+- Archive summary generation
+- Dry-run mode
+- Symlink handling
+- .archiveignore pattern support
+- Archive compression for old years
+
+### 6. test_token_metrics.bats
+**Target**: scripts/token-metrics.sh
+**Test Count**: 10 tests
+**Coverage Areas**:
+- Accurate token counting
+- Directory total calculation
+- Token-heavy file identification
+- Multiple model support
+- Optimization suggestions
+- Usage tracking over time
+- Multiple export formats (JSON, CSV, Markdown)
+- Cost estimation
+- .tokenignore pattern support
+- Comparative analysis between versions
+
+### 7. test_setup_coverage.bats
+**Target**: scripts/setup-coverage.sh
+**Test Count**: 12 tests
+**Coverage Areas**:
+- Project type detection
+- Coverage tool installation
+- Configuration file creation
+- Coverage report generation
+- Uncovered code identification
+- Threshold enforcement
+- CI system integration
+- Multi-language support
+- Badge generation for README
+- Coverage trend tracking
+- File exclusion patterns
+- Coverage report merging
+
+## Total Test Coverage
+
+- **7 test files** created
+- **78 total tests** written
+- **All tests intentionally failing** (TDD RED phase)
+- **Core scripts covered**: wizard.sh, build-context.sh, check-drift.sh, archive-old-work.sh, token-metrics.sh, setup-coverage.sh
+- **Adapter libraries covered**: install.sh, manifest.sh, remove.sh, prefix.sh, rewrite.sh, update.sh
+
+## Next Steps (for implementation teams)
+
+1. **GREEN Phase**: Implement minimal code to make tests pass
+2. **REFACTOR Phase**: Improve implementation while keeping tests green
+3. **Continuous**: Add more tests as edge cases are discovered
+
+## TDD Compliance
+
+✅ All tests written BEFORE implementation
+✅ All tests currently FAILING as expected
+✅ Tests committed to git for audit trail
+✅ Clear test descriptions for each failure point
+
+## Running the Tests
+
+```bash
+# Run all new tests
+bats tests/bats/test_wizard_bootstrap.bats
+bats tests/bats/test_build_context.bats
+bats tests/bats/test_check_drift.bats
+bats tests/bats/test_adapter_core.bats
+bats tests/bats/test_archive_old_work.bats
+bats tests/bats/test_token_metrics.bats
+bats tests/bats/test_setup_coverage.bats
+
+# Or run all at once
+for test in tests/bats/test_*.bats; do
+    echo "Running: $test"
+    bats "$test"
+done
+```
+
+## Coordination Notes
+
+- Tests follow existing BATS test patterns in the project
+- Use existing test_helper.bash for common functionality
+- Tests are isolated with proper setup/teardown
+- Mock data and temporary directories used to avoid side effects
+- Each test validates a specific piece of functionality
+
+---
+*Generated by ENG-Tests team following TDD mandate*
+*All tests must fail before implementation (RED → GREEN → REFACTOR)*

@@ -1,8 +1,7 @@
 #!/bin/bash
+set -euo pipefail
 # living-docs drift detection and auto-fix tool
 # Finds and fixes orphaned files and missing links in documentation
-
-set -e
 
 # Colors
 RED='\033[0;31m'

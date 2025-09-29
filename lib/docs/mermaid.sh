@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Mermaid Diagram Validation for living-docs
 # Validates Mermaid syntax, checks for common errors, verifies accessibility
 # Part of living-docs documentation quality assurance system
-
-set -uo pipefail
 
 # Version and metadata
 readonly SCRIPT_VERSION="1.0.0"

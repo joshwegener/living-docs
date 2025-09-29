@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Command Namespacing Functions for Adapter Installation System
 # Handles prefix generation, application, and conflict detection
 

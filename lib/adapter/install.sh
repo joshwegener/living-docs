@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Safe Installation Functions for Adapter Installation System
 # Handles staging, validation, and atomic installation of adapters
 

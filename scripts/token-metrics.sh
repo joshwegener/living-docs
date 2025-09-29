@@ -1,7 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 # token-metrics.sh - Measure token usage of documentation system
-
-set -e
 
 echo "📊 Token Metrics Analysis"
 echo "========================"

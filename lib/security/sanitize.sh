@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Input sanitization functions for living-docs security module
 # Prevents command injection, path traversal, and other security vulnerabilities
 

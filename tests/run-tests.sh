@@ -13,7 +13,7 @@ VERBOSE="${VERBOSE:-false}"
 CI_MODE="${CI:-false}"
 
 # Colors for output (disabled in CI)
-if [[ "$CI_MODE" == "true" ]] || [[ -t 1 == "false" ]]; then
+if [[ "$CI_MODE" == "true" ]] || [[ ! -t 1 ]]; then
     RED=""
     GREEN=""
     YELLOW=""

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Spawn Review Terminal - Open isolated terminal for compliance review
 
 # spawn_review_terminal() - Open new terminal with review context

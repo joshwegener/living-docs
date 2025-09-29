@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Rule Loading Service - Load and include framework-specific rules
 
 # get_installed_specs() - Parse installed frameworks from config

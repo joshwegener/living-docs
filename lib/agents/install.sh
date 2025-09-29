@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Agent Template Installation Functions for Adapter Installation System
 # Handles installation of AI agents to various agent directories
 

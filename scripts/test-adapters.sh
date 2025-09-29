@@ -1,7 +1,7 @@
 #!/bin/bash
+set -euo pipefail
 
 # Comprehensive test suite for multi-spec adapter system
-set -e
 
 # Colors
 RED='\033[0;31m'
