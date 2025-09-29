@@ -5,6 +5,9 @@ set -euo pipefail
 
 echo "Testing namespace collision detection..."
 
+# Initialize test status
+FAILED=0
+
 # Source prefix functions
 if [[ -f "lib/adapter/prefix.sh" ]]; then
     source lib/adapter/prefix.sh
@@ -38,12 +41,13 @@ fi
 # Test 3: Check for prefix validation pattern
 echo "Test 3: Testing prefix validation..."
 
-if ! grep -q "^[a-z][a-z0-9_]*\$\|\[a-zA-Z\]\[a-zA-Z0-9_\]*" lib/adapter/prefix.sh; then
+# Look for the regex pattern in the file
+if grep -E '\^\[a-z\].*\[a-z0-9_\].*\$' lib/adapter/prefix.sh >/dev/null 2>&1; then
+    echo "✓ Prefix format validation exists"
+else
     echo "✗ FAIL: No prefix format validation"
     echo "  Invalid prefixes could cause shell injection"
     FAILED=1
-else
-    echo "✓ Prefix format validation exists"
 fi
 
 # Test 4: Check if existing prefixes are tracked

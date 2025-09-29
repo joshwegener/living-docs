@@ -108,6 +108,12 @@ if [ "$UPDATE_ONLY" = true ]; then
     TEMP_FILE=$(mktemp)
     CHECKSUM_FILE=$(mktemp)
 
+    # Set up cleanup trap for security
+    cleanup_temp_files() {
+        rm -f "$TEMP_FILE" "$CHECKSUM_FILE" 2>/dev/null || true
+    }
+    trap cleanup_temp_files EXIT INT TERM
+
     # Download wizard.sh and its checksum
     if curl -sL "$REPO_URL/wizard.sh" -o "$TEMP_FILE" 2>/dev/null; then
         # Try to download and verify checksum if available
