@@ -1,0 +1,132 @@
+name: TDD Enforcement
+
+on:
+  pull_request:
+    paths:
+      - 'lib/**/*.sh'
+      - 'tests/**/*.bats'
+      - 'tests/**/*.sh'
+
+jobs:
+  tdd-check:
+    runs-on: ubuntu-latest
+    name: Enforce Test-Driven Development
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check TDD Compliance
+        run: |
+          set -e
+
+          echo "=== TDD Compliance Check ==="
+          echo "Checking that tests exist for new implementations..."
+
+          # Get all changed files
+          IMPL_FILES=$(git diff --name-only origin/main...HEAD | grep -E '^lib/.*\.sh$' || true)
+
+          if [ -z "$IMPL_FILES" ]; then
+            echo "✓ No implementation files changed"
+            exit 0
+          fi
+
+          echo "Implementation files changed:"
+          echo "$IMPL_FILES"
+
+          # For each implementation file, check for corresponding test
+          VIOLATIONS=""
+          for impl in $IMPL_FILES; do
+            # Extract module name
+            module=$(basename "$impl" .sh)
+            dir=$(dirname "$impl" | sed 's|^lib/||')
+
+            # Look for corresponding test file
+            test_file="tests/bats/test_${module}.bats"
+            alt_test_file="tests/unit/test_${module}.sh"
+            integration_test="tests/integration/test_${module}_*.sh"
+
+            if [ ! -f "$test_file" ] && [ ! -f "$alt_test_file" ] && ! ls $integration_test 2>/dev/null | grep -q .; then
+              VIOLATIONS="${VIOLATIONS}\n  - $impl (no test found)"
+            else
+              echo "✓ $impl has tests"
+
+              # Check that test was committed BEFORE implementation
+              impl_first_commit=$(git log --reverse --format="%H" --follow -- "$impl" | head -1)
+
+              if [ -f "$test_file" ]; then
+                test_first_commit=$(git log --reverse --format="%H" --follow -- "$test_file" | head -1)
+
+                # Compare commit timestamps
+                impl_date=$(git show -s --format=%ct "$impl_first_commit")
+                test_date=$(git show -s --format=%ct "$test_first_commit" 2>/dev/null || echo "0")
+
+                if [ "$test_date" -gt "$impl_date" ]; then
+                  VIOLATIONS="${VIOLATIONS}\n  - $impl (test written AFTER implementation)"
+                fi
+              fi
+            fi
+          done
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo ""
+            echo "❌ TDD VIOLATIONS FOUND:"
+            echo -e "$VIOLATIONS"
+            echo ""
+            echo "=== TDD REQUIREMENT ==="
+            echo "Tests MUST be written and committed BEFORE implementation."
+            echo "This is not optional. Follow the TDD cycle:"
+            echo "1. Write a failing test"
+            echo "2. Write minimal code to pass"
+            echo "3. Refactor"
+            echo ""
+            echo "To fix:"
+            echo "1. Write tests for the violations above"
+            echo "2. Ensure tests fail initially"
+            echo "3. Commit tests first, then implementation"
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ All implementation files have corresponding tests"
+
+      - name: Check Test Quality
+        if: success()
+        run: |
+          echo "=== Test Quality Check ==="
+
+          # Check for skipped tests (indicates not following RED phase)
+          SKIPPED=$(grep -r "skip.*Implementation pending" tests/ || true)
+
+          if [ -n "$SKIPPED" ]; then
+            echo "⚠️ WARNING: Skipped tests found"
+            echo "TDD requires tests to FAIL first, not be skipped:"
+            echo "$SKIPPED"
+            echo ""
+            echo "Replace skips with actual failing assertions."
+          fi
+
+      - name: Generate TDD Report
+        if: always()
+        run: |
+          echo "## TDD Compliance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "### ❌ Violations Found" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The following files violate TDD principles:" >> $GITHUB_STEP_SUMMARY
+            echo -e "$VIOLATIONS" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ TDD Compliant" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All implementation files have tests written first." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### TDD Requirements" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests MUST be written before implementation" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests MUST fail initially (RED phase)" >> $GITHUB_STEP_SUMMARY
+          echo "- Implementation should be minimal to pass tests (GREEN phase)" >> $GITHUB_STEP_SUMMARY
+          echo "- Refactor only after tests pass (REFACTOR phase)" >> $GITHUB_STEP_SUMMARY

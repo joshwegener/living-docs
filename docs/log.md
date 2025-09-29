@@ -2,6 +2,14 @@
 
 *One-liner updates for agent coordination - newest first*
 
+## Sept 22, 2025
+
+- 11:45 AM - COMPLIANCE: Documented 30,000+ lines of TDD violations in branch 007-adapter-installation
+- 11:30 AM - DEBT: Created 8-week TDD remediation plan (specs 008-011)
+- 11:20 AM - ENFORCE: Added GitHub Action tdd-enforcement.yml to prevent future violations
+- 11:15 AM - ENFORCE: Installed git pre-commit hook for TDD compliance
+- 11:00 AM - REVIEW: Independent compliance review FAILED branch with 4 critical violations
+
 ## Sept 20, 2025
 
 - 8:10 PM - COMPLIANCE: Added retrospective specs and tests for debug logging and troubleshooting guide

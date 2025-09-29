@@ -22,11 +22,12 @@
 - [ ] Convert more docs to XML format for 5x information density (procedures, knowledge, rules)
 - [ ] Auto-generate current.md from directory structure
 - [ ] GitHub Actions for daily spec-kit updates
-- [ ] VSCode extension for living-docs navigation
+- [ ] **VSCode extension**: IDE integration with quick actions (add bug/idea), navigation (jump to current.md), templates, status bar indicators
 - [ ] Web dashboard for documentation visualization
 - [ ] AI chat interface for querying project docs
 - [ ] Automatic PR description generation from completed tasks
 - [ ] Integration with Notion/Obsidian for cross-platform docs
+- [ ] **Examples library**: Real-world examples across project types (tmux-orchestrator, web apps, Python packages, Node microservices, mobile apps)
 - [ ] Docker container with pre-configured living-docs
 - [ ] CLI tool for quick operations (ld add-bug, ld complete-task)
 - [ ] Automated documentation health scoring

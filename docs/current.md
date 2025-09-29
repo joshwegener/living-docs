@@ -24,6 +24,15 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
+
+### ⚠️ CRITICAL: TDD Remediation (8-week plan)
+**30,000+ lines of code violating TDD_TESTS_FIRST gate**
+1. [Week 1: Security Modules](specs/008-tdd-remediation-week1/spec.md) - 🔴 CRITICAL (lib/security/*)
+2. [Week 2: Core Adapters](specs/009-tdd-remediation-week2/spec.md) - 🔴 HIGH (lib/adapter/*)
+3. [Week 3-4: Validation](specs/010-tdd-remediation-week3/spec.md) - 🟡 MEDIUM (lib/validation/*)
+4. [Week 5-6: UI & Integration](specs/011-tdd-remediation-week5/spec.md) - 🟡 MEDIUM (lib/ui/*, lib/docs/*)
+
+### Regular Development
 1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
    - ✅ Created comprehensive input sanitization test suite
    - 🔴 Need to implement lib/security/sanitize.sh module
@@ -49,6 +58,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
 - [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅
+- [Spec 008: TDD Week 1](../specs/008-tdd-remediation-week1/spec.md) - Security module remediation 🔴
+- [Spec 009: TDD Week 2](../specs/009-tdd-remediation-week2/spec.md) - Core adapter remediation 🔴
+- [Spec 010: TDD Week 3-4](../specs/010-tdd-remediation-week3/spec.md) - Validation remediation 🔴
+- [Spec 011: TDD Week 5-6](../specs/011-tdd-remediation-week5/spec.md) - UI & integration remediation 🔴
 
 ## 📂 Complete Documentation Map
 

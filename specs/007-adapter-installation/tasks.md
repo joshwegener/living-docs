@@ -33,45 +33,53 @@ Define and validate the manifest JSON schema.
 
 ## Contract Test Tasks (T004-T011) - Write Tests First (TDD)
 
-### T004: Write install adapter default test [P] [X]
+### T004: Write install adapter default test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Implement test for basic adapter installation.
 - File: `tests/unit/test_install_adapter_default.sh`
 - Test manifest creation, command installation, success return
+- **VIOLATION**: Test written AFTER lib/adapter/install.sh implementation
 
-### T005: Write custom paths installation test [P] [X]
+### T005: Write custom paths installation test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test adapter installation with custom SCRIPTS_PATH and SPECS_PATH.
 - File: `tests/unit/test_install_adapter_custom_paths.sh`
 - Verify path rewriting in installed files
+- **VIOLATION**: Test written AFTER implementation
 
-### T006: Write adapter removal test [P] [X]
+### T006: Write adapter removal test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test complete adapter removal using manifest.
 - File: `tests/unit/test_remove_adapter.sh`
 - Verify all tracked files removed
+- **VIOLATION**: Test written AFTER lib/adapter/remove.sh
 
-### T007: Write update with customizations test [P] [X]
+### T007: Write update with customizations test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test updating adapter while preserving user customizations.
 - File: `tests/unit/test_update_adapter_customizations.sh`
 - Verify customized files preserved
+- **VIOLATION**: Test written AFTER lib/adapter/update.sh
 
-### T008: Write path validation test [P] [X]
+### T008: Write path validation test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test detection of hardcoded paths before installation.
 - File: `tests/unit/test_validate_paths.sh`
 - Check for scripts/bash, .spec, memory paths
+- **VIOLATION**: Test written AFTER lib/validation/paths.sh
 
-### T009: Write command prefixing test [P] [X]
+### T009: Write command prefixing test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test automatic command name prefixing.
 - File: `tests/unit/test_command_prefixing.sh`
 - Verify prefix applied to prevent conflicts
+- **VIOLATION**: Test written AFTER lib/adapter/prefix.sh
 
-### T010: Write conflict handling test [P] [X]
+### T010: Write conflict handling test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test detection and resolution of command conflicts.
 - File: `tests/unit/test_handle_conflicts.sh`
 - Verify existing files preserved
+- **VIOLATION**: Test written AFTER lib/validation/conflicts.sh
 
-### T011: Write agent installation test [P] [X]
+### T011: Write agent installation test [P] [X] ⚠️ COMPLIANCE VIOLATION
 Test installation of agent templates.
 - File: `tests/unit/test_install_agents.sh`
 - Verify agents installed to correct directory
+- **VIOLATION**: Test written AFTER lib/agents/install.sh
 
 ## Core Library Implementation (T012-T020)
 

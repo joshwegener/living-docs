@@ -2,7 +2,12 @@
 
 *One-liner bug capture - promote to docs/issues/ when investigation needed*
 
-## 🔴 Critical
+## 🔴 Critical - Technical Debt
+- [ ] **TDD VIOLATIONS**: 30,000+ lines without test-first development → [specs/008-tdd-remediation-week1/](specs/008-tdd-remediation-week1/spec.md)
+  - [ ] Week 1: Security modules (lib/security/*) - CRITICAL
+  - [ ] Week 2: Core adapter functions (lib/adapter/*) - HIGH
+  - [ ] Week 3-4: Validation & helpers (lib/validation/*, lib/agents/*) - MEDIUM
+  - [ ] Week 5-6: UI & Integration (lib/ui/*, lib/docs/*) - MEDIUM
 - [ ] Universal Adapters not implemented (framework exists but no actual adapters)
 - [ ] Spec-kit adapter completely missing (no .claude/commands/)
 - [ ] BMAD adapter not implemented

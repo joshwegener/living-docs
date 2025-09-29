@@ -1,5 +1,5 @@
 # Dynamic Context
-<!-- Generated: 2025-09-21 14:16:03 -->
+<!-- Generated: 2025-09-21 18:48:32 -->
 
 ## Current Work
 - **Directory**: project root
@@ -8,7 +8,7 @@
 - **Frameworks**: spec-kit
 
 ## Recent Activity
-- **Last Commit**: 4b34518 feat: Living Docs v5.1.0 - Debug System & Comprehensive Testing (#3)
+- **Last Commit**: 8433d92 docs: Update documentation for v5.1.0 adapter installation features
 - **Recent Commands**: none tracked
 
 ## Current Tasks
