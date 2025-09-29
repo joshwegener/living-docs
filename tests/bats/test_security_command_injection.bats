@@ -129,7 +129,7 @@ teardown() {
         [ "$status" -eq 0 ]
 
         # Should escape or remove redirections (THIS WILL FAIL)
-        [[ ! "$output" =~ [<>] ]] || [[ "$output" =~ \\[<>] ]]
+        [[ ! "$output" =~ [\<\>] ]] || [[ "$output" =~ \\\< ]] || [[ "$output" =~ \\\> ]]
     done
 }
 
