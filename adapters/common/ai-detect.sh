@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # AI Assistant Detection and Command Installation Helper
 # Used by adapters to install commands to AI-specific locations
 

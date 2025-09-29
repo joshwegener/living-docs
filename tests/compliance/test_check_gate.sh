@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: check_gate() function
 set -e
 

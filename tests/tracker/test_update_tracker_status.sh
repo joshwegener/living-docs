@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: update_tracker_status() function
 set -e
 

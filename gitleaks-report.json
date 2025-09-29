@@ -1,0 +1,23 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 118,
+  "EndLine": 118,
+  "StartColumn": 8,
+  "EndColumn": 36,
+  "Match": "API_KEY=\"sk-1234567890abcdef\"",
+  "Secret": "sk-1234567890abcdef",
+  "File": "specs/SEC-002-secrets-scan.md",
+  "SymlinkFile": "",
+  "Commit": "00a14f64330577b504076ad2442749f1e2de6b73",
+  "Link": "https://github.com/joshwegener/living-docs/blob/00a14f64330577b504076ad2442749f1e2de6b73/specs/SEC-002-secrets-scan.md?plain=1#L118",
+  "Entropy": 4.2479277,
+  "Author": "Josh Wegener",
+  "Email": "JoshWegener@gmail.com",
+  "Date": "2025-09-29T03:43:21Z",
+  "Message": "security: Add 'set -euo pipefail' to lib/ and scripts/ directories\n\n- Added strict error handling to all lib/ scripts\n- Added strict error handling to all scripts/ scripts\n- Removed duplicate 'set -e' lines where found\n- Ensures scripts fail fast on errors, undefined variables, and pipe failures\n\nPart of security hardening initiative to pass shell-security.test.sh",
+  "Tags": [],
+  "Fingerprint": "00a14f64330577b504076ad2442749f1e2de6b73:specs/SEC-002-secrets-scan.md:generic-api-key:118"
+ }
+]

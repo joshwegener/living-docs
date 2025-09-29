@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Install adapter with custom SCRIPTS_PATH and SPECS_PATH
 # Should rewrite paths in installed files
 

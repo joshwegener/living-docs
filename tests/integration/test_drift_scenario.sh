@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration test for drift detection scenario validation
 # Tests the complete drift detection workflow from quickstart.md
 

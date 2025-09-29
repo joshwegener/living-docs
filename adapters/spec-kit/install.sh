@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Spec-Kit Adapter Installation Script
 # Installs GitHub's specification-driven development toolkit with path rewriting

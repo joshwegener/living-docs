@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Master Update Script for All Adapters
 # Updates all installed spec adapters

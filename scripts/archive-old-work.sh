@@ -6,6 +6,7 @@ set -euo pipefail
 
 # Load config if exists
 if [ -f ".living-docs.config" ]; then
+    # shellcheck source=/dev/null
     source .living-docs.config
 else
     docs_path="docs"
@@ -82,8 +83,8 @@ else
 fi
 
 # Show archive stats
-total_archived=$(ls "$docs_path/archived/" 2>/dev/null | wc -l | tr -d ' ')
+total_archived=$(find "$docs_path/archived/" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 echo ""
 echo "Archive statistics:"
 echo "  Total archived files: $total_archived"
-echo "  Active completed work: $(ls "$docs_path/completed/" 2>/dev/null | wc -l | tr -d ' ')"
+echo "  Active completed work: $(find "$docs_path/completed/" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')"

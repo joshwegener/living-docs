@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: get_tracker_info() function
 set -e
 

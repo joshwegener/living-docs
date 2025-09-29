@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: discover_rule_files() function
 set -e
 

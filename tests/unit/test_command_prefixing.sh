@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Automatic command name prefixing (T009)
 # Should automatically prefix command names to prevent conflicts
 

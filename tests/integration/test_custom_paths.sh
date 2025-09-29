@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test T030: Custom Paths Configuration
 # Tests adapter installation with non-standard paths
 

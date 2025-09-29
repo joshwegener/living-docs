@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test for wizard.sh help output - should not have duplicate Options sections
 # This test MUST fail initially (TDD red phase)
 

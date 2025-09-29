@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # BMAD-Method Adapter Installation Script
 # Installs BMAD multi-agent system with Node.js detection

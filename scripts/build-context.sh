@@ -8,7 +8,7 @@ CONTEXT_FILE="docs/context.md"
 # Get current directory relative to project root
 CURRENT_DIR=$(pwd)
 PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-REL_DIR=${CURRENT_DIR#$PROJECT_ROOT}
+REL_DIR=${CURRENT_DIR#"$PROJECT_ROOT"}
 REL_DIR=${REL_DIR#/}
 
 # Detect file types in current directory
@@ -17,7 +17,7 @@ FILE_TYPES=$(find . -maxdepth 2 -type f -name "*.*" | sed 's/.*\.//' | sort -u |
 # Check for active spec
 ACTIVE_SPEC=""
 if [ -d "docs/active" ]; then
-    ACTIVE_SPEC=$(ls docs/active/*.md 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "")
+    ACTIVE_SPEC=$(find docs/active -name "*.md" -type f 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "")
 fi
 
 # Check installed frameworks
@@ -55,7 +55,7 @@ EOF
 
 # Add active work from current.md
 if [ -f "docs/current.md" ]; then
-    echo "$(grep -A 3 '## 🔥 Active Development' docs/current.md | tail -n +2 | head -3)" >> "$CONTEXT_FILE"
+    grep -A 3 '## 🔥 Active Development' docs/current.md | tail -n +2 | head -3 >> "$CONTEXT_FILE"
 else
     echo "- No active tasks found" >> "$CONTEXT_FILE"
 fi

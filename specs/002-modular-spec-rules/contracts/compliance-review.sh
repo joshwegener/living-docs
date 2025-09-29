@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Contract: Compliance Review Service (Phase 2)
 # Purpose: Independent review of rule compliance
 

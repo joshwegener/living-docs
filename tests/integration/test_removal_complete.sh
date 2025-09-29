@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test T032: Complete Removal Verification
 # Verifies complete cleanup after adapter removal
 

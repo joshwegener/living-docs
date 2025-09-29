@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test for run-tests.sh script syntax
 # This test MUST fail initially (TDD red phase)
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Aider Adapter Installation Script
 # Simple installation - just copies CONVENTIONS.md to project root

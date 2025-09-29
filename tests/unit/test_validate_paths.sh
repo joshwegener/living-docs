@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Detection of hardcoded paths before installation (T008)
 # Should identify and warn about hardcoded paths in adapter files
 

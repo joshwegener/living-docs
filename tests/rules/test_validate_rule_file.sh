@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: validate_rule_file() function
 set -e
 

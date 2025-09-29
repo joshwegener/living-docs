@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test: Wizard creates bootstrap with framework rules
 set -e
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Detection and resolution of command conflicts (T010)
 # Should handle various conflict scenarios and resolution strategies
 

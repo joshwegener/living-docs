@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: review_compliance() function
 set -e
 

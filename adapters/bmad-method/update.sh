@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # bmad-method Adapter Update Script
 

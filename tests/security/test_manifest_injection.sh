@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test for manifest JSON injection vulnerability in manifest.sh
 # This test MUST fail initially (TDD red phase)
 
@@ -8,6 +9,9 @@ set -e
 source lib/adapter/manifest.sh
 
 echo "Testing manifest.sh for injection vulnerabilities..."
+
+# Initialize test status
+FAILED=0
 
 # Create test environment
 TEST_DIR=$(mktemp -d)
@@ -62,11 +66,13 @@ fi
 echo "Test 4: Testing path traversal in get_manifest_path..."
 
 TRAVERSAL_NAME="../../../tmp/evil"
-MANIFEST_PATH=$(get_manifest_path "$TRAVERSAL_NAME")
+MANIFEST_PATH=$(get_manifest_path "$TRAVERSAL_NAME" 2>&1 || echo "REJECTED")
 
-if [[ "$MANIFEST_PATH" == *"../"* ]]; then
+if [[ "$MANIFEST_PATH" == *"../"* ]] || [[ "$MANIFEST_PATH" == *"/tmp/evil"* ]]; then
     echo "✗ FAIL: Path traversal not sanitized in get_manifest_path"
     FAILED=1
+elif [[ "$MANIFEST_PATH" == "REJECTED" ]] || [[ "$MANIFEST_PATH" == *"Error"* ]]; then
+    echo "✓ Path traversal rejected (secure)"
 else
     echo "✓ Path traversal sanitized"
 fi

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test T029: Multi-Adapter Installation
 # Tests installing multiple adapters without conflicts
 

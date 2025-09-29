@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Create a new feature specification directory
 # Usage: ./create-new-feature.sh [feature-number] [feature-name]

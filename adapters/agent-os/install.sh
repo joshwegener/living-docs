@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Agent OS Adapter Installation Script
 # Installs Agent OS with dated specification folders

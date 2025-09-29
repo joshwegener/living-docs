@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test runner for sanitization tests (TDD verification)
 # This should FAIL until lib/security/sanitize.sh is implemented
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test: Update with Rollback - Comprehensive End-to-End Test
 #
 # PURPOSE:

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Directory structure validation
 # MUST FAIL before implementation (TDD)
 

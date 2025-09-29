@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test for namespace collision detection in prefix.sh
 # This test MUST fail initially (TDD red phase)
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test for temp directory vulnerability in install.sh
 # This test MUST fail initially (TDD red phase)
 

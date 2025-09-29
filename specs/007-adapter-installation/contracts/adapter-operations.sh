@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Adapter Operations Contract Tests
 # These tests define the expected behavior - they should fail until implemented
 

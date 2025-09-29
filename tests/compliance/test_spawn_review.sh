@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: spawn_review_terminal() function
 set -e
 

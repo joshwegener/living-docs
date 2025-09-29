@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Check for updates to adapters from their source repositories
 set -e

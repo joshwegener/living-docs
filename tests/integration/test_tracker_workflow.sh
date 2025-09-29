@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test: Complete tracker lifecycle workflow
 set -e
 

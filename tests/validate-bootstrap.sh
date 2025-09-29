@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Bootstrap content validation
 # MUST FAIL before implementation (TDD)
 

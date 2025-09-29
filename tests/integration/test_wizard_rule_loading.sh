@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test: End-to-end rule loading through wizard
 set -e
 

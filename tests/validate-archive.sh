@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Archive functionality validation
 # MUST FAIL before implementation (TDD)
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Tests for Debug Logging Library
 # Note: These tests are retrospective - should have been written first per TDD
 

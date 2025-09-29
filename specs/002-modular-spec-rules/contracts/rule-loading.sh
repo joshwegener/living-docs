@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Contract: Rule Loading Service
 # Purpose: Load framework-specific rules based on installed specs
 

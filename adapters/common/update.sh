@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Common Update Script for Adapters
 # Handles backing up and updating adapter installations

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Cursor Adapter Installation Script
 # Simple installation - just copies .cursorrules to project root

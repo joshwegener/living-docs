@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Update adapter while preserving user customizations (T007)
 # Should update adapter files but preserve user customizations
 

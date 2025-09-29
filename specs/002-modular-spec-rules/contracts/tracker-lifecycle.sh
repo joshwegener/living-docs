@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Contract: Tracker Lifecycle Management
 # Purpose: Manage spec tracker files through their lifecycle
 

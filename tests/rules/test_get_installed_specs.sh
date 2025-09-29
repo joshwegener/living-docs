@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: get_installed_specs() function
 set -e
 

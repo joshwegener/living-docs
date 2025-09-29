@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Configuration file validation
 # MUST FAIL before implementation (TDD)
 

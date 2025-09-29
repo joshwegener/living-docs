@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Basic Tests for Debug Logging Library (Retrospective TDD)
 # These tests verify core functionality of lib/debug/logger.sh
 

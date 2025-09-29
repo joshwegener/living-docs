@@ -35,10 +35,48 @@ Please use the bug report template when reporting issues.
 
 Please use the feature request template when suggesting new features.
 
-## Code Review Process
+## Code Review Process (CRITICAL - MANDATORY)
 
-1. All submissions require review
-2. We may suggest changes or improvements
-3. Once approved, your PR will be merged
+⚠️ **Every PR must follow this exact protocol. No exceptions.**
+
+### 1. PR Ready → Spawn Ephemeral Reviewer
+- Tell orchestrator to spawn fresh Claude Code reviewer window
+- Reviewer must have completely fresh context (no development history)
+
+### 2. Fresh Reviewer Runs Compliance Check
+```bash
+/review-branch
+```
+- Reviewer checks TDD compliance, security, architecture
+- No bias from development context
+
+### 3. Fix ALL Findings Before Merge
+- Address every single finding from reviewer
+- Re-run `/review-branch` until clean approval
+- No partial fixes allowed
+
+### 4. Post-Merge Version Bump (Manual)
+```bash
+# Update README.md version (example: v5.1.0 -> v5.1.1)
+sed -i '' 's/v5\.1\.0/v5.1.1/g' README.md
+```
+- Patch: Bug fixes, docs
+- Minor: New features, adapters
+- Major: Breaking changes
+
+### 5. Tag Release
+```bash
+git tag v5.1.1
+git push origin v5.1.1
+```
+
+### 6. Destroy Reviewer Window
+- Close ephemeral reviewer to prevent context pollution
+- Critical step - do not skip
+
+### Enforcement
+- Pre-commit TDD hooks installed via `./scripts/install-tdd-hook.sh`
+- GitHub Actions `tdd-enforcement.yml` blocks non-compliant PRs
+- Manual checklist required in PR description
 
 Thank you for contributing!

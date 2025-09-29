@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Path Rewriting Engine for Multi-Spec Adapters
 # Handles dynamic path substitution based on user preferences

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test T031: Update Workflow with Customizations
 # Tests full update cycle preserving customizations
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Compliance Tests for Debug Logger - Retrospective TDD
 # These tests demonstrate that testing infrastructure exists
 # Note: Full test suite would be written BEFORE implementation in proper TDD

@@ -3,9 +3,17 @@ set -euo pipefail
 # Manifest Management Functions for Adapter Installation System
 # Handles creation, reading, updating, and validation of adapter manifests
 
+# Source security functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../security/input-validation.sh"
+
 # Get manifest path for an adapter
 get_manifest_path() {
     local adapter_name="$1"
+
+    # Validate adapter name to prevent path traversal
+    adapter_name=$(validate_adapter_name "$adapter_name") || return 1
+
     echo "${PROJECT_ROOT:-$(pwd)}/adapters/$adapter_name/.living-docs-manifest.json"
 }
 
@@ -14,6 +22,11 @@ create_manifest() {
     local adapter_name="$1"
     local version="$2"
     local prefix="$3"
+
+    # Validate all inputs
+    adapter_name=$(validate_adapter_name "$adapter_name") || return 1
+    version=$(validate_version "$version") || return 1
+    prefix=$(validate_prefix "$prefix") || return 1
 
     local manifest_path
     manifest_path=$(get_manifest_path "$adapter_name")
@@ -74,6 +87,17 @@ update_manifest() {
     local checksum="$3"
     local original_path="$4"
     local file_type="${5:-script}"
+
+    # Validate and escape inputs
+    adapter_name=$(validate_adapter_name "$adapter_name") || return 1
+    file_path=$(sanitize_path "$file_path") || return 1
+    file_path=$(escape_awk "$file_path")
+    checksum=$(echo "$checksum" | grep -E '^[a-f0-9]{64}$') || {
+        echo "Error: Invalid checksum format" >&2
+        return 1
+    }
+    original_path=$(sanitize_path "$original_path") || return 1
+    original_path=$(escape_awk "$original_path")
 
     local manifest_path
     manifest_path=$(get_manifest_path "$adapter_name")

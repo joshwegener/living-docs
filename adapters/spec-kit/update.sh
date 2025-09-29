@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # spec-kit Adapter Update Script
 

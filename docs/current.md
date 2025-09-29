@@ -168,6 +168,7 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/enforcement.md](./procedures/enforcement.md) - Mandatory rules & verification
 - [docs/procedures/common-tasks.md](./procedures/common-tasks.md) - Command reference
 - [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
+- [docs/procedures/pr-protocol.md](./procedures/pr-protocol.md) - CRITICAL: Mandatory PR workflow with ephemeral reviewers
 
 ## 🐛 Quick Issues
 See [bugs.md](./bugs.md) - Current count: 19 open

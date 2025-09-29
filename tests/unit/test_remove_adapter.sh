@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Complete adapter removal using manifest (T006)
 # Should remove all files tracked in manifest and clean up directories
 

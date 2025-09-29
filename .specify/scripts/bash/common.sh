@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # (Moved to scripts/bash/) Common functions and variables for all scripts
 
 get_repo_root() { git rev-parse --show-toplevel; }

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Continue.dev Adapter Installation Script
 # Simple installation - just copies .continuerules to project root

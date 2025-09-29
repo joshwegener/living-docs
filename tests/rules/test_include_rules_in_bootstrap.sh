@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: include_rules_in_bootstrap() function
 set -e
 

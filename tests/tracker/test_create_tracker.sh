@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: create_tracker() function
 set -e
 

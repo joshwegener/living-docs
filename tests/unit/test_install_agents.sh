@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Installation of agent templates (T011)
 # Should install agent-specific configuration files and templates
 

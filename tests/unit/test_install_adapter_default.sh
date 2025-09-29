@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Test: Install adapter with default settings
 # Should create manifest, install commands, and return success
 

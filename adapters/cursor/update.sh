@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Cursor Adapter Update Script
 

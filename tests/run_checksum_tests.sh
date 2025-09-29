@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Quick test runner for checksum tests
 
 BATS_PATH="/opt/homebrew/Cellar/bats-core/1.12.0/bin/bats"

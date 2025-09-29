@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 set -e
 JSON_MODE=false
 for arg in "$@"; do case "$arg" in --json) JSON_MODE=true ;; --help|-h) echo "Usage: $0 [--json]"; exit 0 ;; esac; done

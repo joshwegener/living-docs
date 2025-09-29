@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # agent-os Adapter Update Script
 

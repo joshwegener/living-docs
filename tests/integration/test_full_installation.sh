@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Integration Test: Full Installation Flow
 # Tests complete adapter installation with all features
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Quick fix for spec-kit v0.0.47 hardcoded paths
 # This should be integrated into the installer eventually
 
