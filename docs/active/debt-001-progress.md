@@ -18,5 +18,7 @@
 - [ ] Break up docs/mermaid.sh
 - [ ] Optimize adapter/update.sh
 
-## Time: 00:30 checkpoint
+## Time: 01:23 checkpoint
+- Reporter tests updated and passing
+- Ready to remove duplicate report functions from check.sh
 
