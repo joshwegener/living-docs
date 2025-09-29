@@ -16,12 +16,12 @@ install_adapter() {
     local adapter_name="$1"
     local options="${2:-}"
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
 
-    echo "Installing adapter: $adapter_name"
+    echo "Installing adapter: ${adapter_name}"
 
     # Parse options
     local custom_paths=false
@@ -29,7 +29,7 @@ install_adapter() {
     local force=false
     local source_dir=""
 
-    for opt in $options; do
+    for opt in ${options}; do
         case $opt in
             --custom-paths) custom_paths=true ;;
             --dry-run) dry_run=true ;;
@@ -39,26 +39,26 @@ install_adapter() {
     done
 
     # Determine source directory
-    if [[ -z "$source_dir" ]]; then
-        source_dir="${PROJECT_ROOT:-$(pwd)}/tmp/$adapter_name"
+    if [[ -z "${source_dir}" ]]; then
+        source_dir="${PROJECT_ROOT:-$(pwd)}/tmp/${adapter_name}"
     fi
 
     if [[ ! -d "$source_dir" ]]; then
-        echo "Error: Source directory not found: $source_dir" >&2
+        echo "Error: Source directory not found: ${source_dir}" >&2
         echo "Please clone or download the adapter first" >&2
         return 1
     fi
 
     # Stage installation in temporary directory
     local temp_dir
-    temp_dir=$(stage_in_temp "$adapter_name" "$source_dir")
+    temp_dir=$(stage_in_temp "${adapter_name}" "${source_dir}")
 
     if [[ -z "$temp_dir" || ! -d "$temp_dir" ]]; then
         echo "Error: Failed to create staging directory" >&2
         return 1
     fi
 
-    echo "Staging in: $temp_dir"
+    echo "Staging in: ${temp_dir}"
 
     # Validate installation
     if ! validate_installation "$temp_dir" "$adapter_name"; then
@@ -83,20 +83,20 @@ install_adapter() {
         echo "Conflicts detected, applying prefix..."
         prefix=$(generate_prefix "$adapter_name")
 
-        if [[ -z "$prefix" ]]; then
+        if [[ -z "${prefix}" ]]; then
             echo "Error: Failed to generate prefix" >&2
             rm -rf "$temp_dir"
             return 1
         fi
 
-        echo "Using prefix: $prefix"
+        echo "Using prefix: ${prefix}"
     fi
 
     # Perform atomic installation
     if [[ "$dry_run" == "true" ]]; then
         echo "Dry run mode - would install:"
         find "$temp_dir" -type f | while read -r file; do
-            echo "  - $file"
+            echo "  - ${file}"
         done
         rm -rf "$temp_dir"
         return 0
@@ -119,7 +119,7 @@ install_adapter() {
     # Clean up
     rm -rf "$temp_dir"
 
-    echo " Adapter $adapter_name installed successfully"
+    echo " Adapter ${adapter_name} installed successfully"
     return 0
 }
 
@@ -152,7 +152,7 @@ stage_in_temp() {
         return 1
     fi
 
-    echo "$temp_dir"
+    echo "${temp_dir}"
 }
 
 # Validate adapter installation
@@ -180,7 +180,7 @@ validate_installation() {
     local path_report
     path_report=$(detect_paths "$temp_dir" 2>&1)
 
-    if [[ -n "$path_report" ]]; then
+    if [[ -n "${path_report}" ]]; then
         echo "Note: Hardcoded paths detected (will be rewritten):"
         echo "$path_report" | head -5
     fi
@@ -216,14 +216,14 @@ atomic_move() {
                 local dest_name="$base_name"
 
                 # Apply prefix if needed
-                if [[ -n "$prefix" ]]; then
+                if [[ -n "${prefix}" ]]; then
                     dest_name="${prefix}_${base_name}"
                 fi
 
                 local dest_file="$ai_dir/$dest_name"
 
                 if cp "$cmd_file" "$dest_file"; then
-                    echo "   Installed: $dest_name"
+                    echo "   Installed: ${dest_name}"
                 else
                     echo "   Failed to install: $dest_name" >&2
                     ((errors++))
@@ -292,7 +292,7 @@ track_installed_files() {
     ai_dir=$(get_ai_command_dir)
 
     # Track command files
-    if [[ -n "$prefix" ]]; then
+    if [[ -n "${prefix}" ]]; then
         for cmd_file in "$ai_dir/${prefix}_"*.md; do
             if [[ -f "$cmd_file" ]]; then
                 local checksum
@@ -354,7 +354,7 @@ get_adapter_version() {
         version=$(grep '"version"' "$source_dir/package.json" | head -1 | sed 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
     fi
 
-    echo "$version"
+    echo "${version}"
 }
 
 # Rollback installation on failure
@@ -373,11 +373,11 @@ rollback_installation() {
     local files_to_remove
     files_to_remove=$(list_manifest_files "$adapter_name" 2>/dev/null)
 
-    if [[ -n "$files_to_remove" ]]; then
+    if [[ -n "${files_to_remove}" ]]; then
         echo "$files_to_remove" | while read -r file; do
             if [[ -f "$file" ]]; then
                 rm -f "$file"
-                echo "  Removed: $file"
+                echo "  Removed: ${file}"
             fi
         done
     fi

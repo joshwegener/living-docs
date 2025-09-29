@@ -50,7 +50,7 @@ check_file_for_paths() {
     local found=0
 
     while IFS='|' read -r pattern replacement; do
-        [[ -z "$pattern" ]] && continue
+        [[ -z "${pattern}" ]] && continue
         if grep -q "$pattern" "$file"; then
             echo "Found hardcoded path in $file: $pattern" >> "$report_file"
             ((found++))
@@ -67,15 +67,15 @@ create_mappings() {
     # Generate sed script for path replacements
     {
         while IFS='|' read -r pattern replacement; do
-            [[ -z "$pattern" ]] && continue
+            [[ -z "${pattern}" ]] && continue
             # Escape special characters for sed
             escaped_pattern=$(echo "$pattern" | sed 's/[[\.*^$(){}?+|]/\\&/g')
             escaped_replacement=$(echo "$replacement" | sed 's/[[\.*^$(){}?+|]/\\&/g')
-            echo "s|$escaped_pattern|$escaped_replacement|g"
+            echo "s|$escaped_pattern|${escaped_replacement}|g"
         done <<< "$PATH_MAPPINGS"
     } > "$mappings_file"
 
-    echo "$mappings_file"
+    echo "${mappings_file}"
 }
 
 # Apply path rewrites to a file or directory
@@ -135,7 +135,7 @@ rewrite_file() {
         # Check if file changed
         if ! cmp -s "$file" "$temp_file"; then
             cp "$temp_file" "$file"
-            echo "Rewritten: $file"
+            echo "Rewritten: ${file}"
         fi
         return 0
     else
@@ -193,7 +193,7 @@ apply_custom_paths() {
     echo "s|{{MEMORY_PATH}}|${memory_path}|g" >> "$custom_mappings_file"
     echo "s|{{AI_PATH}}|${ai_path}|g" >> "$custom_mappings_file"
 
-    echo "$custom_mappings_file"
+    echo "${custom_mappings_file}"
 }
 
 # Validate that all paths use variables after rewriting
@@ -204,7 +204,7 @@ validate_rewritten_paths() {
 
     # Check for any remaining hardcoded paths
     while IFS='|' read -r pattern replacement; do
-        [[ -z "$pattern" ]] && continue
+        [[ -z "${pattern}" ]] && continue
         if [[ -f "$target" ]]; then
             if grep -q "$pattern" "$target"; then
                 echo "Validation Error: Hardcoded path still present in $target: $pattern" >&2
@@ -231,7 +231,7 @@ generate_rewrite_report() {
     {
         echo "Path Rewrite Report"
         echo "=================="
-        echo "Target: $target"
+        echo "Target: ${target}"
         echo "Date: $(date)"
         echo ""
         echo "Configured Paths:"
@@ -243,10 +243,10 @@ generate_rewrite_report() {
         echo "Files to Process:"
 
         if [[ -f "$target" ]]; then
-            echo "  - $target"
+            echo "  - ${target}"
         elif [[ -d "$target" ]]; then
             find "$target" -type f \( -name "*.md" -o -name "*.sh" -o -name "*.txt" \) | while read -r file; do
-                echo "  - $file"
+                echo "  - ${file}"
             done
         fi
 
@@ -256,7 +256,7 @@ generate_rewrite_report() {
 
     } > "$report_file"
 
-    echo "$report_file"
+    echo "${report_file}"
 }
 
 # Reverse path rewrites (for uninstalling)

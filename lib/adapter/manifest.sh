@@ -14,7 +14,7 @@ get_manifest_path() {
     # Validate adapter name to prevent path traversal
     adapter_name=$(validate_adapter_name "$adapter_name") || return 1
 
-    echo "${PROJECT_ROOT:-$(pwd)}/adapters/$adapter_name/.living-docs-manifest.json"
+    echo "${PROJECT_ROOT:-$(pwd)}/adapters/${adapter_name}/.living-docs-manifest.json"
 }
 
 # Create a new manifest for an installed adapter
@@ -55,7 +55,7 @@ EOF
         store_manifest_checksum "$manifest_path" 2>/dev/null || true
     fi
 
-    echo "$manifest_path"
+    echo "${manifest_path}"
 }
 
 # Read manifest and return specific field
@@ -71,7 +71,7 @@ read_manifest() {
         return 1
     fi
 
-    if [[ -z "$field" ]]; then
+    if [[ -z "${field}" ]]; then
         # Return entire manifest
         cat "$manifest_path"
     else
@@ -377,7 +377,7 @@ backup_manifest() {
 
     local backup_path="${manifest_path}.backup"
     cp "$manifest_path" "$backup_path"
-    echo "$backup_path"
+    echo "${backup_path}"
 }
 
 # Restore manifest from backup
@@ -394,7 +394,7 @@ restore_manifest() {
     fi
 
     mv "$backup_path" "$manifest_path"
-    echo "Manifest restored for $adapter_name"
+    echo "Manifest restored for ${adapter_name}"
 }
 
 # Calculate SHA256 checksum for a file

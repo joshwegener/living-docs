@@ -69,7 +69,7 @@ install_agents() {
         esac
     done
 
-    echo "Installing agents for adapter: $adapter_name"
+    echo "Installing agents for adapter: ${adapter_name}"
 
     # Check if source has agents
     local agents_source_dir="$source_dir/agents"
@@ -79,29 +79,29 @@ install_agents() {
     fi
 
     # Detect AI tool if not specified
-    if [[ -z "$ai_tool" ]]; then
+    if [[ -z "${ai_tool}" ]]; then
         ai_tool=$(detect_ai_tool)
-        if [[ -z "$ai_tool" ]]; then
+        if [[ -z "${ai_tool}" ]]; then
             echo "Warning: Could not detect AI tool, using default (claude)"
             ai_tool="claude"
         fi
     fi
 
-    echo "Detected AI tool: $ai_tool"
+    echo "Detected AI tool: ${ai_tool}"
 
     # Determine agents directory
     local target_agents_dir
-    if [[ -n "$agents_dir" ]]; then
+    if [[ -n "${agents_dir}" ]]; then
         target_agents_dir="$agents_dir"
     else
         target_agents_dir=$(get_agents_dir "$ai_tool")
-        if [[ -z "$target_agents_dir" ]]; then
+        if [[ -z "${target_agents_dir}" ]]; then
             echo "Error: Could not determine agents directory for $ai_tool" >&2
             return 1
         fi
     fi
 
-    echo "Target agents directory: $target_agents_dir"
+    echo "Target agents directory: ${target_agents_dir}"
 
     # Install agents
     if ! install_to_agents_dir "$adapter_name" "$agents_source_dir" "$target_agents_dir" "$dry_run" "$force"; then
@@ -132,7 +132,7 @@ detect_ai_tool() {
         fi
     fi
 
-    if [[ -n "$OPENAI_API_KEY" ]]; then
+    if [[ -n "${OPENAI_API_KEY}" ]]; then
         if [[ -d "$project_root/.github/copilot" ]]; then
             echo "copilot"
             return 0
@@ -144,7 +144,7 @@ detect_ai_tool() {
         local pattern
         pattern=$(get_tool_pattern "$tool")
         if [[ -n "$pattern" && -e "$project_root/$pattern" ]]; then
-            echo "$tool"
+            echo "${tool}"
             return 0
         fi
     done
@@ -173,19 +173,19 @@ detect_ai_tool() {
 get_agents_dir() {
     local ai_tool="$1"
 
-    if [[ -z "$ai_tool" ]]; then
+    if [[ -z "${ai_tool}" ]]; then
         echo "Error: AI tool required" >&2
         return 1
     fi
 
     local agents_dir
     agents_dir=$(get_tool_agents_dir "$ai_tool")
-    if [[ -z "$agents_dir" ]]; then
+    if [[ -z "${agents_dir}" ]]; then
         echo "Error: Unknown AI tool: $ai_tool" >&2
         return 1
     fi
 
-    echo "$agents_dir"
+    echo "${agents_dir}"
 }
 
 # Install agents to specific directory
@@ -216,17 +216,17 @@ install_to_agents_dir() {
 
             # Check for conflicts
             if [[ -f "$target_file" && "$force" != "true" ]]; then
-                echo "  Conflict: $agent_name already exists (use --force to overwrite)"
+                echo "  Conflict: ${agent_name} already exists (use --force to overwrite)"
                 ((errors++))
                 continue
             fi
 
             if [[ "$dry_run" == "true" ]]; then
-                echo "  Would install: $agent_name"
+                echo "  Would install: ${agent_name}"
             else
                 # Copy agent file
                 if cp "$agent_file" "$target_file"; then
-                    echo "   Installed agent: $agent_name"
+                    echo "   Installed agent: ${agent_name}"
                     ((agents_installed++))
 
                     # Make executable if it's a script
@@ -242,7 +242,7 @@ install_to_agents_dir() {
     done < <(find "$source_dir" -type f)
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Installed $agents_installed agents with $errors errors"
+        echo "Installed $agents_installed agents with ${errors} errors"
     fi
 
     return $errors
@@ -278,7 +278,7 @@ track_in_manifest() {
             # Add to agents array in manifest
             add_agent_to_manifest "$adapter_name" "$agent_name"
 
-            echo "  Tracked agent: $agent_name"
+            echo "  Tracked agent: ${agent_name}"
         fi
     done < <(find "$full_agents_dir" -type f -name "*" 2>/dev/null)
 
@@ -290,7 +290,7 @@ remove_agents() {
     local adapter_name="$1"
     local dry_run="${2:-false}"
 
-    echo "Removing agents for adapter: $adapter_name"
+    echo "Removing agents for adapter: ${adapter_name}"
 
     local manifest_path
     manifest_path=$(get_manifest_path "$adapter_name")
@@ -317,8 +317,8 @@ remove_agents() {
     { line[NR] = $0 }
     ' "$manifest_path")
 
-    if [[ -z "$agent_files" ]]; then
-        echo "No agents found for adapter $adapter_name"
+    if [[ -z "${agent_files}" ]]; then
+        echo "No agents found for adapter ${adapter_name}"
         return 0
     fi
 
@@ -327,7 +327,7 @@ remove_agents() {
     local project_root="${PROJECT_ROOT:-$(pwd)}"
 
     while IFS= read -r agent_path; do
-        [[ -z "$agent_path" ]] && continue
+        [[ -z "${agent_path}" ]] && continue
 
         # Convert relative path to absolute
         if [[ ! "$agent_path" =~ ^/ ]]; then
@@ -352,7 +352,7 @@ remove_agents() {
     done <<< "$agent_files"
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Removed $agents_removed agents with $errors errors"
+        echo "Removed $agents_removed agents with ${errors} errors"
     fi
 
     return $errors
@@ -370,7 +370,7 @@ list_agents() {
         return 1
     fi
 
-    echo "Agents for adapter: $adapter_name"
+    echo "Agents for adapter: ${adapter_name}"
 
     # Get agents array from manifest
     local agents
@@ -385,14 +385,14 @@ list_agents() {
     }
     ' "$manifest_path")
 
-    if [[ -z "$agents" ]]; then
+    if [[ -z "${agents}" ]]; then
         echo "  No agents installed"
         return 0
     fi
 
     while IFS= read -r agent_name; do
-        [[ -z "$agent_name" ]] && continue
-        echo "  - $agent_name"
+        [[ -z "${agent_name}" ]] && continue
+        echo "  - ${agent_name}"
     done <<< "$agents"
 }
 
@@ -445,7 +445,7 @@ generate_agent_report() {
     {
         echo "Agent Installation Report"
         echo "========================"
-        echo "Adapter: $adapter_name"
+        echo "Adapter: ${adapter_name}"
         echo "Date: $(date)"
         echo ""
 
@@ -458,11 +458,11 @@ generate_agent_report() {
             if [[ -n "$pattern" && -e "$project_root/$pattern" ]]; then
                 local agents_dir
                 agents_dir=$(get_tool_agents_dir "$tool")
-                echo "  - $tool (agents: $agents_dir)"
+                echo "  - $tool (agents: ${agents_dir})"
                 if [[ -n "$agents_dir" && -d "$project_root/$agents_dir" ]]; then
                     local agent_count
                     agent_count=$(find "$project_root/$agents_dir" -type f 2>/dev/null | wc -l)
-                    echo "    Existing agents: $agent_count"
+                    echo "    Existing agents: ${agent_count}"
                 fi
             fi
         done
@@ -475,7 +475,7 @@ generate_agent_report() {
 
     } > "$report_file"
 
-    echo "$report_file"
+    echo "${report_file}"
 }
 
 # Export functions for use by other scripts

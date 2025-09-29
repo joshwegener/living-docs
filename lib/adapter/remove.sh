@@ -13,7 +13,7 @@ remove_adapter() {
     local adapter_name="$1"
     local options="${2:-}"
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
@@ -31,7 +31,7 @@ remove_adapter() {
         esac
     done
 
-    echo "Removing adapter: $adapter_name"
+    echo "Removing adapter: ${adapter_name}"
 
     # Check if adapter exists
     local manifest_path
@@ -55,14 +55,14 @@ remove_adapter() {
     local backup_path
     if [[ "$dry_run" != "true" ]]; then
         backup_path=$(backup_manifest "$adapter_name")
-        echo "Manifest backed up to: $backup_path"
+        echo "Manifest backed up to: ${backup_path}"
     fi
 
     # Remove files tracked in manifest
     if ! remove_files "$adapter_name" "$dry_run"; then
         echo "Error: Failed to remove all files" >&2
-        if [[ -n "$backup_path" ]]; then
-            echo "Manifest backup available at: $backup_path"
+        if [[ -n "${backup_path}" ]]; then
+            echo "Manifest backup available at: ${backup_path}"
         fi
         return 1
     fi
@@ -79,17 +79,17 @@ remove_adapter() {
         if [[ "$keep_config" == "true" ]]; then
             # Keep config files but remove everything else
             find "$adapter_dir" -type f ! -name "config.yml" ! -name "config.yaml" ! -name ".living-docs-manifest.json" -delete 2>/dev/null
-            echo "Kept configuration files in $adapter_dir"
+            echo "Kept configuration files in ${adapter_dir}"
         else
             # Remove entire adapter directory
             if [[ -d "$adapter_dir" ]]; then
                 rm -rf "$adapter_dir"
-                echo "Removed adapter directory: $adapter_dir"
+                echo "Removed adapter directory: ${adapter_dir}"
             fi
         fi
     fi
 
-    echo " Adapter $adapter_name removed successfully"
+    echo " Adapter ${adapter_name} removed successfully"
     return 0
 }
 
@@ -125,7 +125,7 @@ remove_files() {
     local files_to_remove
     files_to_remove=$(list_manifest_files "$adapter_name")
 
-    if [[ -z "$files_to_remove" ]]; then
+    if [[ -z "${files_to_remove}" ]]; then
         echo "No files to remove"
         return 0
     fi
@@ -136,7 +136,7 @@ remove_files() {
 
     while IFS= read -r file_path; do
         # Skip empty lines
-        [[ -z "$file_path" ]] && continue
+        [[ -z "${file_path}" ]] && continue
 
         # Convert relative paths to absolute
         if [[ ! "$file_path" =~ ^/ ]]; then
@@ -145,31 +145,31 @@ remove_files() {
 
         if [[ "$dry_run" == "true" ]]; then
             if [[ -f "$file_path" ]]; then
-                echo "Would remove: $file_path"
+                echo "Would remove: ${file_path}"
             else
-                echo "Would remove (not found): $file_path"
+                echo "Would remove (not found): ${file_path}"
             fi
         else
             if [[ -f "$file_path" ]]; then
                 if rm "$file_path" 2>/dev/null; then
-                    echo "   Removed: $file_path"
+                    echo "   Removed: ${file_path}"
                     ((files_removed++))
                 else
                     echo "   Failed to remove: $file_path" >&2
                     ((errors++))
                 fi
             else
-                echo "  - Not found (already removed): $file_path"
+                echo "  - Not found (already removed): ${file_path}"
                 ((files_not_found++))
             fi
         fi
     done <<< "$files_to_remove"
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Files removed: $files_removed"
-        echo "Files not found: $files_not_found"
+        echo "Files removed: ${files_removed}"
+        echo "Files not found: ${files_not_found}"
         if [[ $errors -gt 0 ]]; then
-            echo "Errors: $errors"
+            echo "Errors: ${errors}"
         fi
     fi
 
@@ -189,7 +189,7 @@ cleanup_directories() {
     # Get AI command directory
     local ai_dir
     ai_dir=$(get_ai_command_dir 2>/dev/null)
-    if [[ -n "$ai_dir" ]]; then
+    if [[ -n "${ai_dir}" ]]; then
         directories_to_check+=("$project_root/$ai_dir")
     fi
 
@@ -208,10 +208,10 @@ cleanup_directories() {
             # Check if directory is empty
             if [[ -z "$(ls -A "$dir" 2>/dev/null)" ]]; then
                 if [[ "$dry_run" == "true" ]]; then
-                    echo "Would remove empty directory: $dir"
+                    echo "Would remove empty directory: ${dir}"
                 else
                     if rmdir "$dir" 2>/dev/null; then
-                        echo "   Removed empty directory: $dir"
+                        echo "   Removed empty directory: ${dir}"
                         ((cleaned++))
                     else
                         echo "  - Could not remove directory: $dir" >&2
@@ -223,9 +223,9 @@ cleanup_directories() {
     done
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Empty directories cleaned: $cleaned"
+        echo "Empty directories cleaned: ${cleaned}"
         if [[ $errors -gt 0 ]]; then
-            echo "Directory cleanup errors: $errors"
+            echo "Directory cleanup errors: ${errors}"
         fi
     fi
 
@@ -256,7 +256,7 @@ list_installed_adapters() {
             local prefix
             prefix=$(read_manifest "$adapter_name" "prefix" 2>/dev/null || echo "none")
 
-            echo "  - $adapter_name (v$version) [prefix: $prefix]"
+            echo "  - $adapter_name (v$version) [prefix: ${prefix}]"
         fi
     done < <(find "$adapters_dir" -name ".living-docs-manifest.json" 2>/dev/null)
 }
@@ -272,7 +272,7 @@ remove_file_type() {
         return 1
     fi
 
-    echo "Removing $file_type files for adapter: $adapter_name"
+    echo "Removing $file_type files for adapter: ${adapter_name}"
 
     local manifest_path
     manifest_path=$(get_manifest_path "$adapter_name")
@@ -299,8 +299,8 @@ remove_file_type() {
     { line[NR] = $0 }
     ' "$manifest_path")
 
-    if [[ -z "$files_to_remove" ]]; then
-        echo "No $file_type files found for adapter $adapter_name"
+    if [[ -z "${files_to_remove}" ]]; then
+        echo "No $file_type files found for adapter ${adapter_name}"
         return 0
     fi
 
@@ -308,7 +308,7 @@ remove_file_type() {
     local errors=0
 
     while IFS= read -r file_path; do
-        [[ -z "$file_path" ]] && continue
+        [[ -z "${file_path}" ]] && continue
 
         # Convert relative paths to absolute
         if [[ ! "$file_path" =~ ^/ ]]; then
@@ -316,24 +316,24 @@ remove_file_type() {
         fi
 
         if [[ "$dry_run" == "true" ]]; then
-            echo "Would remove $file_type file: $file_path"
+            echo "Would remove $file_type file: ${file_path}"
         else
             if [[ -f "$file_path" ]]; then
                 if rm "$file_path"; then
-                    echo "   Removed $file_type file: $file_path"
+                    echo "   Removed $file_type file: ${file_path}"
                     ((removed++))
                 else
                     echo "   Failed to remove: $file_path" >&2
                     ((errors++))
                 fi
             else
-                echo "  - $file_type file not found: $file_path"
+                echo "  - $file_type file not found: ${file_path}"
             fi
         fi
     done <<< "$files_to_remove"
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Removed $removed $file_type files with $errors errors"
+        echo "Removed $removed $file_type files with ${errors} errors"
     fi
 
     return $errors
@@ -343,7 +343,7 @@ remove_file_type() {
 verify_removal() {
     local adapter_name="$1"
 
-    echo "Verifying removal of adapter: $adapter_name"
+    echo "Verifying removal of adapter: ${adapter_name}"
 
     local issues=0
     local project_root="${PROJECT_ROOT:-$(pwd)}"
@@ -352,17 +352,17 @@ verify_removal() {
     local manifest_path
     manifest_path=$(get_manifest_path "$adapter_name")
     if [[ -f "$manifest_path" ]]; then
-        echo "Issue: Manifest still exists: $manifest_path"
+        echo "Issue: Manifest still exists: ${manifest_path}"
         ((issues++))
     fi
 
     # Check if adapter directory still exists
     local adapter_dir="$project_root/adapters/$adapter_name"
     if [[ -d "$adapter_dir" ]]; then
-        echo "Issue: Adapter directory still exists: $adapter_dir"
+        echo "Issue: Adapter directory still exists: ${adapter_dir}"
         local remaining_files
         remaining_files=$(find "$adapter_dir" -type f | wc -l)
-        echo "  Files remaining: $remaining_files"
+        echo "  Files remaining: ${remaining_files}"
         ((issues++))
     fi
 
@@ -375,7 +375,7 @@ verify_removal() {
 
         local orphaned_commands
         orphaned_commands=$(find "$ai_dir" -name "${prefix}_*.md" 2>/dev/null)
-        if [[ -n "$orphaned_commands" ]]; then
+        if [[ -n "${orphaned_commands}" ]]; then
             echo "Issue: Orphaned command files found:"
             echo "$orphaned_commands" | sed 's/^/  /'
             ((issues++))
@@ -386,7 +386,7 @@ verify_removal() {
         echo " Removal verification passed - adapter completely removed"
         return 0
     else
-        echo " Removal verification failed - $issues issues found"
+        echo " Removal verification failed - ${issues} issues found"
         return 1
     fi
 }

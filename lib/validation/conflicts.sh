@@ -34,7 +34,7 @@ scan_existing() {
     {
         echo "AI Directory Scan Report"
         echo "======================="
-        echo "Target Directory: $target_dir"
+        echo "Target Directory: ${target_dir}"
         echo "Date: $(date)"
         echo ""
         echo "AI Directories Found:"
@@ -76,7 +76,7 @@ scan_existing() {
 
     {
         echo "Summary:"
-        echo "  Total command files found: $found_files"
+        echo "  Total command files found: ${found_files}"
     } >> "$report_file"
 
     return $found_files
@@ -241,13 +241,13 @@ check_adapter_conflicts() {
     local adapter_files=("${@:2}")
     local report_file="${2:-/tmp/adapter_conflicts.txt}"
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
 
     {
-        echo "Adapter Conflict Check: $adapter_name"
+        echo "Adapter Conflict Check: ${adapter_name}"
         echo "=================================="
         echo "Date: $(date)"
         echo ""
@@ -282,7 +282,7 @@ check_adapter_conflicts() {
     # Clean up temp files
     rm -f "/tmp/scan_results.txt" "/tmp/resolution.txt"
 
-    echo "$report_file"
+    echo "${report_file}"
     return $conflict_count
 }
 
@@ -295,7 +295,7 @@ generate_conflict_report() {
     {
         echo "Comprehensive Conflict Analysis"
         echo "=============================="
-        echo "Target Directory: $target_dir"
+        echo "Target Directory: ${target_dir}"
         echo "Date: $(date)"
         echo ""
     } > "$report_file"
@@ -332,7 +332,7 @@ generate_conflict_report() {
     # Clean up
     rm -f "/tmp/env_scan.txt"
 
-    echo "$report_file"
+    echo "${report_file}"
 }
 
 # Quick conflict check (returns 0 for no conflicts, 1 for conflicts found)
@@ -363,7 +363,7 @@ backup_conflicting_files() {
         return 0
     fi
 
-    echo "Creating backup directory: $full_backup_dir"
+    echo "Creating backup directory: ${full_backup_dir}"
     mkdir -p "$full_backup_dir"
 
     local backed_up=0
@@ -378,7 +378,7 @@ backup_conflicting_files() {
             mkdir -p "$backup_target_dir"
 
             if cp "$conflict" "$backup_target_dir/"; then
-                echo "Backed up: $conflict"
+                echo "Backed up: ${conflict}"
                 ((backed_up++))
             else
                 echo "Error backing up: $conflict" >&2
@@ -387,8 +387,8 @@ backup_conflicting_files() {
         fi
     done
 
-    echo "Backup complete: $backed_up files backed up, $errors errors"
-    echo "Backup location: $full_backup_dir"
+    echo "Backup complete: $backed_up files backed up, ${errors} errors"
+    echo "Backup location: ${full_backup_dir}"
 
     return $errors
 }
@@ -403,7 +403,7 @@ restore_from_backup() {
         return 1
     fi
 
-    echo "Restoring files from: $backup_dir"
+    echo "Restoring files from: ${backup_dir}"
 
     local restored=0
     local errors=0
@@ -414,14 +414,14 @@ restore_from_backup() {
         original_path=$(echo "$backup_file" | sed "s|^$backup_dir/||")
 
         if [[ "$dry_run" == "true" ]]; then
-            echo "Would restore: $backup_file -> $original_path"
+            echo "Would restore: $backup_file -> ${original_path}"
         else
             local target_dir
             target_dir=$(dirname "$original_path")
             mkdir -p "$target_dir"
 
             if cp "$backup_file" "$original_path"; then
-                echo "Restored: $original_path"
+                echo "Restored: ${original_path}"
                 ((restored++))
             else
                 echo "Error restoring: $backup_file -> $original_path" >&2
@@ -431,7 +431,7 @@ restore_from_backup() {
     done < <(find "$backup_dir" -type f)
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Restore complete: $restored files restored, $errors errors"
+        echo "Restore complete: $restored files restored, ${errors} errors"
     fi
 
     return $errors

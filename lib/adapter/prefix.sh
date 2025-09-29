@@ -12,7 +12,7 @@ get_ai_command_dir() {
     local ai_type="${1:-auto}"
 
     # Use AI_PATH if set
-    if [[ -n "$AI_PATH" ]]; then
+    if [[ -n "${AI_PATH}" ]]; then
         echo "${AI_PATH}/commands"
         return 0
     fi
@@ -99,7 +99,7 @@ generate_prefix() {
     local adapter_name="$1"
     local existing_prefixes=("${@:2}")
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
@@ -132,7 +132,7 @@ generate_prefix() {
         prefix="${base_prefix}${counter}"
     fi
 
-    echo "$prefix"
+    echo "${prefix}"
 }
 
 # Check for existing command conflicts in AI directories
@@ -204,10 +204,10 @@ apply_prefix() {
             local dest_file="$dest_dir/$prefixed_name"
 
             if [[ "$dry_run" == "true" ]]; then
-                echo "Would copy: $file -> $dest_file"
+                echo "Would copy: $file -> ${dest_file}"
             else
                 if cp "$file" "$dest_file"; then
-                    echo "Applied prefix: $base_name -> $prefixed_name"
+                    echo "Applied prefix: $base_name -> ${prefixed_name}"
                     ((files_processed++))
                 else
                     echo "Error: Failed to copy $file to $dest_file" >&2
@@ -218,7 +218,7 @@ apply_prefix() {
     done < <(find "$source_dir" -type f -name "*.md")
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Processed $files_processed files with $errors errors"
+        echo "Processed $files_processed files with ${errors} errors"
     fi
 
     return $errors
@@ -305,10 +305,10 @@ remove_prefix() {
         # Check if file starts with our prefix
         if [[ "$base_name" =~ ^${prefix}_.* ]]; then
             if [[ "$dry_run" == "true" ]]; then
-                echo "Would remove: $file"
+                echo "Would remove: ${file}"
             else
                 if rm "$file"; then
-                    echo "Removed prefixed file: $file"
+                    echo "Removed prefixed file: ${file}"
                     ((files_removed++))
                 else
                     echo "Error: Failed to remove $file" >&2
@@ -319,7 +319,7 @@ remove_prefix() {
     done < <(find "$command_dir" -type f -name "${prefix}_*.md" 2>/dev/null)
 
     if [[ "$dry_run" != "true" ]]; then
-        echo "Removed $files_removed files with $errors errors"
+        echo "Removed $files_removed files with ${errors} errors"
     fi
 
     return $errors
@@ -329,7 +329,7 @@ remove_prefix() {
 validate_prefix() {
     local prefix="$1"
 
-    if [[ -z "$prefix" ]]; then
+    if [[ -z "${prefix}" ]]; then
         echo "Error: Empty prefix" >&2
         return 1
     fi
@@ -359,7 +359,7 @@ generate_prefix_report() {
     local report_file="${2:-/dev/stdout}"
 
     {
-        echo "Prefix Report for Adapter: $adapter_name"
+        echo "Prefix Report for Adapter: ${adapter_name}"
         echo "========================================"
         echo "Date: $(date)"
         echo ""
@@ -371,7 +371,7 @@ generate_prefix_report() {
             local ai_dir
             ai_dir=$(get_ai_command_dir "$ai_type" 2>/dev/null)
             if [[ -d "$ai_dir" ]]; then
-                echo "  - $ai_type: $ai_dir"
+                echo "  - $ai_type: ${ai_dir}"
                 echo "    Files: $(find "$ai_dir" -name "*.md" 2>/dev/null | wc -l)"
             fi
         done
@@ -388,13 +388,13 @@ generate_prefix_report() {
         echo "Suggested Prefix:"
         local suggested_prefix
         suggested_prefix=$(generate_prefix "$adapter_name" "${existing_prefixes[@]}")
-        echo "  $suggested_prefix"
+        echo "  ${suggested_prefix}"
         echo ""
         echo "Prefix Valid: $(validate_prefix "$suggested_prefix" >/dev/null 2>&1 && echo "Yes" || echo "No")"
 
     } > "$report_file"
 
-    echo "$report_file"
+    echo "${report_file}"
 }
 
 # Export functions for use by other scripts

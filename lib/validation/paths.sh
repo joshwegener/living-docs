@@ -51,7 +51,7 @@ validate_no_absolute() {
     {
         echo "Absolute Path Validation Report"
         echo "=============================="
-        echo "Target: $target"
+        echo "Target: ${target}"
         echo "Date: $(date)"
         echo ""
         echo "Errors:"
@@ -92,8 +92,8 @@ validate_no_absolute() {
     {
         echo ""
         echo "Summary:"
-        echo "  Errors: $errors"
-        echo "  Warnings: $warnings"
+        echo "  Errors: ${errors}"
+        echo "  Warnings: ${warnings}"
         echo "  Status: $(if [[ $errors -eq 0 ]]; then echo "PASS"; else echo "FAIL"; fi)"
     } >> "$report_file"
 
@@ -179,7 +179,7 @@ check_variables() {
     {
         echo "Path Variable Validation Report"
         echo "=============================="
-        echo "Target: $target"
+        echo "Target: ${target}"
         echo "Date: $(date)"
         echo ""
         echo "Valid Variables:"
@@ -205,7 +205,7 @@ check_variables() {
     {
         echo ""
         echo "Summary:"
-        echo "  Issues: $errors"
+        echo "  Issues: ${errors}"
         echo "  Status: $(if [[ $errors -eq 0 ]]; then echo "PASS"; else echo "FAIL"; fi)"
     } >> "$report_file"
 
@@ -268,8 +268,8 @@ verify_references() {
     {
         echo "Path Reference Validation Report"
         echo "==============================="
-        echo "Target: $target"
-        echo "Base Directory: $base_dir"
+        echo "Target: ${target}"
+        echo "Base Directory: ${base_dir}"
         echo "Date: $(date)"
         echo ""
         echo "Issues Found:"
@@ -290,7 +290,7 @@ verify_references() {
     {
         echo ""
         echo "Summary:"
-        echo "  Errors: $errors"
+        echo "  Errors: ${errors}"
         echo "  Status: $(if [[ $errors -eq 0 ]]; then echo "PASS"; else echo "WARN"; fi)"
     } >> "$report_file"
 
@@ -342,8 +342,8 @@ generate_path_validation_report() {
     {
         echo "Comprehensive Path Validation Report"
         echo "==================================="
-        echo "Target: $target"
-        echo "Base Directory: $base_dir"
+        echo "Target: ${target}"
+        echo "Base Directory: ${base_dir}"
         echo "Date: $(date)"
         echo ""
     } > "$report_file"
@@ -377,9 +377,9 @@ generate_path_validation_report() {
         cat "$temp_dir/references.txt"
         echo ""
         echo "=== OVERALL SUMMARY ==="
-        echo "Absolute Path Errors: $absolute_errors"
-        echo "Variable Errors: $variable_errors"
-        echo "Reference Errors: $reference_errors"
+        echo "Absolute Path Errors: ${absolute_errors}"
+        echo "Variable Errors: ${variable_errors}"
+        echo "Reference Errors: ${reference_errors}"
         echo "Total Errors: $((absolute_errors + variable_errors + reference_errors))"
         echo "Overall Status: $(if [[ $((absolute_errors + variable_errors + reference_errors)) -eq 0 ]]; then echo "PASS"; else echo "FAIL"; fi)"
     } >> "$report_file"
@@ -387,7 +387,7 @@ generate_path_validation_report() {
     # Clean up
     rm -rf "$temp_dir"
 
-    echo "$report_file"
+    echo "${report_file}"
 }
 
 # Quick validation check (returns 0 for pass, 1 for fail)

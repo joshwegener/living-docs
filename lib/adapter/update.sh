@@ -15,7 +15,7 @@ update_adapter() {
     local adapter_name="$1"
     local options="${2:-}"
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
@@ -37,7 +37,7 @@ update_adapter() {
         esac
     done
 
-    echo "Updating adapter: $adapter_name"
+    echo "Updating adapter: ${adapter_name}"
 
     # Check if adapter is installed
     local manifest_path
@@ -52,7 +52,7 @@ update_adapter() {
     # Get current version
     local current_version
     current_version=$(read_manifest "$adapter_name" "version")
-    echo "Current version: $current_version"
+    echo "Current version: ${current_version}"
 
     # Fetch upstream changes
     local upstream_dir
@@ -64,7 +64,7 @@ update_adapter() {
     # Get new version
     local new_version
     new_version=$(get_adapter_version "$upstream_dir")
-    echo "Upstream version: $new_version"
+    echo "Upstream version: ${new_version}"
 
     # Check if update is needed
     if [[ "$current_version" == "$new_version" && "$force_update" != "true" ]]; then
@@ -92,7 +92,7 @@ update_adapter() {
     local backup_dir=""
     if [[ "$backup_customizations" == "true" && ${#customized_files[@]} -gt 0 ]]; then
         backup_dir=$(backup_customizations "$adapter_name" "${customized_files[@]}")
-        echo "Customizations backed up to: $backup_dir"
+        echo "Customizations backed up to: ${backup_dir}"
     fi
 
     # Perform the update
@@ -104,8 +104,8 @@ update_adapter() {
 
     if ! merge_changes "$adapter_name" "$upstream_dir" customized_files changed_files new_files; then
         echo "Error: Failed to merge changes" >&2
-        if [[ -n "$backup_dir" ]]; then
-            echo "Customizations backup available at: $backup_dir"
+        if [[ -n "${backup_dir}" ]]; then
+            echo "Customizations backup available at: ${backup_dir}"
         fi
         rm -rf "$upstream_dir"
         return 1
@@ -117,7 +117,7 @@ update_adapter() {
     # Clean up
     rm -rf "$upstream_dir"
 
-    echo " Adapter $adapter_name updated successfully"
+    echo " Adapter ${adapter_name} updated successfully"
     return 0
 }
 
@@ -129,7 +129,7 @@ fetch_upstream() {
     local temp_dir
     temp_dir=$(mktemp -d)
 
-    if [[ -n "$source_dir" ]]; then
+    if [[ -n "${source_dir}" ]]; then
         # Use provided source directory
         if [[ ! -d "$source_dir" ]]; then
             echo "Error: Source directory not found: $source_dir" >&2
@@ -137,7 +137,7 @@ fetch_upstream() {
             return 1
         fi
 
-        echo "Using source: $source_dir"
+        echo "Using source: ${source_dir}"
         if ! cp -R "$source_dir"/* "$temp_dir/" 2>/dev/null; then
             echo "Error: Failed to copy from source directory" >&2
             rm -rf "$temp_dir"
@@ -160,14 +160,14 @@ fetch_upstream() {
             fi
         done
 
-        if [[ -z "$found_source" ]]; then
+        if [[ -z "${found_source}" ]]; then
             echo "Error: No upstream source found" >&2
             echo "Please specify source with --source=/path/to/upstream"
             rm -rf "$temp_dir"
             return 1
         fi
 
-        echo "Using upstream source: $found_source"
+        echo "Using upstream source: ${found_source}"
         if ! cp -R "$found_source"/* "$temp_dir/" 2>/dev/null; then
             echo "Error: Failed to copy from upstream source" >&2
             rm -rf "$temp_dir"
@@ -175,7 +175,7 @@ fetch_upstream() {
         fi
     fi
 
-    echo "$temp_dir"
+    echo "${temp_dir}"
 }
 
 # Compare checksums between installed and upstream versions
@@ -198,7 +198,7 @@ compare_checksums() {
 
     # Check existing files
     while IFS= read -r file_path; do
-        [[ -z "$file_path" ]] && continue
+        [[ -z "${file_path}" ]] && continue
 
         # Convert to absolute path
         if [[ ! "$file_path" =~ ^/ ]]; then
@@ -222,7 +222,7 @@ compare_checksums() {
             local upstream_file
             upstream_file=$(find_upstream_file "$file_path" "$upstream_dir")
 
-            if [[ -n "$upstream_file" ]]; then
+            if [[ -n "${upstream_file}" ]]; then
                 local upstream_checksum
                 upstream_checksum=$(calculate_checksum "$upstream_file")
 
@@ -239,7 +239,7 @@ compare_checksums() {
     upstream_files=$(find "$upstream_dir" -type f \( -name "*.md" -o -name "*.sh" -o -name "*.txt" \))
 
     while IFS= read -r upstream_file; do
-        [[ -z "$upstream_file" ]] && continue
+        [[ -z "${upstream_file}" ]] && continue
 
         local installed_file
         installed_file=$(find_installed_file "$upstream_file" "$upstream_dir")
@@ -279,7 +279,7 @@ find_upstream_file() {
 
     for path in "${possible_paths[@]}"; do
         if [[ -f "$path" ]]; then
-            echo "$path"
+            echo "${path}"
             return 0
         fi
     done
@@ -310,20 +310,20 @@ find_installed_file() {
         commands)
             local ai_dir
             ai_dir=$(get_ai_command_dir)
-            if [[ -n "$prefix" ]]; then
+            if [[ -n "${prefix}" ]]; then
                 echo "$project_root/$ai_dir/${prefix}_${basename_file}"
             else
-                echo "$project_root/$ai_dir/$basename_file"
+                echo "$project_root/$ai_dir/${basename_file}"
             fi
             ;;
         templates)
-            echo "$project_root/adapters/$adapter_name/templates/$basename_file"
+            echo "$project_root/adapters/$adapter_name/templates/${basename_file}"
             ;;
         scripts)
-            echo "$project_root/adapters/$adapter_name/scripts/$basename_file"
+            echo "$project_root/adapters/$adapter_name/scripts/${basename_file}"
             ;;
         *)
-            echo "$project_root/adapters/$adapter_name/$basename_file"
+            echo "$project_root/adapters/$adapter_name/${basename_file}"
             ;;
     esac
 }
@@ -372,7 +372,7 @@ show_update_summary() {
     fi
 
     local total_changes=$((${#changed_ref[@]} + ${#new_ref[@]}))
-    echo "Total changes: $total_changes files"
+    echo "Total changes: ${total_changes} files"
     echo "Customized files preserved: ${#customized_ref[@]}"
 }
 
@@ -402,7 +402,7 @@ backup_customizations() {
         fi
     done
 
-    echo "$backup_dir"
+    echo "${backup_dir}"
 }
 
 # Merge changes while preserving customizations
@@ -521,7 +521,7 @@ update_manifest_version() {
     sed 's/"version"[[:space:]]*:[[:space:]]*"[^"]*"/"version": "'"$new_version"'"/' "$manifest_path" > "$temp_file"
 
     if mv "$temp_file" "$manifest_path"; then
-        echo "Updated manifest version to: $new_version"
+        echo "Updated manifest version to: ${new_version}"
         return 0
     else
         echo "Error: Failed to update manifest version" >&2
@@ -535,7 +535,7 @@ check_updates() {
     local adapter_name="$1"
     local source_dir="$2"
 
-    if [[ -z "$adapter_name" ]]; then
+    if [[ -z "${adapter_name}" ]]; then
         echo "Error: Adapter name required" >&2
         return 1
     fi
@@ -544,7 +544,7 @@ check_updates() {
     manifest_path=$(get_manifest_path "$adapter_name")
 
     if [[ ! -f "$manifest_path" ]]; then
-        echo "Adapter $adapter_name is not installed"
+        echo "Adapter ${adapter_name} is not installed"
         return 1
     fi
 
@@ -557,9 +557,9 @@ check_updates() {
         local upstream_version
         upstream_version=$(get_adapter_version "$upstream_dir")
 
-        echo "Adapter: $adapter_name"
-        echo "Current: $current_version"
-        echo "Available: $upstream_version"
+        echo "Adapter: ${adapter_name}"
+        echo "Current: ${current_version}"
+        echo "Available: ${upstream_version}"
 
         if [[ "$current_version" != "$upstream_version" ]]; then
             echo "Status: Update available"
@@ -571,8 +571,8 @@ check_updates() {
             return 1
         fi
     else
-        echo "Adapter: $adapter_name"
-        echo "Current: $current_version"
+        echo "Adapter: ${adapter_name}"
+        echo "Current: ${current_version}"
         echo "Status: Cannot check (upstream not available)"
         return 2
     fi
