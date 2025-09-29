@@ -5,11 +5,74 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# Source test framework
-source "$PROJECT_ROOT/tests/test-framework.sh"
+# Test setup
+TEST_TMP_DIR="/tmp/reporter-test-$$"
+mkdir -p "$TEST_TMP_DIR"
+trap 'rm -rf "$TEST_TMP_DIR"' EXIT
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# Test counters
+PASSED=0
+FAILED=0
 
 # Source module to test
 source "$PROJECT_ROOT/lib/a11y/reporter.sh"
+
+# Helper functions
+assert_file_exists() {
+    local file="$1"
+    local msg="${2:-File should exist}"
+    if [[ -f "$file" ]]; then
+        echo -e "${GREEN}✓${NC} $msg"
+        ((PASSED++))
+    else
+        echo -e "${RED}✗${NC} $msg: $file not found"
+        ((FAILED++))
+    fi
+}
+
+assert_contains() {
+    local haystack="$1"
+    local needle="$2"
+    local msg="${3:-String should contain}"
+    if [[ "$haystack" == *"$needle"* ]]; then
+        echo -e "${GREEN}✓${NC} $msg"
+        ((PASSED++))
+    else
+        echo -e "${RED}✗${NC} $msg: '$needle' not found"
+        ((FAILED++))
+    fi
+}
+
+assert_not_empty() {
+    local value="$1"
+    local msg="${2:-Value should not be empty}"
+    if [[ -n "$value" ]]; then
+        echo -e "${GREEN}✓${NC} $msg"
+        ((PASSED++))
+    else
+        echo -e "${RED}✗${NC} $msg"
+        ((FAILED++))
+    fi
+}
+
+assert_gt() {
+    local val1="$1"
+    local val2="$2"
+    local msg="${3:-Value should be greater}"
+    if [[ "$val1" -gt "$val2" ]]; then
+        echo -e "${GREEN}✓${NC} $msg"
+        ((PASSED++))
+    else
+        echo -e "${RED}✗${NC} $msg: $val1 not > $val2"
+        ((FAILED++))
+    fi
+}
 
 # Test generate_report
 test_generate_report() {
@@ -133,10 +196,21 @@ test_report_format_selection() {
 }
 
 # Run tests
-run_test_suite "A11y Reporter Tests" \
-    test_generate_report \
-    test_generate_html_report \
-    test_generate_json_report \
-    test_generate_csv_report \
-    test_generate_text_report \
-    test_report_format_selection
+echo -e "${YELLOW}=== A11y Reporter Tests ===${NC}"
+
+test_generate_report
+test_generate_html_report
+test_generate_json_report
+test_generate_csv_report
+test_generate_text_report
+test_report_format_selection
+
+# Summary
+echo ""
+echo -e "${YELLOW}=== Test Summary ===${NC}"
+echo -e "Passed: ${GREEN}${PASSED}${NC}"
+echo -e "Failed: ${RED}${FAILED}${NC}"
+
+if [[ $FAILED -gt 0 ]]; then
+    exit 1
+fi
