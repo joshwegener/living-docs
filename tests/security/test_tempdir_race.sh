@@ -7,6 +7,9 @@ set -e
 
 echo "Testing install.sh for temp directory race conditions..."
 
+# Initialize test status
+VULNERABLE=0
+
 # Source functions (but not with set -u which will fail on RANDOM)
 set +u
 source lib/adapter/install.sh
@@ -57,6 +60,7 @@ unset RANDOM
 
 TEST_DIR2=$(mktemp -d)
 mkdir -p "$TEST_DIR2/source"
+echo "test" > "$TEST_DIR2/source/file.txt"  # Add a test file so cp -R works
 
 TEMP_DIR=$(stage_in_temp "test-adapter" "$TEST_DIR2/source")
 

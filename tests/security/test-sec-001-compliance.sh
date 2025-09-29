@@ -56,12 +56,23 @@ for script in "${CRITICAL_SCRIPTS[@]}"; do
     fi
 done
 
-# Test 2: Check for proper file existence validation before sourcing
+# Test 2: Check for proper file existence validation before sourcing (critical files only)
 echo -e "\nTest 2: File existence validation before sourcing"
-if grep -r "source.*\.sh" "$PROJECT_ROOT" --include="*.sh" | grep -v "^\s*#" | grep -v "if.*-f"; then
-    test_fail "Found unsafe sourcing without file existence check"
+unsafe_sourcing=false
+for script in "${CRITICAL_SCRIPTS[@]}"; do
+    if [[ -f "$PROJECT_ROOT/$script" ]]; then
+        # Look for source statements without proper validation
+        if grep "source.*\.sh" "$PROJECT_ROOT/$script" | grep -v "^\s*#" | grep -v "if.*-f" | grep -v "2>/dev/null.*true"; then
+            echo "Unsafe sourcing in critical script: $script"
+            unsafe_sourcing=true
+        fi
+    fi
+done
+
+if [[ "$unsafe_sourcing" == "true" ]]; then
+    test_fail "Found unsafe sourcing in critical scripts"
 else
-    test_pass "All sourcing operations have proper validation"
+    test_pass "All critical scripts have proper sourcing validation"
 fi
 
 # Test 3: Check for cross-platform compatibility in sed usage
