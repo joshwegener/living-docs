@@ -128,12 +128,20 @@ stage_in_temp() {
     local adapter_name="$1"
     local source_dir="$2"
 
-    local temp_base="${TMPDIR:-/tmp}"
-    local temp_dir="$temp_base/living-docs-install-$$-$RANDOM"
+    # Use mktemp -d for secure temp directory creation
+    local temp_dir
+    temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/living-docs-install-XXXXXX") || {
+        echo "Error: Failed to create secure temp directory" >&2
+        return 1
+    }
 
-    # Create temporary staging directory
-    if ! mkdir -p "$temp_dir"; then
-        echo "Error: Failed to create temp directory" >&2
+    # Set restrictive permissions immediately
+    chmod 700 "$temp_dir"
+
+    # Check for symlinks before use
+    if [[ -L "$temp_dir" ]]; then
+        echo "Error: Temp directory is a symlink (possible attack)" >&2
+        rm -rf "$temp_dir"
         return 1
     fi
 
@@ -314,7 +322,7 @@ track_installed_files() {
         find "$template_dir" -type f | while read -r file; do
             local checksum
             checksum=$(calculate_checksum "$file")
-            local relative_path="${file#$project_root/}"
+            local relative_path="${file#"$project_root/"}"
             update_manifest "$adapter_name" "$relative_path" "$checksum" "" "template"
         done
     fi
@@ -325,7 +333,7 @@ track_installed_files() {
         find "$scripts_dir" -type f | while read -r file; do
             local checksum
             checksum=$(calculate_checksum "$file")
-            local relative_path="${file#$project_root/}"
+            local relative_path="${file#"$project_root/"}"
             update_manifest "$adapter_name" "$relative_path" "$checksum" "" "script"
         done
     fi

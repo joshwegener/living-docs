@@ -5,6 +5,9 @@ set -euo pipefail
 
 echo "Testing temp directory security in install.sh..."
 
+# Initialize test status
+FAILED=0
+
 # Test 1: Check if using predictable pattern
 echo "Test 1: Checking temp directory predictability..."
 

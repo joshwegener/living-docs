@@ -3,6 +3,10 @@ set -euo pipefail
 # Command Namespacing Functions for Adapter Installation System
 # Handles prefix generation, application, and conflict detection
 
+# Source security functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../security/input-validation.sh" 2>/dev/null || true
+
 # Get AI command directory based on the current setup
 get_ai_command_dir() {
     local ai_type="${1:-auto}"
