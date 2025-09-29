@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # living-docs drift detection system
-# Comprehensive drift detection with git integration, checksums, and auto-fixing
-
+# Main orchestrator using modular components
 set -euo pipefail
 
 # === CONFIGURATION ===
@@ -28,24 +27,14 @@ EXIT_SUCCESS=0
 EXIT_DRIFT_DETECTED=1
 EXIT_ERROR=2
 
-# === UTILITY FUNCTIONS ===
-
-log() {
-    echo "[$(date '+%H:%M:%S')] $*" >&2
-}
-
-verbose() {
-    [[ "$VERBOSE" == true ]] && log "$@"
-}
-
-error() {
-    echo "ERROR: $*" >&2
-}
-
-die() {
-    error "$@"
-    exit $EXIT_ERROR
-}
+# Source modular components
+source "${SCRIPT_DIR}/../common/errors.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/../common/logging.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/../common/paths.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/scanner.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/analyzer.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/reporter.sh" 2>/dev/null || true
+source "${SCRIPT_DIR}/fixer.sh" 2>/dev/null || true
 
 # Parse YAML config (simple parser for our needs)
 parse_config() {
@@ -53,9 +42,7 @@ parse_config() {
 
     verbose "Loading configuration from $CONFIG_FILE"
 
-    # Basic YAML validation - detect obviously malformed content
-    # The test uses "invalid: yaml: content:" which should be treated as invalid
-    # for our purposes even though it's technically valid YAML
+    # Basic YAML validation
     if grep -qE ":[[:space:]]*[a-zA-Z_-]+:[[:space:]]*[a-zA-Z_-]+:" "$CONFIG_FILE"; then
         echo "Invalid configuration format in $CONFIG_FILE" >&2
         return 1
@@ -77,8 +64,8 @@ parse_config() {
             "  baseline_path:"*)
                 if [[ "$in_drift_section" == true ]]; then
                     local baseline_name="${line_original#*: }"
-                    baseline_name="${baseline_name//\"}"  # Remove quotes
-                    baseline_name="${baseline_name// }"   # Remove spaces
+                    baseline_name="${baseline_name//\"}"
+                    baseline_name="${baseline_name// }"
                     BASELINE_FILE="$LIVING_DOCS_DIR/$baseline_name"
                 fi
                 ;;
@@ -90,12 +77,11 @@ parse_config() {
             "    - "*)
                 if [[ "$in_ignore_section" == true ]]; then
                     local pattern="${line_original#*- }"
-                    pattern="${pattern//\"}"  # Remove quotes
+                    pattern="${pattern//\"}"
                     IGNORE_PATTERNS+=("$pattern")
                 fi
                 ;;
             [a-zA-Z_-]*":")
-                # Reset drift section only on top-level keys (no leading whitespace)
                 if [[ "$line_original" != "drift:" ]]; then
                     in_drift_section=false
                     in_ignore_section=false
@@ -104,708 +90,348 @@ parse_config() {
         esac
     done < "$CONFIG_FILE"
 
-    # Load ignore file patterns
-    if [[ -f "$DEFAULT_IGNORE_FILE" ]]; then
-        while IFS= read -r pattern; do
-            [[ -n "$pattern" && ! "$pattern" =~ ^# ]] && IGNORE_PATTERNS+=("$pattern")
-        done < "$DEFAULT_IGNORE_FILE"
-    fi
+    return 0
 }
 
-# Check if file should be ignored
+# Check if path should be ignored
 should_ignore() {
-    local file="$1"
-    local pattern
-
-    # Handle empty array case
-    if [[ ${#IGNORE_PATTERNS[@]} -eq 0 ]]; then
-        return 1
-    fi
+    local path="$1"
 
     for pattern in "${IGNORE_PATTERNS[@]}"; do
-        # Use glob matching
-        if [[ "$file" == $pattern ]]; then
-            return 0
-        fi
-        # Also check if file starts with the pattern (for directory patterns)
-        if [[ "$pattern" == *"/*" && "$file" == ${pattern%/*}/* ]]; then
-            return 0
-        fi
-        # Handle **/* patterns
-        if [[ "$pattern" == *"/**/*" ]]; then
-            local dir_pattern="${pattern%/**/*}"
-            if [[ "$file" == $dir_pattern/* ]]; then
-                return 0
-            fi
-        fi
+        case "$path" in
+            $pattern) return 0 ;;
+        esac
     done
+
+    # Special handling for .git directory
+    if [[ "$path" == .git/* ]] || [[ "$path" == */.git/* ]]; then
+        return 0
+    fi
+
     return 1
 }
 
-# Check if git repo exists
+# Check git repository
 check_git_repo() {
     if [[ "$NO_GIT" == true ]]; then
         return 1
     fi
 
     if ! git rev-parse --git-dir >/dev/null 2>&1; then
-        echo "Not a git repository"
-        echo "Initialize git or use --no-git option"
+        verbose "Not in a git repository"
         return 1
     fi
+
     return 0
 }
 
-# === CORE DRIFT DETECTION FUNCTIONS ===
-
-# Get modified files from git (assumes git repo is available)
+# Git integration functions
 get_modified_files() {
-    git status --porcelain | grep "^ M\|^M " | cut -c4-
+    check_git_repo && git diff --name-only 2>/dev/null || true
 }
 
-# Get added files from git (assumes git repo is available)
 get_added_files() {
-    git status --porcelain | grep "^??" | cut -c4-
+    check_git_repo && git ls-files --others --exclude-standard 2>/dev/null || true
 }
 
-# Get removed files from git (assumes git repo is available)
 get_removed_files() {
-    git status --porcelain | grep "^ D\|^D " | cut -c4-
+    check_git_repo && git ls-files --deleted 2>/dev/null || true
 }
 
-# Generate baseline checksums
-generate_baseline() {
-    verbose "Generating baseline checksums..."
-    mkdir -p "$(dirname "$BASELINE_FILE")"
-
-    local temp_file
-    temp_file=$(mktemp)
-    local file_count=0
-
-    # Find all files except those in ignore patterns
-    while IFS= read -r -d '' file; do
-        # Convert absolute path to relative
-        local rel_file="${file#./}"
-
-        # Skip if should be ignored
-        should_ignore "$rel_file" && continue
-
-        # Skip the baseline file itself to avoid circular dependency
-        [[ "$file" -ef "$BASELINE_FILE" ]] && continue
-
-        # Skip if not a regular file
-        [[ -f "$file" ]] || continue
-
-        # Generate checksum
-        if command -v sha256sum >/dev/null; then
-            sha256sum "$file" | sed "s|$file|$rel_file|" >> "$temp_file"
-        elif command -v shasum >/dev/null; then
-            shasum -a 256 "$file" | sed "s|$file|$rel_file|" >> "$temp_file"
-        else
-            die "No checksum utility found (sha256sum or shasum required)"
-        fi
-
-        ((file_count++))
-        [[ "$VERBOSE" == true ]] && [[ $((file_count % 10)) -eq 0 ]] && log "Processing $file_count files..."
-    done < <(find . -type f -print0)
-
-    # Sort and move to final location
-    if ! sort "$temp_file" > "$BASELINE_FILE" 2>/dev/null; then
-        rm "$temp_file"
-        echo "Permission denied writing baseline file: $BASELINE_FILE" >&2
-        return $EXIT_DRIFT_DETECTED
-    fi
-    rm "$temp_file"
-
-    verbose "Generated baseline with $file_count files"
-    return 0
-}
-
-# Check checksums against baseline
-check_checksums() {
-    [[ ! -f "$BASELINE_FILE" ]] && {
-        echo "No baseline checksums found"
-        echo "Run --generate-baseline first"
-        return $EXIT_ERROR
-    }
-
-    verbose "Checking checksums against baseline..."
-
-    local temp_current
-    temp_current=$(mktemp)
-    local drift_detected=false
-    local checked_files=0
-
-    # Generate current checksums
-    while IFS= read -r line; do
-        local checksum file_path
-        checksum="${line%% *}"
-        file_path="${line#*  }"  # Remove checksum and TWO spaces
-
-        if [[ -f "$file_path" ]]; then
-            local current_checksum
-            if command -v sha256sum >/dev/null; then
-                current_checksum=$(sha256sum "$file_path" | cut -d' ' -f1)
-            elif command -v shasum >/dev/null; then
-                current_checksum=$(shasum -a 256 "$file_path" | cut -d' ' -f1)
-            else
-                die "No checksum utility found"
-            fi
-
-            if [[ "$current_checksum" != "$checksum" ]]; then
-                echo "$file_path CHECKSUM_MISMATCH"
-                drift_detected=true
-            fi
-        else
-            echo "$file_path REMOVED"
-            drift_detected=true
-        fi
-
-        ((checked_files++))
-    done < "$BASELINE_FILE"
-
-    rm -f "$temp_current"
-
-    if [[ "$drift_detected" == false ]]; then
-        echo "All checksums valid"
-        return 0
-    else
-        return $EXIT_DRIFT_DETECTED
-    fi
-}
-
-# Fix drift by updating baseline or restoring from git
-fix_drift() {
-    if [[ "$DRY_RUN" == true ]]; then
-        echo "DRY RUN: Would fix drift"
-        if [[ "$RESTORE_FROM_GIT" == true ]]; then
-            echo "Would restore from git:"
-            get_modified_files | while read -r file; do
-                echo "  $file"
-            done
-        else
-            echo "Would update baseline checksums"
-        fi
-        return 0
-    fi
-
-    if [[ "$RESTORE_FROM_GIT" == true ]]; then
-        check_git_repo || return $EXIT_ERROR
-        verbose "Restoring files from git..."
-
-        local restored_count=0
-        get_modified_files | while read -r file; do
-            if git checkout HEAD -- "$file" 2>/dev/null; then
-                verbose "Restored: $file"
-                ((restored_count++))
-            else
-                error "Failed to restore: $file"
-            fi
-        done
-
-        echo "Restored from git"
-        return 0
-    else
-        verbose "Updating baseline checksums..."
-        if ! generate_baseline; then
-            error "Failed to update baseline checksums"
-            return $EXIT_DRIFT_DETECTED
-        fi
-        echo "Updated baseline checksums"
-        return 0
-    fi
-}
-
-# === REPORTING FUNCTIONS ===
-
-# Generate comprehensive drift report
-generate_report() {
-    local modified_files=()
-    local added_files=()
-    local removed_files=()
-    local checksum_mismatches=()
-
-    # Collect git-based changes
-    if check_git_repo; then
-        while IFS= read -r file; do
-            [[ -n "$file" ]] && modified_files+=("$file")
-        done < <(get_modified_files)
-
-        while IFS= read -r file; do
-            [[ -n "$file" ]] && added_files+=("$file")
-        done < <(get_added_files)
-
-        while IFS= read -r file; do
-            [[ -n "$file" ]] && removed_files+=("$file")
-        done < <(get_removed_files)
-    fi
-
-    # Collect checksum mismatches
-    if [[ -f "$BASELINE_FILE" ]]; then
-        while IFS= read -r line; do
-            if [[ "$line" =~ CHECKSUM_MISMATCH ]]; then
-                checksum_mismatches+=("${line%% *}")
-            fi
-        done < <(check_checksums 2>/dev/null || true)
-    fi
-
-    # Determine if any drift exists
-    local has_drift=false
-    if [[ ${#modified_files[@]} -gt 0 || ${#added_files[@]} -gt 0 || ${#removed_files[@]} -gt 0 || ${#checksum_mismatches[@]} -gt 0 ]]; then
-        has_drift=true
-    fi
-
-    # Generate report based on format
-    if [[ "$FORMAT" == "json" ]]; then
-        generate_json_report \
-            "${modified_files[@]:-}" "|||" \
-            "${added_files[@]:-}" "|||" \
-            "${removed_files[@]:-}" "|||" \
-            "${checksum_mismatches[@]:-}"
-    else
-        generate_human_report \
-            "${modified_files[@]:-}" "|||" \
-            "${added_files[@]:-}" "|||" \
-            "${removed_files[@]:-}" "|||" \
-            "${checksum_mismatches[@]:-}"
-    fi
-
-    [[ "$has_drift" == true ]] && return $EXIT_DRIFT_DETECTED || return 0
-}
-
-generate_human_report() {
-    local args=("$@")
-    local modified_files=()
-    local added_files=()
-    local removed_files=()
-    local checksum_mismatches=()
-
-    # Parse the arguments (separated by |||)
-    local current_section="modified"
-    for arg in "${args[@]}"; do
-        case "$arg" in
-            "|||")
-                case "$current_section" in
-                    "modified") current_section="added" ;;
-                    "added") current_section="removed" ;;
-                    "removed") current_section="checksums" ;;
-                esac
-                ;;
-            *)
-                case "$current_section" in
-                    "modified") [[ -n "$arg" ]] && modified_files+=("$arg") ;;
-                    "added") [[ -n "$arg" ]] && added_files+=("$arg") ;;
-                    "removed") [[ -n "$arg" ]] && removed_files+=("$arg") ;;
-                    "checksums") [[ -n "$arg" ]] && checksum_mismatches+=("$arg") ;;
-                esac
-                ;;
-        esac
-    done
-
-    echo "DRIFT REPORT"
-    echo "============"
-    echo "Modified files: ${#modified_files[@]}"
-    echo "Added files: ${#added_files[@]}"
-    echo "Removed files: ${#removed_files[@]}"
-    echo
-
-    if [[ ${#modified_files[@]} -gt 0 ]]; then
-        echo "Modified Files:"
-        for file in "${modified_files[@]}"; do
-            echo "  $file (MODIFIED)"
-        done
-        echo
-    fi
-
-    if [[ ${#added_files[@]} -gt 0 ]]; then
-        echo "Added Files:"
-        for file in "${added_files[@]}"; do
-            echo "  $file (ADDED)"
-        done
-        echo
-    fi
-
-    if [[ ${#removed_files[@]} -gt 0 ]]; then
-        echo "Removed Files:"
-        for file in "${removed_files[@]}"; do
-            echo "  $file (REMOVED)"
-        done
-        echo
-    fi
-
-    if [[ ${#checksum_mismatches[@]} -gt 0 ]]; then
-        echo "Checksum Mismatches:"
-        for file in "${checksum_mismatches[@]}"; do
-            echo "  $file (CHECKSUM_MISMATCH)"
-        done
-        echo
-    fi
-}
-
-generate_json_report() {
-    local args=("$@")
-    local modified_files=()
-    local added_files=()
-    local removed_files=()
-    local checksum_mismatches=()
-
-    # Parse the arguments (same as human report)
-    local current_section="modified"
-    for arg in "${args[@]}"; do
-        case "$arg" in
-            "|||")
-                case "$current_section" in
-                    "modified") current_section="added" ;;
-                    "added") current_section="removed" ;;
-                    "removed") current_section="checksums" ;;
-                esac
-                ;;
-            *)
-                case "$current_section" in
-                    "modified") [[ -n "$arg" ]] && modified_files+=("$arg") ;;
-                    "added") [[ -n "$arg" ]] && added_files+=("$arg") ;;
-                    "removed") [[ -n "$arg" ]] && removed_files+=("$arg") ;;
-                    "checksums") [[ -n "$arg" ]] && checksum_mismatches+=("$arg") ;;
-                esac
-                ;;
-        esac
-    done
-
-    echo "{"
-    echo '  "drift_report": {'
-    echo '    "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",'
-    echo '    "summary": {'
-    echo '      "modified_count": '${#modified_files[@]}','
-    echo '      "added_count": '${#added_files[@]}','
-    echo '      "removed_count": '${#removed_files[@]}','
-    echo '      "checksum_mismatches": '${#checksum_mismatches[@]}
-    echo '    },'
-
-    echo '    "modified_files": ['
-    for i in "${!modified_files[@]}"; do
-        echo -n '      {"path": "'${modified_files[i]}'", "status": "MODIFIED"}'
-        [[ $i -lt $((${#modified_files[@]} - 1)) ]] && echo "," || echo
-    done
-    echo '    ],'
-
-    echo '    "added_files": ['
-    for i in "${!added_files[@]}"; do
-        echo -n '      {"path": "'${added_files[i]}'", "status": "ADDED"}'
-        [[ $i -lt $((${#added_files[@]} - 1)) ]] && echo "," || echo
-    done
-    echo '    ],'
-
-    echo '    "removed_files": ['
-    for i in "${!removed_files[@]}"; do
-        echo -n '      {"path": "'${removed_files[i]}'", "status": "REMOVED"}'
-        [[ $i -lt $((${#removed_files[@]} - 1)) ]] && echo "," || echo
-    done
-    echo '    ]'
-
-    echo '  }'
-    echo "}"
-}
-
-# === MAIN FUNCTIONS ===
-
+# Check modified files using git
 check_modified_files() {
-    # Check git repo first and let errors be displayed
-    if ! check_git_repo; then
-        return $EXIT_ERROR
-    fi
+    local modified_files
+    modified_files=$(get_modified_files)
 
-    local files
-    files=$(get_modified_files)
-
-    if [[ -z "$files" ]]; then
-        echo "No modified files detected"
-        return 0
-    else
-        echo "$files" | while read -r file; do
-            echo "$file MODIFIED"
+    if [[ -n "$modified_files" ]]; then
+        echo "$modified_files" | while IFS= read -r file; do
+            should_ignore "$file" || echo "MODIFIED:$file"
         done
-        return $EXIT_DRIFT_DETECTED
     fi
 }
 
+# Check added files using git
 check_added_files() {
-    # Check git repo first and let errors be displayed
-    if ! check_git_repo; then
-        return $EXIT_ERROR
-    fi
+    local added_files
+    added_files=$(get_added_files)
 
-    local files
-    files=$(get_added_files)
-
-    if [[ -z "$files" ]]; then
-        echo "No added files detected"
-        return 0
-    else
-        echo "$files" | while read -r file; do
-            echo "$file ADDED"
+    if [[ -n "$added_files" ]]; then
+        echo "$added_files" | while IFS= read -r file; do
+            should_ignore "$file" || echo "ADDED:$file"
         done
-        return $EXIT_DRIFT_DETECTED
     fi
 }
 
+# Check removed files using git
 check_removed_files() {
-    # Check git repo first and let errors be displayed
-    if ! check_git_repo; then
-        return $EXIT_ERROR
-    fi
+    local removed_files
+    removed_files=$(get_removed_files)
 
-    local files
-    files=$(get_removed_files)
-
-    if [[ -z "$files" ]]; then
-        echo "No removed files detected"
-        return 0
-    else
-        echo "$files" | while read -r file; do
-            echo "$file REMOVED"
+    if [[ -n "$removed_files" ]]; then
+        echo "$removed_files" | while IFS= read -r file; do
+            should_ignore "$file" || echo "DELETED:$file"
         done
-        return $EXIT_DRIFT_DETECTED
     fi
 }
 
+# Check all changes (git-based)
 check_all_changes() {
-    # Check git repo first and let errors be displayed
-    if ! check_git_repo; then
-        return $EXIT_ERROR
-    fi
+    local changes=()
 
-    local has_changes=false
-    local modified added removed
+    # Modified files
+    while IFS= read -r drift; do
+        [[ -n "$drift" ]] && changes+=("$drift")
+    done < <(check_modified_files)
 
-    modified=$(get_modified_files)
-    added=$(get_added_files)
-    removed=$(get_removed_files)
+    # Added files
+    while IFS= read -r drift; do
+        [[ -n "$drift" ]] && changes+=("$drift")
+    done < <(check_added_files)
 
-    if [[ -n "$modified" ]]; then
-        echo "$modified" | while read -r file; do
-            echo "$file MODIFIED"
-        done
-        has_changes=true
-    fi
+    # Removed files
+    while IFS= read -r drift; do
+        [[ -n "$drift" ]] && changes+=("$drift")
+    done < <(check_removed_files)
 
-    if [[ -n "$added" ]]; then
-        echo "$added" | while read -r file; do
-            echo "$file ADDED"
-        done
-        has_changes=true
-    fi
-
-    if [[ -n "$removed" ]]; then
-        echo "$removed" | while read -r file; do
-            echo "$file REMOVED"
-        done
-        has_changes=true
-    fi
-
-    [[ "$has_changes" == true ]] && return $EXIT_DRIFT_DETECTED || return 0
+    printf '%s\n' "${changes[@]}"
 }
 
-check_config_validity() {
-    if ! parse_config; then
-        echo "Invalid configuration in $CONFIG_FILE"
-        return $EXIT_DRIFT_DETECTED
-    fi
-    echo "Configuration is valid"
-    return 0
-}
+# Main drift detection
+detect_drift() {
+    local mode="${1:-all}"
+    local drift_list=()
 
-show_usage() {
-    cat << 'EOF'
-Usage: detector.sh [OPTIONS]
+    case "$mode" in
+        baseline)
+            # Use baseline checksums
+            if [[ ! -f "$BASELINE_FILE" ]]; then
+                die "Baseline file not found: $BASELINE_FILE" "$E_FILE_NOT_FOUND"
+            fi
 
-OPTIONS:
-  Git-based Detection:
-    --check-modified     Check for modified files in git
-    --check-added        Check for newly added files
-    --check-removed      Check for removed/deleted files
-    --check-all-changes  Check for all types of changes
-
-  Checksum-based Detection:
-    --generate-baseline  Generate baseline checksums
-    --check-checksums    Validate current files against baseline
-
-  Drift Management:
-    --fix-drift          Auto-fix detected drift
-    --restore-from-git   Restore files from git (use with --fix-drift)
-    --dry-run           Show what would be done without making changes
-
-  Reporting:
-    --report            Generate comprehensive drift report
-    --format=FORMAT     Output format: human (default) or json
-    --output=FILE       Save output to file
-
-  Configuration:
-    --check-config      Validate configuration file
-    --no-git           Disable git operations
-    --verbose          Enable verbose output
-
-  Help:
-    --help             Show this help message
-
-EXAMPLES:
-  detector.sh --check-modified
-  detector.sh --generate-baseline
-  detector.sh --check-checksums
-  detector.sh --fix-drift --dry-run
-  detector.sh --report --format=json --output=drift-report.json
-
-EXIT CODES:
-  0  Success / No drift detected
-  1  Drift detected
-  2  Error / Missing requirements
-
-EOF
-}
-
-# === MAIN SCRIPT LOGIC ===
-
-main() {
-    local action=""
-
-    # Parse command line arguments
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            --check-modified)
-                action="check_modified"
-                shift
-                ;;
-            --check-added)
-                action="check_added"
-                shift
-                ;;
-            --check-removed)
-                action="check_removed"
-                shift
-                ;;
-            --check-all-changes)
-                action="check_all_changes"
-                shift
-                ;;
-            --generate-baseline)
-                action="generate_baseline"
-                shift
-                ;;
-            --check-checksums)
-                action="check_checksums"
-                shift
-                ;;
-            --fix-drift)
-                action="fix_drift"
-                shift
-                ;;
-            --report)
-                action="report"
-                shift
-                ;;
-            --check-config)
-                action="check_config"
-                shift
-                ;;
-            --restore-from-git)
-                RESTORE_FROM_GIT=true
-                shift
-                ;;
-            --dry-run)
-                DRY_RUN=true
-                shift
-                ;;
-            --no-git)
-                NO_GIT=true
-                shift
-                ;;
-            --verbose)
-                VERBOSE=true
-                shift
-                ;;
-            --format=*)
-                FORMAT="${1#*=}"
-                shift
-                ;;
-            --output=*)
-                OUTPUT_FILE="${1#*=}"
-                shift
-                ;;
-            --help)
-                show_usage
-                exit 0
-                ;;
-            *)
-                echo "Unknown option: $1" >&2
-                show_usage >&2
-                exit $EXIT_DRIFT_DETECTED
-                ;;
-        esac
-    done
-
-    # Load configuration (skip for check-config action)
-    if [[ "$action" != "check_config" ]]; then
-        if ! parse_config; then
-            die "Failed to parse configuration"
-        fi
-    fi
-
-    # Validate action
-    if [[ -z "$action" ]]; then
-        error "No action specified"
-        show_usage >&2
-        exit $EXIT_DRIFT_DETECTED
-    fi
-
-    # Execute action and capture output
-    local exit_code=0
-    local output_content
-
-    case "$action" in
-        check_modified)
-            output_content=$(check_modified_files) || exit_code=$?
+            local drifts
+            drifts=$(check_drift "$PROJECT_ROOT" "$BASELINE_FILE" "${IGNORE_PATTERNS[@]}")
+            if [[ -n "$drifts" ]]; then
+                while IFS= read -r drift; do
+                    drift_list+=("$drift")
+                done <<< "$drifts"
+            fi
             ;;
-        check_added)
-            output_content=$(check_added_files) || exit_code=$?
+
+        git|all)
+            # Use git to detect changes
+            if ! check_git_repo; then
+                log_warning "Not in a git repository, falling back to baseline mode"
+                if [[ -f "$BASELINE_FILE" ]]; then
+                    detect_drift baseline
+                    return $?
+                else
+                    die "No git repository and no baseline file found"
+                fi
+            fi
+
+            while IFS= read -r drift; do
+                [[ -n "$drift" ]] && drift_list+=("$drift")
+            done < <(check_all_changes)
             ;;
-        check_removed)
-            output_content=$(check_removed_files) || exit_code=$?
-            ;;
-        check_all_changes)
-            output_content=$(check_all_changes) || exit_code=$?
-            ;;
-        generate_baseline)
-            output_content=$(generate_baseline) || exit_code=$?
-            ;;
-        check_checksums)
-            output_content=$(check_checksums) || exit_code=$?
-            ;;
-        fix_drift)
-            output_content=$(fix_drift) || exit_code=$?
-            ;;
-        report)
-            output_content=$(generate_report) || exit_code=$?
-            ;;
-        check_config)
-            output_content=$(check_config_validity) || exit_code=$?
-            ;;
+
         *)
-            die "Unknown action: $action"
+            die "Unknown detection mode: $mode"
             ;;
     esac
 
-    # Output results
-    if [[ -n "$OUTPUT_FILE" ]]; then
-        echo "$output_content" > "$OUTPUT_FILE"
-        verbose "Output saved to $OUTPUT_FILE"
-    else
-        echo "$output_content"
+    # Process results
+    if [[ ${#drift_list[@]} -eq 0 ]]; then
+        [[ "$FORMAT" != "json" ]] && log_success "No drift detected"
+        return $EXIT_SUCCESS
     fi
 
-    exit $exit_code
+    # Analyze drift
+    if command -v analyze_drift_impact &>/dev/null; then
+        analyze_drift_impact "${drift_list[@]}"
+    fi
+
+    # Generate report
+    local report
+    report=$(generate_report "$FORMAT" "${drift_list[@]}")
+
+    if [[ -n "$OUTPUT_FILE" ]]; then
+        echo "$report" > "$OUTPUT_FILE"
+        log_info "Report saved to: $OUTPUT_FILE"
+    else
+        echo "$report"
+    fi
+
+    # Auto-fix if enabled
+    if [[ "$AUTO_FIX" == true ]]; then
+        log_info "Attempting auto-fix..."
+        export FIX_DRY_RUN="$DRY_RUN"
+        export FIX_RESTORE_FROM_GIT="$RESTORE_FROM_GIT"
+        fix_all_drifts "${drift_list[@]}"
+    fi
+
+    return $EXIT_DRIFT_DETECTED
 }
 
-# Handle errors gracefully
-trap 'error "Script interrupted"; exit $EXIT_ERROR' INT TERM
+# Show usage
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [COMMAND]
 
-# Run main function with all arguments
-main "$@"
+Commands:
+    check       Check for drift (default)
+    baseline    Generate or update baseline
+    fix         Fix detected drift
+    report      Generate drift report
+
+Options:
+    -b FILE     Baseline file (default: $DEFAULT_BASELINE_FILE)
+    -f FORMAT   Output format: human|json|markdown|csv (default: human)
+    -o FILE     Output file (default: stdout)
+    -i PATTERN  Add ignore pattern (can be used multiple times)
+    -a          Auto-fix drift
+    -g          Use git for restore operations
+    -n          No git (baseline only)
+    -d          Dry run (show what would be done)
+    -v          Verbose output
+    -h          Show this help
+
+Examples:
+    $(basename "$0")                    # Check for drift using git
+    $(basename "$0") baseline           # Generate baseline
+    $(basename "$0") check -f json      # Check drift, output JSON
+    $(basename "$0") fix -g             # Fix drift using git
+    $(basename "$0") report -f markdown # Generate markdown report
+
+Exit codes:
+    0 - No drift detected
+    1 - Drift detected
+    2 - Error occurred
+EOF
+}
+
+# Parse command line arguments
+parse_args() {
+    local command=""
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            check|baseline|fix|report)
+                command="$1"
+                shift
+                ;;
+            -b|--baseline)
+                BASELINE_FILE="${2:-$DEFAULT_BASELINE_FILE}"
+                shift 2
+                ;;
+            -f|--format)
+                FORMAT="${2:-human}"
+                shift 2
+                ;;
+            -o|--output)
+                OUTPUT_FILE="${2:-}"
+                shift 2
+                ;;
+            -i|--ignore)
+                IGNORE_PATTERNS+=("${2:-}")
+                shift 2
+                ;;
+            -a|--auto-fix)
+                AUTO_FIX=true
+                shift
+                ;;
+            -g|--git-restore)
+                RESTORE_FROM_GIT=true
+                shift
+                ;;
+            -n|--no-git)
+                NO_GIT=true
+                shift
+                ;;
+            -d|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -v|--verbose)
+                VERBOSE=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                exit $EXIT_SUCCESS
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                usage
+                exit $EXIT_ERROR
+                ;;
+        esac
+    done
+
+    echo "${command:-check}"
+}
+
+# Main entry point
+main() {
+    # Parse configuration
+    parse_config || true
+
+    # Parse command line (overrides config)
+    local command
+    command=$(parse_args "$@")
+
+    # Execute command
+    case "$command" in
+        check)
+            detect_drift "all"
+            ;;
+        baseline)
+            log_info "Generating baseline..."
+            generate_baseline "$PROJECT_ROOT" "$BASELINE_FILE" "${IGNORE_PATTERNS[@]}"
+            ;;
+        fix)
+            log_info "Checking for drift to fix..."
+            local drift_list=()
+            while IFS= read -r drift; do
+                [[ -n "$drift" ]] && drift_list+=("$drift")
+            done < <(check_all_changes)
+
+            if [[ ${#drift_list[@]} -eq 0 ]]; then
+                log_success "No drift to fix"
+            else
+                export FIX_DRY_RUN="$DRY_RUN"
+                export FIX_RESTORE_FROM_GIT="$RESTORE_FROM_GIT"
+
+                if [[ "$DRY_RUN" == true ]]; then
+                    log_info "DRY RUN - would fix:"
+                fi
+
+                fix_all_drifts "${drift_list[@]}"
+            fi
+            ;;
+        report)
+            log_info "Generating drift report..."
+            local drift_list=()
+            while IFS= read -r drift; do
+                [[ -n "$drift" ]] && drift_list+=("$drift")
+            done < <(check_all_changes)
+
+            local report
+            report=$(generate_report "$FORMAT" "${drift_list[@]}")
+
+            if [[ -n "$OUTPUT_FILE" ]]; then
+                echo "$report" > "$OUTPUT_FILE"
+                log_success "Report saved to: $OUTPUT_FILE"
+            else
+                echo "$report"
+            fi
+            ;;
+        *)
+            die "Unknown command: $command"
+            ;;
+    esac
+}
+
+# Run if executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
