@@ -6,6 +6,24 @@
 **@docs/gates.xml** - Mandatory compliance checks (immutable, cache-optimized)
 **FIRST GATE**: Run `./scripts/build-context.sh` before any work
 
+### ⚠️ TDD_TESTS_FIRST Gate (MANDATORY)
+**Enforcement**: IMMEDIATE - No exceptions
+**Rule**: Tests MUST be written and committed BEFORE implementation
+
+Requirements:
+1. Write failing test first (RED phase)
+2. Commit test to git
+3. Write minimal implementation to pass (GREEN phase)
+4. Commit implementation
+5. Refactor if needed (REFACTOR phase)
+
+**Violations will be caught by**:
+- Git pre-commit hooks
+- GitHub Actions (tdd-enforcement.yml)
+- Compliance reviews
+
+**To check compliance**: `git log --oneline --follow tests/ lib/`
+
 ## 📍 Current Context
 **@docs/context.md** - Dynamic context (auto-generated, includes active tasks)
 **@docs/current.md** - Project dashboard (loaded if full status needed)

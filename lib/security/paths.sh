@@ -103,8 +103,7 @@ normalize_path() {
 
     # Split path into components
     local IFS='/'
-    local components
-    read -ra components <<< "$path"
+    local components=($path)
     local normalized_components=()
 
     for component in "${components[@]}"; do
@@ -296,7 +295,7 @@ sanitize_filename() {
 
     # Use tr to replace all dangerous characters at once
     # This includes null bytes, control chars, and path chars
-    sanitized="$(printf '%s' "$sanitized" | tr '\000-\037\177/<>:"|?*\\'\'' '_')"
+    sanitized="$(printf '%s' "$sanitized" | tr '\000-\037\177/<>:"|?*\\' '_')"
 
     # Handle double dots by replacing with single underscore
     sanitized="${sanitized//../_}"
@@ -315,8 +314,7 @@ validate_file_extension() {
     extension="$(echo "$extension" | tr '[:upper:]' '[:lower:]')"
 
     # Convert allowed extensions to lowercase
-    local allowed_lower
-    allowed_lower="$(echo "$allowed_extensions" | tr '[:upper:]' '[:lower:]')"
+    local allowed_lower="$(echo "$allowed_extensions" | tr '[:upper:]' '[:lower:]')"
 
     # Check if extension is in the comma-separated list
     # Add commas around the allowed list for exact matching

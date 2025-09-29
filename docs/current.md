@@ -24,17 +24,25 @@ Create a documentation framework that actually stays alive throughout a project'
 - **Community**: 🔴 Not Started
 
 ## 🔥 Active Development
+
+### ⚠️ CRITICAL: TDD Remediation (8-week plan)
+**30,000+ lines of code violating TDD_TESTS_FIRST gate**
+1. [Week 1: Security Modules](specs/008-tdd-remediation-week1/spec.md) - 🔴 CRITICAL (lib/security/*)
+2. [Week 2: Core Adapters](specs/009-tdd-remediation-week2/spec.md) - 🔴 HIGH (lib/adapter/*)
+3. [Week 3-4: Validation](specs/010-tdd-remediation-week3/spec.md) - 🟡 MEDIUM (lib/validation/*)
+4. [Week 5-6: UI & Integration](specs/011-tdd-remediation-week5/spec.md) - 🟡 MEDIUM (lib/ui/*, lib/docs/*)
+
+### Regular Development
 1. [Testing Framework](./active/06-testing-framework.md) - 🟡 In Progress (HIGH)
    - ✅ Created comprehensive input sanitization test suite
    - 🔴 Need to implement lib/security/sanitize.sh module
+- [planning-modular-rules](active/002-planning-modular-rules.md) - [Description needed]
 2. [Examples Library](./active/07-examples-library.md) - 🔴 Not Started (HIGH)
 3. [VSCode Extension](./active/08-vscode-extension.md) - ⚪ Future
 
 ## ✅ Recently Completed
-- [Living Docs Review](./specs/004-living-docs-review/) - Comprehensive security and infrastructure improvements ✅
 - [Documentation Optimization](./specs/003-documentation-optimization/) - 82% token reduction via dynamic loading ✅
 - [Modular Spec Rules System](./specs/002-modular-spec-rules/) - Dynamic framework rule inclusion with compliance review ✅
-- [Spec 002 Planning](./completed/2025-09-21-002-planning-modular-rules.md) - Planning documentation for modular rules ✅
 - [Multi-Spec Adapter System](./completed/2025-09-16-multi-spec-adapter.md) - Support for 6 frameworks ✅
 - [System Consistency Fixes](completed/2025-09-16-system-consistency-fixes.md) - Fixed drift detection and path issues ✅
 - [Wizard v3.0.0](./completed/2025-09-16-wizard-v3.md) - Multi-select framework installation ✅
@@ -43,16 +51,21 @@ Create a documentation framework that actually stays alive throughout a project'
 - [Drift Detection System](./completed/2025-09-15-drift-detection.md) - Auto-fix documentation drift ✅
 
 ## 📐 Project Specifications
-- [Spec 001: System Consistency](./specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
+- [Spec 001: System Consistency](../specs/001-system-consistency-fixes/spec.md) - Fixes for drift and version issues
 - [Spec 002: Modular Rules](../specs/002-modular-spec-rules/spec.md) - Framework-specific rules system
-- [Spec 003: Bootstrap System](../specs/003-documentation-optimization/spec.md) - Token-optimized context loading
+- [Spec 003: Bootstrap System](../specs/003-bootstrap-system/spec.md) - Token-optimized context loading
 - [Spec 004: Living Docs Review](../specs/004-living-docs-review/spec.md) - Comprehensive review and fixes
 - [Spec 005: Debug Logging](../specs/005-debug-logging/spec.md) - Comprehensive debug logging system (retrospective)
 - [Spec 006: Troubleshooting Guide](../specs/006-troubleshooting-guide/spec.md) - User troubleshooting documentation (retrospective)
+- [Spec 007: Adapter Installation](../specs/007-adapter-installation/spec.md) - Safe adapter installation with conflict prevention ✅
+- [Spec 008: TDD Week 1](../specs/008-tdd-remediation-week1/spec.md) - Security module remediation 🔴
+- [Spec 009: TDD Week 2](../specs/009-tdd-remediation-week2/spec.md) - Core adapter remediation 🔴
+- [Spec 010: TDD Week 3-4](../specs/010-tdd-remediation-week3/spec.md) - Validation remediation 🔴
+- [Spec 011: TDD Week 5-6](../specs/011-tdd-remediation-week5/spec.md) - UI & integration remediation 🔴
 
 ## 📂 Complete Documentation Map
 
-### Core Files (v5.1 Architecture)
+### Core Files (v5.0 Architecture)
 - [README.md](../README.md) - Public introduction (GitHub standard)
 - [VERSION](../VERSION) - Current version number
 - [docs/versioning.md](./versioning.md) - Versioning strategy and history
@@ -86,6 +99,14 @@ Create a documentation framework that actually stays alive throughout a project'
 - [tests/debug/logger-compliance.test.sh](../tests/debug/logger-compliance.test.sh) - Debug logger compliance tests
 - [tests/debug/logger-basic.test.sh](../tests/debug/logger-basic.test.sh) - Debug logger basic tests
 - [tests/debug/logger.test.sh](../tests/debug/logger.test.sh) - Debug logger full test suite
+- [tests/unit/test_install_adapter_default.sh](../tests/unit/test_install_adapter_default.sh) - Test default adapter installation
+- [tests/unit/test_install_adapter_custom_paths.sh](../tests/unit/test_install_adapter_custom_paths.sh) - Test custom path adapter installation
+- [tests/unit/test_remove_adapter.sh](../tests/unit/test_remove_adapter.sh) - Test complete adapter removal using manifest (T006)
+- [tests/unit/test_update_adapter_customizations.sh](../tests/unit/test_update_adapter_customizations.sh) - Test updating adapter while preserving user customizations (T007)
+- [tests/unit/test_validate_paths.sh](../tests/unit/test_validate_paths.sh) - Test detection of hardcoded paths before installation (T008)
+- [tests/unit/test_command_prefixing.sh](../tests/unit/test_command_prefixing.sh) - Test automatic command name prefixing (T009)
+- [tests/unit/test_handle_conflicts.sh](../tests/unit/test_handle_conflicts.sh) - Test detection and resolution of command conflicts (T010)
+- [tests/unit/test_install_agents.sh](../tests/unit/test_install_agents.sh) - Test installation of agent templates (T011)
 
 ### Templates
 - [templates/PROJECT.md.template](../templates/PROJECT.md.template) - Standard projects
@@ -117,7 +138,6 @@ Create a documentation framework that actually stays alive throughout a project'
 
 ### Development History
 - [docs/log.md](./log.md) - Agent coordination log (one-liners for multi-agent awareness)
-- [mermaid-validation](procedures/mermaid-validation.md) - [Description needed]
 - [maintenance](procedures/maintenance.md) - [Description needed]
 - [docs/completed/](./completed/) - Finished tasks with full details (dated)
 - [docs/issues/](./issues/) - Detailed bug investigations when needed
@@ -126,10 +146,10 @@ Create a documentation framework that actually stays alive throughout a project'
 - [docs/procedures/adapter-versioning.md](./procedures/adapter-versioning.md) - Dual versioning guide for adapters
 
 ## 🐛 Quick Issues
-See [bugs.md](./bugs.md) - Current count: 10 open
+See [bugs.md](./bugs.md) - Current count: 17 open
 
 ## 💡 Ideas Backlog
-See [ideas.md](./ideas.md) - Feature ideas and improvements (33 items)
+See [ideas.md](./ideas.md) - Feature ideas and improvements
 
 ## 🔮 Roadmap
 - [x] **v1.0.0**: Core framework (Sept 2025)
@@ -137,7 +157,7 @@ See [ideas.md](./ideas.md) - Feature ideas and improvements (33 items)
 - [x] **v3.0.0**: Multi-spec adapter system (Sept 2025)
 - [x] **v4.0.0**: Modular rules system (Sept 2025)
 - [x] **v5.0.0**: Documentation optimization - 82% token reduction (Sept 2025)
-- [x] **v5.1.0**: Debug system and comprehensive testing (Sept 2025)
+- [ ] **v5.1.0**: Testing framework
 - [ ] **v5.2.0**: Examples library
 - [ ] **v6.0.0**: XML format conversion for all docs
 - [ ] **v10.0.0**: Production ready with enterprise features

@@ -159,7 +159,7 @@ extract_mermaid_diagrams() {
         /^```mermaid/ {
             in_mermaid = 1
             diagram_num++
-            filename = "'"$output_dir"'/diagram_" diagram_num ".mmd"
+            filename = "'$output_dir'/diagram_" diagram_num ".mmd"
             start_line = line_num
             next
         }
@@ -469,8 +469,7 @@ validate_file() {
     fi
 
     # Create temporary directory for this file
-    local file_temp_dir
-    file_temp_dir="$TEMP_DIR/$(basename "$file" .md)"
+    local file_temp_dir="$TEMP_DIR/$(basename "$file" .md)"
     mkdir -p "$file_temp_dir"
 
     # Extract diagrams

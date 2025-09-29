@@ -26,6 +26,22 @@ When modifying wizard.sh or templates:
 3. Test all paths through wizard
 4. Verify template substitutions
 
+## Adapter Management (New v5.1.0)
+Robust adapter installation with conflict prevention:
+- **Manifests**: Each adapter tracks files in `.living-docs-manifest.json`
+- **Prefixing**: Commands auto-prefixed to prevent conflicts (e.g., `speckit_plan.md`)
+- **Path Rewriting**: Hardcoded paths replaced with variables during install
+- **Safe Updates**: Customizations preserved during adapter updates
+- **Complete Removal**: Manifest ensures all files removed cleanly
+
+Key adapter libraries in `lib/adapter/`:
+- `install.sh` - Safe installation with temp directory staging
+- `prefix.sh` - Command namespace management
+- `rewrite.sh` - Path variable substitution engine
+- `manifest.sh` - Installation tracking
+- `remove.sh` - Complete adapter removal
+- `update.sh` - Smart updates preserving customizations
+
 ## Critical Files
 - `wizard.sh` - The one script that does everything
 - `docs/current.md` - Single source of truth

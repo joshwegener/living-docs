@@ -1,8 +1,8 @@
-# Implementation Plan: Security & Infrastructure Improvements
+# Implementation Plan: [FEATURE]
 
 
-**Branch**: `004-living-docs-review` | **Date**: 2025-09-20 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/004-living-docs-review/spec.md`
+**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
 ## Execution Flow (/plan command scope)
 ```
@@ -30,55 +30,51 @@
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
-Comprehensive security and infrastructure improvements for living-docs v5.0, addressing critical security vulnerabilities, documentation drift, missing CI/CD infrastructure, and developer experience gaps. The implementation will prioritize security fixes, then infrastructure, followed by UX improvements.
+[Extract from feature spec: primary requirement + technical approach from research]
 
 ## Technical Context
-**Language/Version**: Bash 4.0+ (current implementation)
-**Primary Dependencies**: None (dependency-free by design)
-**Storage**: File system (markdown files, shell scripts)
-**Testing**: Bash-based test scripts (existing framework in tests/)
-**Target Platform**: macOS, Linux (POSIX-compliant systems)
-**Project Type**: single (CLI tool with adapters)
-**Performance Goals**: Sub-second operations for local commands, <3s for network operations
-**Constraints**: Zero dependencies, backward compatibility, one-command installation
-**Scale/Scope**: Support up to 10,000 documentation files per project
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [single/web/mobile - determines source structure]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 **Simplicity**:
-- Projects: 1 (single project - CLI tools)
-- Using framework directly? Yes (no wrapper classes, direct bash)
-- Single data model? Yes (markdown files and configs)
-- Avoiding patterns? Yes (no unnecessary abstractions)
+- Projects: [#] (max 3 - e.g., api, cli, tests)
+- Using framework directly? (no wrapper classes)
+- Single data model? (no DTOs unless serialization differs)
+- Avoiding patterns? (no Repository/UoW without proven need)
 
 **Architecture**:
-- EVERY feature as library? Yes (modular scripts in scripts/ and adapters/)
-- Libraries listed:
-  - security-lib: Checksum verification, GPG signing
-  - drift-lib: Documentation drift detection
-  - ci-lib: CI/CD automation scripts
-  - test-lib: Unified test runner
-- CLI per library: wizard.sh with subcommands
-- Library docs: README.md per module planned
+- EVERY feature as library? (no direct app code)
+- Libraries listed: [name + purpose for each]
+- CLI per library: [commands with --help/--version/--format]
+- Library docs: llms.txt format planned?
 
 **Testing (NON-NEGOTIABLE)**:
-- RED-GREEN-Refactor cycle enforced? Yes
-- Git commits show tests before implementation? Will enforce
-- Order: Contract→Integration→E2E→Unit strictly followed? Yes
-- Real dependencies used? N/A (no external deps)
-- Integration tests for: new libraries, contract changes, shared schemas? Yes
-- FORBIDDEN: Implementation before test, skipping RED phase - Understood
+- RED-GREEN-Refactor cycle enforced? (test MUST fail first)
+- Git commits show tests before implementation?
+- Order: Contract→Integration→E2E→Unit strictly followed?
+- Real dependencies used? (actual DBs, not mocks)
+- Integration tests for: new libraries, contract changes, shared schemas?
+- FORBIDDEN: Implementation before test, skipping RED phase
 
 **Observability**:
-- Structured logging included? Yes (via debug mode)
-- Frontend logs → backend? N/A (CLI only)
-- Error context sufficient? Will improve
+- Structured logging included?
+- Frontend logs → backend? (unified stream)
+- Error context sufficient?
 
 **Versioning**:
-- Version number assigned? Yes (5.1.0 for this release)
-- BUILD increments on every change? Will implement
-- Breaking changes handled? Yes (backward compatibility maintained)
+- Version number assigned? (MAJOR.MINOR.BUILD)
+- BUILD increments on every change?
+- Breaking changes handled? (parallel tests, migration plan)
 
 ## Project Structure
 
@@ -130,7 +126,7 @@ ios/ or android/
 └── [platform-specific structure]
 ```
 
-**Structure Decision**: Option 1 (Single project structure - CLI tool)
+**Structure Decision**: [DEFAULT to Option 1 unless Technical Context indicates web/mobile app]
 
 ## Phase 0: Outline & Research
 1. **Extract unknowns from Technical Context** above:
@@ -191,47 +187,17 @@ ios/ or android/
 **Task Generation Strategy**:
 - Load `/templates/tasks-template.md` as base
 - Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
-- Security tasks first (critical priority)
-- Infrastructure tasks second (CI/CD, testing)
-- Documentation accuracy tasks third
-- Developer experience improvements last
-
-**Task Categories**:
-1. **Security Implementation** (FR-001 to FR-006)
-   - Checksum generation and verification scripts [P]
-   - GPG signing integration [P]
-   - Input sanitization library [P]
-   - Path validation functions [P]
-
-2. **CI/CD Infrastructure** (FR-012 to FR-015)
-   - GitHub Actions workflows [P]
-   - Test runner unification
-   - Coverage reporting setup
-   - Release automation
-
-3. **Documentation System** (FR-007 to FR-011)
-   - Drift detection improvements
-   - Documentation validation tests
-   - Status tracking automation
-
-4. **Developer Experience** (FR-016 to FR-022)
-   - Progress indicator library [P]
-   - Rollback mechanism [P]
-   - Debug mode implementation [P]
-   - Troubleshooting guide creation [P]
-
-5. **2025 Best Practices** (FR-023 to FR-026)
-   - Vale integration
-   - Mermaid support
-   - Accessibility testing
+- Each contract → contract test task [P]
+- Each entity → model creation task [P] 
+- Each user story → integration test task
+- Implementation tasks to make tests pass
 
 **Ordering Strategy**:
-- TDD order: Tests before implementation
-- Critical security fixes must be first
-- Dependencies resolved before dependent tasks
+- TDD order: Tests before implementation 
+- Dependency order: Models before services before UI
 - Mark [P] for parallel execution (independent files)
 
-**Estimated Output**: 30-35 numbered, ordered tasks in tasks.md covering all 30 functional requirements
+**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
@@ -255,18 +221,18 @@ ios/ or android/
 *This checklist is updated during execution flow*
 
 **Phase Status**:
-- [x] Phase 0: Research complete (/plan command)
-- [x] Phase 1: Design complete (/plan command)
-- [x] Phase 2: Task planning complete (/plan command - describe approach only)
+- [ ] Phase 0: Research complete (/plan command)
+- [ ] Phase 1: Design complete (/plan command)
+- [ ] Phase 2: Task planning complete (/plan command - describe approach only)
 - [ ] Phase 3: Tasks generated (/tasks command)
 - [ ] Phase 4: Implementation complete
 - [ ] Phase 5: Validation passed
 
 **Gate Status**:
-- [x] Initial Constitution Check: PASS
-- [x] Post-Design Constitution Check: PASS
-- [x] All NEEDS CLARIFICATION resolved
-- [x] Complexity deviations documented (none required)
+- [ ] Initial Constitution Check: PASS
+- [ ] Post-Design Constitution Check: PASS
+- [ ] All NEEDS CLARIFICATION resolved
+- [ ] Complexity deviations documented
 
 ---
 *Based on Constitution v2.1.1 - See `/memory/constitution.md`*
