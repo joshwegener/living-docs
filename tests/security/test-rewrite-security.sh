@@ -11,7 +11,12 @@ export SPECS_PATH="/etc/shadow"
 export AI_PATH="'; rm -rf /; echo '"
 
 # Source the library
-source lib/adapter/rewrite.sh
+if [[ -f "lib/adapter/rewrite.sh" ]]; then
+    source lib/adapter/rewrite.sh
+else
+    echo "Error: lib/adapter/rewrite.sh not found" >&2
+    exit 1
+fi
 
 # Create test file
 TEST_FILE=$(mktemp)

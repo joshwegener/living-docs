@@ -58,6 +58,42 @@ get_ai_command_dir() {
     esac
 }
 
+# Check for prefix collision
+check_prefix_collision() {
+    local proposed_prefix="$1"
+    local adapter_name="${2:-}"
+
+    # Validate prefix format
+    if ! [[ "$proposed_prefix" =~ ^[a-z][a-z0-9_]*$ ]]; then
+        echo "Error: Invalid prefix format" >&2
+        return 1
+    fi
+
+    # Check all existing adapter manifests for prefix conflicts
+    local adapters_dir="${PROJECT_ROOT:-$(pwd)}/adapters"
+    if [[ -d "$adapters_dir" ]]; then
+        find "$adapters_dir" -name ".living-docs-manifest.json" 2>/dev/null | while read -r manifest; do
+            local existing_adapter
+            existing_adapter=$(basename "$(dirname "$manifest")")
+
+            # Skip checking against self
+            if [[ "$existing_adapter" == "$adapter_name" ]]; then
+                continue
+            fi
+
+            local existing_prefix
+            existing_prefix=$(grep '"prefix"' "$manifest" 2>/dev/null | sed 's/.*"prefix"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || true)
+
+            if [[ "$existing_prefix" == "$proposed_prefix" ]]; then
+                echo "Error: Prefix '$proposed_prefix' already used by adapter '$existing_adapter'" >&2
+                return 1
+            fi
+        done
+    fi
+
+    return 0
+}
+
 # Generate prefix for an adapter to avoid conflicts
 generate_prefix() {
     local adapter_name="$1"
@@ -68,6 +104,11 @@ generate_prefix() {
         return 1
     fi
 
+    # Validate adapter name first
+    if command -v validate_adapter_name >/dev/null 2>&1; then
+        adapter_name=$(validate_adapter_name "$adapter_name") || return 1
+    fi
+
     # Clean adapter name for prefix (remove hyphens, convert to lowercase)
     local base_prefix
     base_prefix=$(echo "$adapter_name" | tr '[:upper:]' '[:lower:]' | tr -d '-')
@@ -76,10 +117,20 @@ generate_prefix() {
     local prefix="$base_prefix"
     local counter=1
 
+    # First check against provided list
     while [[ " ${existing_prefixes[*]} " =~ " ${prefix} " ]]; do
         prefix="${base_prefix}${counter}"
         ((counter++))
     done
+
+    # Then verify no collision with existing adapters
+    if ! check_prefix_collision "$prefix" "$adapter_name"; then
+        # Try with counter
+        while ! check_prefix_collision "${base_prefix}${counter}" "$adapter_name"; do
+            ((counter++))
+        done
+        prefix="${base_prefix}${counter}"
+    fi
 
     echo "$prefix"
 }
@@ -356,3 +407,4 @@ export -f get_existing_prefixes
 export -f remove_prefix
 export -f validate_prefix
 export -f generate_prefix_report
+export -f check_prefix_collision

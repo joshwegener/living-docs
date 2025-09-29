@@ -6,7 +6,12 @@ set -euo pipefail
 echo "Testing namespace collision detection..."
 
 # Source prefix functions
-source lib/adapter/prefix.sh
+if [[ -f "lib/adapter/prefix.sh" ]]; then
+    source lib/adapter/prefix.sh
+else
+    echo "Error: lib/adapter/prefix.sh not found" >&2
+    exit 1
+fi
 
 # Test 1: Check if collision detection exists
 echo "Test 1: Testing collision detection function..."
