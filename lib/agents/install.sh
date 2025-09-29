@@ -5,8 +5,13 @@ set -euo pipefail
 
 # Source required libraries
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../adapter/manifest.sh" 2>/dev/null || true
-source "$SCRIPT_DIR/../adapter/prefix.sh" 2>/dev/null || true
+# Source required adapter libraries with safety checks
+if [[ -f "$SCRIPT_DIR/../adapter/manifest.sh" ]]; then
+    source "$SCRIPT_DIR/../adapter/manifest.sh"
+fi
+if [[ -f "$SCRIPT_DIR/../adapter/prefix.sh" ]]; then
+    source "$SCRIPT_DIR/../adapter/prefix.sh"
+fi
 
 # AI tool detection mappings (bash 3.2 compatible)
 # Get agents directory for a tool
