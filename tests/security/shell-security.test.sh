@@ -50,18 +50,11 @@ done
 # Test 2: Check for unquoted variable expansions
 echo -e "\nTest 2: Variable quoting enforcement"
 for script in "${SCRIPTS[@]}"; do
-    # Look for unquoted $var patterns (excluding in [[ ]], $(( )), and case statements)
-    if grep -E '\$[A-Za-z_][A-Za-z0-9_]*' "$script" | \
-       grep -v '^\s*#' | \
-       grep -v '\[\[.*\]\]' | \
-       grep -v '\$\(' | \
-       grep -v '\$\{' | \
-       grep -v '".*\$' | \
-       grep -v 'case.*in' | \
-       grep -q '\$'; then
-        test_fail "Unquoted variables found in: $script"
+    # Look for unquoted $var patterns (basic check for now)
+    if grep -E '\$[A-Za-z_][A-Za-z0-9_]*[^}"]' "$script" | grep -v '^\s*#' | grep -q .; then
+        test_fail "Potentially unquoted variables found in: $script"
     else
-        test_pass "Variables properly quoted: $script"
+        test_pass "Variables appear properly quoted: $script"
     fi
 done
 
